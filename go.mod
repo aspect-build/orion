@@ -7,6 +7,7 @@ require (
 	github.com/bazelbuild/rules_go v0.34.0
 	github.com/onsi/ginkgo/v2 v2.1.4
 	github.com/onsi/gomega v1.20.0
+	google.golang.org/protobuf v1.28.1
 )
 
 require (
