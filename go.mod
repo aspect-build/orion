@@ -5,8 +5,11 @@ go 1.18
 require (
 	github.com/aspect-build/talkie v0.0.0-00010101000000-000000000000
 	github.com/bazelbuild/rules_go v0.34.0
+	github.com/golang/protobuf v1.5.2
 	github.com/onsi/ginkgo/v2 v2.1.4
 	github.com/onsi/gomega v1.20.0
+	google.golang.org/genproto v0.0.0-20220812140447-cec7f5303424
+	google.golang.org/grpc v1.48.0
 	google.golang.org/protobuf v1.28.1
 )
 
