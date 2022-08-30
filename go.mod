@@ -3,7 +3,7 @@ module github.com/aspect-build/silo
 go 1.18
 
 require (
-	aspect.build/talkie v0.0.0-00010101000000-000000000000
+	github.com/aspect-build/talkie v0.0.0-00010101000000-000000000000
 	github.com/bazelbuild/rules_go v0.34.0
 	github.com/golang/protobuf v1.5.2
 	github.com/onsi/ginkgo/v2 v2.1.4
@@ -34,4 +34,4 @@ require (
 	sigs.k8s.io/yaml v1.3.0 // indirect
 )
 
-replace aspect.build/talkie => ./talkie
+replace github.com/aspect-build/talkie => ./talkie
