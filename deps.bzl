@@ -190,14 +190,14 @@ def go_dependencies():
     go_repository(
         name = "com_github_onsi_ginkgo_v2",
         importpath = "github.com/onsi/ginkgo/v2",
-        sum = "h1:GNapqRSid3zijZ9H77KrgVG4/8KqiyRsxcSxe+7ApXY=",
-        version = "v2.1.4",
+        sum = "h1:Fx2POJZfKRQcM1pH49qSZiYeu319wji004qX+GDovrU=",
+        version = "v2.1.6",
     )
     go_repository(
         name = "com_github_onsi_gomega",
         importpath = "github.com/onsi/gomega",
-        sum = "h1:8W0cWlwFkflGPLltQvLRB7ZVD5HuP6ng320w2IS245Q=",
-        version = "v1.20.0",
+        sum = "h1:PA/3qinGoukvymdIDV8pii6tiZgC8kbmJO6Z5+b002Q=",
+        version = "v1.20.1",
     )
     go_repository(
         name = "com_github_pelletier_go_toml",
@@ -364,8 +364,8 @@ def go_dependencies():
     go_repository(
         name = "org_golang_x_tools",
         importpath = "golang.org/x/tools",
-        sum = "h1:QjFRCZxdOhBJ/UNgnBZLbNV13DlbnK0quyivTnXJM20=",
-        version = "v0.1.10",
+        sum = "h1:VveCTK38A2rkS8ZqFY25HIDFscX5X9OoEhJd3quQmXU=",
+        version = "v0.1.12",
     )
     go_repository(
         name = "org_golang_x_xerrors",
