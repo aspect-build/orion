@@ -7,7 +7,7 @@ require (
 	github.com/bazelbuild/rules_go v0.34.0
 	github.com/golang/protobuf v1.5.2
 	github.com/onsi/ginkgo/v2 v2.1.6
-	github.com/onsi/gomega v1.20.1
+	github.com/onsi/gomega v1.20.2
 	github.com/sirupsen/logrus v1.9.0
 	google.golang.org/genproto v0.0.0-20220829175752-36a9c930ecbf
 	google.golang.org/grpc v1.49.0
