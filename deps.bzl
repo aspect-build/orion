@@ -292,8 +292,8 @@ def go_dependencies():
     go_repository(
         name = "io_k8s_sigs_kind",
         importpath = "sigs.k8s.io/kind",
-        sum = "h1:cNmI3jGBvp7UegEGbC5we8plDtCUmaNRL+bod7JoSCE=",
-        version = "v0.14.0",
+        sum = "h1:Fskj234L4hjQlsScCgeYvCBIRt06cjLzc7+kbr1u8Tg=",
+        version = "v0.15.0",
     )
     go_repository(
         name = "io_k8s_sigs_yaml",
@@ -310,8 +310,8 @@ def go_dependencies():
     go_repository(
         name = "org_golang_google_genproto",
         importpath = "google.golang.org/genproto",
-        sum = "h1:Q5xNKbTSFwkuaaGaR7CMcXEM5sy19KYdUU8iF8/iRC0=",
-        version = "v0.0.0-20220829175752-36a9c930ecbf",
+        sum = "h1:vXJMM8Shg7TGaYxZsQ++A/FOSlbDmDtWhS/o+3w/hj4=",
+        version = "v0.0.0-20220902135211-223410557253",
     )
     go_repository(
         name = "org_golang_google_grpc",
