@@ -98,6 +98,12 @@ def go_dependencies():
         version = "v0.0.0-20160126235308-23def4e6c14b",
     )
     go_repository(
+        name = "com_github_golang_mock",
+        importpath = "github.com/golang/mock",
+        sum = "h1:ErTB+efbowRARo13NNdxyJji2egdxLGQhRaY+DUumQc=",
+        version = "v1.6.0",
+    )
+    go_repository(
         name = "com_github_golang_protobuf",
         importpath = "github.com/golang/protobuf",
         sum = "h1:ROPKBNFfQgOUMifHyP+KYbvpjbdoFNs+aK7DXlji0Tw=",
@@ -266,6 +272,12 @@ def go_dependencies():
         version = "v1.7.0",
     )
     go_repository(
+        name = "com_github_yuin_goldmark",
+        importpath = "github.com/yuin/goldmark",
+        sum = "h1:dPmz1Snjq0kmkz159iL7S6WzdahUTHnHB5M56WFVifs=",
+        version = "v1.3.5",
+    )
+    go_repository(
         name = "com_google_cloud_go",
         importpath = "cloud.google.com/go",
         sum = "h1:eOI3/cP2VTU6uZLDYAoic+eyzzB9YyGmJ7eIjl8rOPg=",
@@ -332,6 +344,12 @@ def go_dependencies():
         version = "v0.0.0-20220829220503-c86fa9a7ed90",
     )
     go_repository(
+        name = "org_golang_x_mod",
+        importpath = "golang.org/x/mod",
+        sum = "h1:Gz96sIWK3OalVv/I/qNygP42zyoKp3xptRVCWRFEBvo=",
+        version = "v0.4.2",
+    )
+    go_repository(
         name = "org_golang_x_net",
         importpath = "golang.org/x/net",
         sum = "h1:ZmngSVLe/wycRns9MKikG9OWIEjGcGAkacif7oYQaUY=",
@@ -342,6 +360,12 @@ def go_dependencies():
         importpath = "golang.org/x/oauth2",
         sum = "h1:TzXSXBo42m9gQenoE3b9BGiEpg5IG2JkU5FkPIawgtw=",
         version = "v0.0.0-20200107190931-bf48bf16ab8d",
+    )
+    go_repository(
+        name = "org_golang_x_sync",
+        importpath = "golang.org/x/sync",
+        sum = "h1:5KslGYwFpkhGh+Q16bwMP3cOontH8FOep7tGV86Y7SQ=",
+        version = "v0.0.0-20210220032951-036812b2e83c",
     )
     go_repository(
         name = "org_golang_x_sys",
