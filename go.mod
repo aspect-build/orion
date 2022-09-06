@@ -4,7 +4,6 @@ go 1.19
 
 require (
 	github.com/aspect-build/talkie v0.0.0-00010101000000-000000000000
-	github.com/avast/retry-go v3.0.0+incompatible
 	github.com/bazelbuild/rules_go v0.34.0
 	github.com/golang/mock v1.6.0
 	github.com/golang/protobuf v1.5.2
@@ -20,6 +19,7 @@ require (
 require (
 	github.com/BurntSushi/toml v1.2.0 // indirect
 	github.com/alessio/shellescape v1.4.1 // indirect
+	github.com/avast/retry-go/v4 v4.1.0 // indirect
 	github.com/evanphx/json-patch/v5 v5.6.0 // indirect
 	github.com/google/go-cmp v0.5.8 // indirect
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect

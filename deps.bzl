@@ -15,10 +15,11 @@ def go_dependencies():
         version = "v1.4.1",
     )
     go_repository(
-        name = "com_github_avast_retry_go",
-        importpath = "github.com/avast/retry-go",
-        sum = "h1:4SOWQ7Qs+oroOTQOYnAHqelpCO0biHSxpiH9JdtuBj0=",
-        version = "v3.0.0+incompatible",
+        name = "com_github_avast_retry_go_v4",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/avast/retry-go/v4",
+        sum = "h1:CwudD9anYv6JMVnDuTRlK6kLo4dBamiL+F3U8YDiyfg=",
+        version = "v4.1.0",
     )
     go_repository(
         name = "com_github_bazelbuild_rules_go",
@@ -252,6 +253,13 @@ def go_dependencies():
         version = "v1.9.5",
     )
     go_repository(
+        name = "com_github_pierrre_gotestcover",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/pierrre/gotestcover",
+        sum = "h1:i5VIxp6QB8oWZ8IkK8zrDgeT6ORGIUeiN+61iETwJbI=",
+        version = "v0.0.0-20160517101806-924dca7d15f0",
+    )
+    go_repository(
         name = "com_github_pkg_errors",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/pkg/errors",
@@ -264,6 +272,13 @@ def go_dependencies():
         importpath = "github.com/pmezard/go-difflib",
         sum = "h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=",
         version = "v1.0.0",
+    )
+    go_repository(
+        name = "com_github_robertkrimen_godocdown",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/robertkrimen/godocdown",
+        sum = "h1:jMxcLa+VjJKhpCwbLUXAD15wJ+hhvXMLujCl3MkXpfM=",
+        version = "v0.0.0-20130622164427-0bfa04905481",
     )
     go_repository(
         name = "com_github_russross_blackfriday_v2",
@@ -325,8 +340,8 @@ def go_dependencies():
         name = "com_github_yuin_goldmark",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/yuin/goldmark",
-        sum = "h1:dPmz1Snjq0kmkz159iL7S6WzdahUTHnHB5M56WFVifs=",
-        version = "v1.3.5",
+        sum = "h1:OtISOGfH6sOWa1/qXqqAiOIAO6Z5J3AEAE18WAq6BiQ=",
+        version = "v1.4.0",
     )
     go_repository(
         name = "com_google_cloud_go",
