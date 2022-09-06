@@ -15,6 +15,12 @@ def go_dependencies():
         version = "v1.4.1",
     )
     go_repository(
+        name = "com_github_avast_retry_go",
+        importpath = "github.com/avast/retry-go",
+        sum = "h1:4SOWQ7Qs+oroOTQOYnAHqelpCO0biHSxpiH9JdtuBj0=",
+        version = "v3.0.0+incompatible",
+    )
+    go_repository(
         name = "com_github_bazelbuild_rules_go",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bazelbuild/rules_go",
