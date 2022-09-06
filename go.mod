@@ -3,27 +3,44 @@ module github.com/aspect-build/silo
 go 1.19
 
 require (
+	aspect.build/cli v0.6.0
 	github.com/aspect-build/talkie v0.0.0-00010101000000-000000000000
+	github.com/avast/retry-go/v4 v4.1.0
+	github.com/bazelbuild/bazel-gazelle v0.26.0
+	github.com/bazelbuild/buildtools v0.0.0-20220830143905-2a9bddb5c3a7
 	github.com/bazelbuild/rules_go v0.34.0
+	github.com/go-test/deep v1.0.8
 	github.com/golang/mock v1.6.0
 	github.com/golang/protobuf v1.5.2
+	github.com/hashicorp/go-plugin v1.4.5
+	github.com/manifoldco/promptui v0.9.0
 	github.com/onsi/ginkgo/v2 v2.1.6
 	github.com/onsi/gomega v1.20.2
 	github.com/sirupsen/logrus v1.9.0
 	google.golang.org/genproto v0.0.0-20220902135211-223410557253
 	google.golang.org/grpc v1.49.0
 	google.golang.org/protobuf v1.28.1
+	gopkg.in/yaml.v2 v2.4.0
 	sigs.k8s.io/kind v0.15.0
 )
 
 require (
 	github.com/BurntSushi/toml v1.2.0 // indirect
 	github.com/alessio/shellescape v1.4.1 // indirect
-	github.com/avast/retry-go/v4 v4.1.0 // indirect
+	github.com/bazelbuild/bazelisk v1.10.1 // indirect
+	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e // indirect
 	github.com/evanphx/json-patch/v5 v5.6.0 // indirect
+	github.com/fatih/color v1.12.0 // indirect
 	github.com/google/go-cmp v0.5.8 // indirect
+	github.com/hashicorp/go-hclog v1.0.0 // indirect
+	github.com/hashicorp/go-version v1.3.0 // indirect
+	github.com/hashicorp/yamux v0.0.0-20180604194846-3520598351bb // indirect
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect
+	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
+	github.com/mitchellh/go-homedir v1.1.0 // indirect
+	github.com/mitchellh/go-testing-interface v1.0.0 // indirect
+	github.com/oklog/run v1.0.0 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/spf13/cobra v1.5.0 // indirect
@@ -31,7 +48,6 @@ require (
 	golang.org/x/net v0.0.0-20220826154423-83b083e8dc8b // indirect
 	golang.org/x/sys v0.0.0-20220829200755-d48e67d00261 // indirect
 	golang.org/x/text v0.3.7 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	sigs.k8s.io/yaml v1.3.0 // indirect
 )
