@@ -8,6 +8,9 @@ require (
 	github.com/bazelbuild/bazel-gazelle v0.26.0
 	github.com/bazelbuild/buildtools v0.0.0-20220907133145-b9bfff5d7f91
 	github.com/bazelbuild/rules_go v0.34.0
+	github.com/bmatcuk/doublestar v1.3.4
+	github.com/emirpasic/gods v1.18.1
+	github.com/evanw/esbuild v0.15.7
 	github.com/go-test/deep v1.0.8
 	github.com/golang/mock v1.6.0
 	github.com/hashicorp/go-plugin v1.4.5
@@ -49,6 +52,7 @@ require (
 	golang.org/x/net v0.0.0-20220907135653-1e95f45603a7 // indirect
 	golang.org/x/sys v0.0.0-20220907062415-87db552b00fd // indirect
 	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/tools v0.1.12 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	sigs.k8s.io/yaml v1.3.0 // indirect
 )
