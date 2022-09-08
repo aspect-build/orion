@@ -5,7 +5,6 @@ go 1.19
 require (
 	aspect.build/cli v0.7.0
 	github.com/aspect-build/talkie v0.0.0-00010101000000-000000000000
-	github.com/avast/retry-go/v4 v4.1.0
 	github.com/bazelbuild/bazel-gazelle v0.26.0
 	github.com/bazelbuild/buildtools v0.0.0-20220907133145-b9bfff5d7f91
 	github.com/bazelbuild/rules_go v0.34.0

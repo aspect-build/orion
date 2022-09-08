@@ -477,13 +477,6 @@ def go_dependencies():
         version = "v2.0.5",
     )
     go_repository(
-        name = "com_github_pierrre_gotestcover",
-        build_file_proto_mode = "disable_global",
-        importpath = "github.com/pierrre/gotestcover",
-        sum = "h1:i5VIxp6QB8oWZ8IkK8zrDgeT6ORGIUeiN+61iETwJbI=",
-        version = "v0.0.0-20160517101806-924dca7d15f0",
-    )
-    go_repository(
         name = "com_github_pkg_browser",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/pkg/browser",
@@ -510,13 +503,6 @@ def go_dependencies():
         importpath = "github.com/prometheus/client_model",
         sum = "h1:gQz4mCbXsO+nc9n1hCxHcGA3Zx3Eo+UHZoInFGUIXNM=",
         version = "v0.0.0-20190812154241-14fe0d1b01d4",
-    )
-    go_repository(
-        name = "com_github_robertkrimen_godocdown",
-        build_file_proto_mode = "disable_global",
-        importpath = "github.com/robertkrimen/godocdown",
-        sum = "h1:jMxcLa+VjJKhpCwbLUXAD15wJ+hhvXMLujCl3MkXpfM=",
-        version = "v0.0.0-20130622164427-0bfa04905481",
     )
     go_repository(
         name = "com_github_rogpeppe_go_internal",
@@ -613,8 +599,8 @@ def go_dependencies():
         name = "com_github_yuin_goldmark",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/yuin/goldmark",
-        sum = "h1:OtISOGfH6sOWa1/qXqqAiOIAO6Z5J3AEAE18WAq6BiQ=",
-        version = "v1.4.0",
+        sum = "h1:dPmz1Snjq0kmkz159iL7S6WzdahUTHnHB5M56WFVifs=",
+        version = "v1.3.5",
     )
     go_repository(
         name = "com_google_cloud_go",
