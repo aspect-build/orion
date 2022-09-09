@@ -46,8 +46,8 @@ def go_dependencies():
         build_file_generation = "on",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bazelbuild/bazelisk",
-        sum = "h1:SpigbUorngcfDULmft0WkdrYVCqqqsFPEW4hm8UA+Gk=",
-        version = "v1.13.2",
+        sum = "h1:2VXAeyKE3vU0kF2x5Oj5FLsBIbxF4+NCb51bTZiaEL8=",
+        version = "v1.14.0",
     )
     go_repository(
         name = "com_github_bazelbuild_buildtools",
@@ -70,7 +70,6 @@ def go_dependencies():
         sum = "h1:xDfNPAt8lFiC1UJrqV3uuy861HCTo708pDMbjHHdCas=",
         version = "v0.0.0-20140422174119-9fd32a8b3d3d",
     )
-
     go_repository(
         name = "com_github_bmatcuk_doublestar",
         build_file_proto_mode = "disable_global",
@@ -78,7 +77,6 @@ def go_dependencies():
         sum = "h1:gPypJ5xD31uhX6Tf54sDPUOBXTqKH4c9aPY66CyQrS0=",
         version = "v1.3.4",
     )
-
     go_repository(
         name = "com_github_bmatcuk_doublestar_v4",
         build_file_proto_mode = "disable_global",
@@ -184,7 +182,6 @@ def go_dependencies():
         sum = "h1:FXtiHYKDGKCW2KzwZKx0iC0PQmdlorYgdFG9jPXJ1Bc=",
         version = "v1.18.1",
     )
-
     go_repository(
         name = "com_github_envoyproxy_go_control_plane",
         build_file_proto_mode = "disable_global",
@@ -213,7 +210,6 @@ def go_dependencies():
         sum = "h1:1oi9ehtc3BTFVXAAsljCc1OQsoMHt4SXipVwaKgmz9s=",
         version = "v0.15.7",
     )
-
     go_repository(
         name = "com_github_fatih_color",
         build_file_proto_mode = "disable_global",
@@ -635,6 +631,13 @@ def go_dependencies():
         version = "v0.34.0",
     )
     go_repository(
+        name = "com_google_cloud_go_asset",
+        build_file_proto_mode = "disable_global",
+        importpath = "cloud.google.com/go/asset",
+        sum = "h1:Px0CZuM7u6mcDysLR2QHlEWza0tN+iSjwCtFZtBY6DA=",
+        version = "v1.5.0",
+    )
+    go_repository(
         name = "in_gopkg_check_v1",
         build_file_proto_mode = "disable_global",
         importpath = "gopkg.in/check.v1",
@@ -701,8 +704,8 @@ def go_dependencies():
         name = "org_golang_google_genproto",
         build_file_proto_mode = "disable_global",
         importpath = "google.golang.org/genproto",
-        sum = "h1:vXJMM8Shg7TGaYxZsQ++A/FOSlbDmDtWhS/o+3w/hj4=",
-        version = "v0.0.0-20220902135211-223410557253",
+        sum = "h1:bMz0aY2wd9TwUp9M7QfjBWuQqaFD/ZaTtvDpPDCo2Ow=",
+        version = "v0.0.0-20220908141613-51c1cc9bc6d0",
     )
     go_repository(
         name = "org_golang_google_grpc",
@@ -771,8 +774,8 @@ def go_dependencies():
         name = "org_golang_x_sys",
         build_file_proto_mode = "disable_global",
         importpath = "golang.org/x/sys",
-        sum = "h1:AZeIEzg+8RCELJYq8w+ODLVxFgLMMigSwO/ffKPEd9U=",
-        version = "v0.0.0-20220907062415-87db552b00fd",
+        sum = "h1:XeJjHH1KiLpKGb6lvMiksZ9l0fVUh+AmGcm0nOMEBOY=",
+        version = "v0.0.0-20220908164124-27713097b956",
     )
     go_repository(
         name = "org_golang_x_term",
