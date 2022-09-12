@@ -7,7 +7,7 @@ require (
 	github.com/aspect-build/talkie v0.0.0-00010101000000-000000000000
 	github.com/bazelbuild/bazel-gazelle v0.26.0
 	github.com/bazelbuild/buildtools v0.0.0-20220907133145-b9bfff5d7f91
-	github.com/bazelbuild/rules_go v0.34.0
+	github.com/bazelbuild/rules_go v0.35.0
 	github.com/bmatcuk/doublestar v1.3.4
 	github.com/emirpasic/gods v1.18.1
 	github.com/evanw/esbuild v0.15.7
@@ -18,7 +18,7 @@ require (
 	github.com/onsi/ginkgo/v2 v2.1.6
 	github.com/onsi/gomega v1.20.2
 	github.com/sirupsen/logrus v1.9.0
-	google.golang.org/genproto v0.0.0-20220908141613-51c1cc9bc6d0
+	google.golang.org/genproto v0.0.0-20220909194730-69f6226f97e5
 	google.golang.org/grpc v1.49.0
 	google.golang.org/protobuf v1.28.1
 	gopkg.in/yaml.v2 v2.4.0
