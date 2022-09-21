@@ -1,5 +1,5 @@
-aspect.build/cli v0.9.0 h1:QBb4OvUv8L3uGPtOwyRepMk9jOSohH3DjTyuy4/bOB0=
-aspect.build/cli v0.9.0/go.mod h1:f0Y7v65/1AnYueFop6ESYr6VPu2i0bs41WaEBpFLEEw=
+aspect.build/cli v0.10.0 h1:VvUpaV12y98EFzVgjaVDLH5hdY2j7stp0aTzAvUUhaw=
+aspect.build/cli v0.10.0/go.mod h1:f0Y7v65/1AnYueFop6ESYr6VPu2i0bs41WaEBpFLEEw=
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/toml v1.0.0/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=

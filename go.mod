@@ -3,7 +3,7 @@ module github.com/aspect-build/silo
 go 1.19
 
 require (
-	aspect.build/cli v0.9.0
+	aspect.build/cli v0.10.0
 	github.com/aspect-build/talkie v0.0.0-00010101000000-000000000000
 	github.com/bazelbuild/bazel-gazelle v0.27.0
 	github.com/bazelbuild/buildtools v0.0.0-20220907133145-b9bfff5d7f91

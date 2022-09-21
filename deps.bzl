@@ -10,8 +10,8 @@ def go_dependencies():
         name = "build_aspect_cli",
         build_file_proto_mode = "disable_global",
         importpath = "aspect.build/cli",
-        sum = "h1:QBb4OvUv8L3uGPtOwyRepMk9jOSohH3DjTyuy4/bOB0=",
-        version = "v0.9.0",
+        sum = "h1:VvUpaV12y98EFzVgjaVDLH5hdY2j7stp0aTzAvUUhaw=",
+        version = "v0.10.0",
     )
     go_repository(
         name = "co_honnef_go_tools",
