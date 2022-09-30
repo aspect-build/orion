@@ -11,7 +11,7 @@ require (
 	github.com/bazelbuild/rules_go v0.35.0
 	github.com/bmatcuk/doublestar v1.3.4
 	github.com/emirpasic/gods v1.18.1
-	github.com/evanw/esbuild v0.15.9
+	github.com/evanw/esbuild v0.15.10
 	github.com/go-test/deep v1.0.8
 	github.com/golang/mock v1.6.0
 	github.com/google/triage-party v1.4.0
@@ -21,7 +21,7 @@ require (
 	github.com/onsi/gomega v1.20.2
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/sirupsen/logrus v1.9.0
-	google.golang.org/genproto v0.0.0-20220921223823-23cae91e6737
+	google.golang.org/genproto v0.0.0-20220930163606-c98284e70a91
 	google.golang.org/grpc v1.49.0
 	google.golang.org/protobuf v1.28.1
 	gopkg.in/yaml.v2 v2.4.0
