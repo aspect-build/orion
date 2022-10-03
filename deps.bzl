@@ -2278,6 +2278,14 @@ def go_dependencies():
         version = "v0.0.0-20220829220503-c86fa9a7ed90",
     )
     go_repository(
+        name = "org_golang_x_exp",
+        build_file_proto_mode = "disable_global",
+        importpath = "golang.org/x/exp",
+        sum = "h1:QE6XYQK6naiK1EPAe1g/ILLxN5RBoH5xkJk3CqlMI/Y=",
+        version = "v0.0.0-20200224162631-6cc2880d07d6",
+    )
+
+    go_repository(
         name = "org_golang_x_image",
         build_file_proto_mode = "disable_global",
         importpath = "golang.org/x/image",
@@ -2330,8 +2338,8 @@ def go_dependencies():
         name = "org_golang_x_sys",
         build_file_proto_mode = "disable_global",
         importpath = "golang.org/x/sys",
-        sum = "h1:PuvuRMeLWqsf/ZdT1UUZz0syhioyv1mzuFZsXs4fvhw=",
-        version = "v0.0.0-20220913175220-63ea55921009",
+        sum = "h1:BkDtF2Ih9xZ7le9ndzTA7KJow28VbQW3odyk/8drmuI=",
+        version = "v0.0.0-20220928140112-f11e5e49a4ec",
     )
     go_repository(
         name = "org_golang_x_term",
