@@ -7,7 +7,7 @@ require (
 	github.com/avast/retry-go/v4 v4.1.0
 	github.com/bazelbuild/bazel-gazelle v0.27.0
 	github.com/bazelbuild/bazelisk v1.14.0
-	github.com/bazelbuild/buildtools v0.0.0-20220907133145-b9bfff5d7f91
+	github.com/bazelbuild/buildtools v0.0.0-20221004120235-7186f635531b
 	github.com/bazelbuild/rules_go v0.35.0
 	github.com/bmatcuk/doublestar v1.3.4
 	github.com/emirpasic/gods v1.18.1
@@ -17,13 +17,13 @@ require (
 	github.com/golang/mock v1.6.0
 	github.com/golang/protobuf v1.5.2
 	github.com/google/triage-party v1.4.0
-	github.com/hashicorp/go-hclog v1.3.0
+	github.com/hashicorp/go-hclog v1.3.1
 	github.com/hashicorp/go-plugin v1.4.5
 	github.com/manifoldco/promptui v0.9.0
 	github.com/mattn/go-isatty v0.0.16
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/onsi/ginkgo/v2 v2.2.0
-	github.com/onsi/gomega v1.20.2
+	github.com/onsi/gomega v1.21.1
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/sirupsen/logrus v1.9.0
@@ -31,12 +31,12 @@ require (
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.13.0
 	golang.org/x/sync v0.0.0-20220929204114-8fcdb60fdcc0
-	google.golang.org/genproto v0.0.0-20220930163606-c98284e70a91
-	google.golang.org/grpc v1.49.0
+	google.golang.org/genproto v0.0.0-20221010155953-15ba04fc1c0e
+	google.golang.org/grpc v1.50.0
 	google.golang.org/protobuf v1.28.1
 	gopkg.in/yaml.v2 v2.4.0
 	gopkg.in/yaml.v3 v3.0.1
-	k8s.io/apimachinery v0.25.0
+	k8s.io/apimachinery v0.25.2
 	sigs.k8s.io/kind v0.16.0
 )
 
