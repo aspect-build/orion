@@ -1245,15 +1245,15 @@ def go_dependencies():
         name = "com_github_onsi_ginkgo_v2",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/onsi/ginkgo/v2",
-        sum = "h1:3ZNA3L1c5FYDFTTxbFeVGGD8jYvjYauHD30YgLxVsNI=",
-        version = "v2.2.0",
+        sum = "h1:kUMoxMoQG3ogk/QWyKh3zibV7BKZ+xBpWil1cTylVqc=",
+        version = "v2.3.0",
     )
     go_repository(
         name = "com_github_onsi_gomega",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/onsi/gomega",
-        sum = "h1:OB/euWYIExnPBohllTicTHmGTrMaqJ67nIu80j0/uEM=",
-        version = "v1.21.1",
+        sum = "h1:pY8O4lBfsHKZHM/6nrxkhVPUznOlIu3quZcKP/M20KI=",
+        version = "v1.22.1",
     )
     go_repository(
         name = "com_github_opencontainers_go_digest",
@@ -1462,8 +1462,8 @@ def go_dependencies():
         name = "com_github_spf13_cobra",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/spf13/cobra",
-        sum = "h1:X+jTBEBqF0bHN+9cSMgmfuvv2VHJ9ezmFNf9Y/XstYU=",
-        version = "v1.5.0",
+        sum = "h1:42a0n6jwCot1pUmomAp4T7DeMD+20LFv4Q54pxLf2LI=",
+        version = "v1.6.0",
     )
     go_repository(
         name = "com_github_spf13_jwalterweatherman",
