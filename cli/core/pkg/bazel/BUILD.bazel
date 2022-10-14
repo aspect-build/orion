@@ -1,0 +1,34 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "bazel",
+    srcs = [
+        "bazel.go",
+        "bazelisk.go",
+    ],
+    importpath = "github.com/aspect-build/silo/cli/core/pkg/bazel",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//cli/core/bazel/analysis",
+        "//cli/core/bazel/flags",
+        "//cli/core/pkg/bazel/workspace",
+        "//cli/core/pkg/ioutils",
+        "@com_github_bazelbuild_bazelisk//core",
+        "@com_github_bazelbuild_bazelisk//httputil",
+        "@com_github_bazelbuild_bazelisk//platforms",
+        "@com_github_bazelbuild_bazelisk//repositories",
+        "@com_github_bazelbuild_bazelisk//versions",
+        "@com_github_mitchellh_go_homedir//:go-homedir",
+        "@org_golang_google_protobuf//proto",
+    ],
+)
+
+go_test(
+    name = "bazel_test",
+    srcs = ["bazel_test.go"],
+    embed = [":bazel"],
+    deps = [
+        "//cli/core/pkg/ioutils",
+        "@com_github_onsi_gomega//:gomega",
+    ],
+)

@@ -1,0 +1,21 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "client",
+    srcs = [
+        "client.go",
+        "download.go",
+    ],
+    importpath = "github.com/aspect-build/silo/cli/core/pkg/plugin/client",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//cli/core/pkg/bazel",
+        "//cli/core/pkg/ioutils",
+        "//cli/core/pkg/plugin/loader",
+        "//cli/core/pkg/plugin/sdk/v1alpha3/config",
+        "//cli/core/pkg/plugin/sdk/v1alpha3/plugin",
+        "@com_github_bazelbuild_bazelisk//httputil",
+        "@com_github_hashicorp_go_hclog//:go-hclog",
+        "@com_github_hashicorp_go_plugin//:go-plugin",
+    ],
+)

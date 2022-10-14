@@ -1,0 +1,26 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "version",
+    srcs = ["version.go"],
+    importpath = "github.com/aspect-build/silo/cli/core/pkg/aspect/version",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//cli/core/buildinfo",
+        "//cli/core/pkg/bazel",
+        "//cli/core/pkg/ioutils",
+    ],
+)
+
+go_test(
+    name = "version_test",
+    srcs = ["version_test.go"],
+    deps = [
+        ":version",
+        "//cli/core/buildinfo",
+        "//cli/core/pkg/bazel/mock",
+        "//cli/core/pkg/ioutils",
+        "@com_github_golang_mock//gomock",
+        "@com_github_onsi_gomega//:gomega",
+    ],
+)

@@ -1,0 +1,43 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "system",
+    srcs = ["system.go"],
+    importpath = "github.com/aspect-build/silo/cli/core/pkg/plugin/system",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//cli/core/pkg/aspect/root/flags",
+        "//cli/core/pkg/aspecterrors",
+        "//cli/core/pkg/interceptors",
+        "//cli/core/pkg/ioutils",
+        "//cli/core/pkg/plugin/client",
+        "//cli/core/pkg/plugin/loader",
+        "//cli/core/pkg/plugin/sdk/v1alpha3/plugin",
+        "//cli/core/pkg/plugin/system/bep",
+        "@com_github_spf13_cobra//:cobra",
+        "@in_gopkg_yaml_v2//:yaml_v2",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_x_sync//errgroup",
+    ],
+)
+
+go_test(
+    name = "system_test",
+    srcs = ["system_test.go"],
+    embed = [":system"],
+    deps = [
+        "//cli/core/pkg/aspect/root/flags",
+        "//cli/core/pkg/aspecterrors",
+        "//cli/core/pkg/ioutils",
+        "//cli/core/pkg/plugin/client",
+        "//cli/core/pkg/plugin/client/mock",
+        "//cli/core/pkg/plugin/loader",
+        "//cli/core/pkg/plugin/loader/mock",
+        "//cli/core/pkg/plugin/sdk/v1alpha3/plugin",
+        "//cli/core/pkg/plugin/sdk/v1alpha3/plugin/mock",
+        "@com_github_golang_mock//gomock",
+        "@com_github_onsi_gomega//:gomega",
+        "@com_github_spf13_cobra//:cobra",
+        "@in_gopkg_yaml_v2//:yaml_v2",
+    ],
+)

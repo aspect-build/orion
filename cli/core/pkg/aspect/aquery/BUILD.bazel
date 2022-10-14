@@ -1,0 +1,30 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "aquery",
+    srcs = ["aquery.go"],
+    importpath = "github.com/aspect-build/silo/cli/core/pkg/aspect/aquery",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//cli/core/pkg/aspect/query/shared",
+        "//cli/core/pkg/bazel",
+        "//cli/core/pkg/ioutils",
+        "@com_github_spf13_cobra//:cobra",
+        "@com_github_spf13_viper//:viper",
+    ],
+)
+
+go_test(
+    name = "aquery_test",
+    srcs = ["aquery_test.go"],
+    deps = [
+        ":aquery",
+        "//cli/core/pkg/aspect/query/shared",
+        "//cli/core/pkg/aspect/query/shared/mock",
+        "//cli/core/pkg/bazel/mock",
+        "//cli/core/pkg/ioutils",
+        "@com_github_golang_mock//gomock",
+        "@com_github_onsi_gomega//:gomega",
+        "@com_github_spf13_cobra//:cobra",
+    ],
+)

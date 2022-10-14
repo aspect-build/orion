@@ -1,0 +1,35 @@
+load("@bazel_gomock//:gomock.bzl", "gomock")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+# gazelle:exclude mock_client_test.go
+
+gomock(
+    name = "mock_client_source",
+    out = "mock_client_test.go",
+    interfaces = [
+        "Factory",
+        "Provider",
+    ],
+    library = "//cli/core/pkg/plugin/client",
+    package = "mock",
+    visibility = ["//visibility:private"],
+)
+
+go_library(
+    name = "mock",
+    srcs = [
+        "doc.go",
+        ":mock_client_source",  # keep
+    ],
+    importpath = "github.com/aspect-build/silo/cli/core/pkg/plugin/client/mock",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//cli/core/pkg/aspecterrors",  # keep
+        "//cli/core/pkg/interceptors",  # keep
+        "//cli/core/pkg/ioutils",  # keep
+        "//cli/core/pkg/plugin/client",  # keep
+        "//cli/core/pkg/plugin/loader",  # keep
+        "@com_github_golang_mock//gomock",  # keep
+        "@com_github_hashicorp_go_plugin//:go-plugin",  #keep
+    ],
+)

@@ -1,0 +1,596 @@
+/*
+ * Copyright 2022 Aspect Build Systems, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package system
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"strings"
+	"testing"
+
+	"github.com/golang/mock/gomock"
+	. "github.com/onsi/gomega"
+	"github.com/spf13/cobra"
+	yaml "gopkg.in/yaml.v2"
+
+	rootFlags "github.com/aspect-build/silo/cli/core/pkg/aspect/root/flags"
+	"github.com/aspect-build/silo/cli/core/pkg/aspecterrors"
+	"github.com/aspect-build/silo/cli/core/pkg/ioutils"
+	"github.com/aspect-build/silo/cli/core/pkg/plugin/client"
+	client_mock "github.com/aspect-build/silo/cli/core/pkg/plugin/client/mock"
+	"github.com/aspect-build/silo/cli/core/pkg/plugin/loader"
+	loader_mock "github.com/aspect-build/silo/cli/core/pkg/plugin/loader/mock"
+	"github.com/aspect-build/silo/cli/core/pkg/plugin/sdk/v1alpha3/plugin"
+	plugin_mock "github.com/aspect-build/silo/cli/core/pkg/plugin/sdk/v1alpha3/plugin/mock"
+)
+
+func createInterceptorCommand() *cobra.Command {
+	cmd := &cobra.Command{
+		Use: "TestCommand",
+	}
+
+	// Required flags for interceptor hooks
+	cmd.PersistentFlags().Bool(rootFlags.InteractiveFlagName, false, "")
+
+	return cmd
+}
+
+func TestPluginSystemInterceptors(t *testing.T) {
+	t.Run("executes hooks in reverse order of interceptors", func(t *testing.T) {
+		g := NewGomegaWithT(t)
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		// Setup
+		var stdout strings.Builder
+		streams := ioutils.Streams{Stdout: &stdout, Stderr: &stdout}
+		ctx := context.Background()
+		cmd := createInterceptorCommand()
+
+		ps := NewPluginSystem().(*pluginSystem)
+		plugin := plugin_mock.NewMockPlugin(ctrl)
+		ps.plugins.insert(&client.PluginInstance{
+			Plugin:   plugin,
+			Provider: client_mock.NewMockProvider(ctrl),
+		})
+
+		// Expect the callbacks in reverse-order of execution
+		gomock.InOrder(
+			plugin.EXPECT().PostRunHook(gomock.Any(), gomock.Any()),
+			plugin.EXPECT().PostTestHook(gomock.Any(), gomock.Any()),
+			plugin.EXPECT().PostBuildHook(gomock.Any(), gomock.Any()),
+		)
+
+		// Hook interceptors
+		buildInterceptor := ps.BuildHooksInterceptor(streams)
+		testInterceptor := ps.TestHooksInterceptor(streams)
+		runInterceptor := ps.RunHooksInterceptor(streams)
+
+		err := buildInterceptor(ctx, cmd, []string{}, func(ctx context.Context, cmd *cobra.Command, args []string) error {
+			return testInterceptor(ctx, cmd, args, func(ctx context.Context, cmd *cobra.Command, args []string) error {
+				return runInterceptor(ctx, cmd, args, func(ctx context.Context, cmd *cobra.Command, args []string) error {
+					return nil
+				})
+			})
+		})
+
+		g.Expect(err).To(BeNil())
+	})
+
+	t.Run("executes plugin hooks in order plugins are added", func(t *testing.T) {
+		g := NewGomegaWithT(t)
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		// Setup
+		var stdout strings.Builder
+		streams := ioutils.Streams{Stdout: &stdout, Stderr: &stdout}
+		ctx := context.Background()
+		cmd := createInterceptorCommand()
+
+		// Plugins to be invoked
+		ps := NewPluginSystem().(*pluginSystem)
+		plugin1 := plugin_mock.NewMockPlugin(ctrl)
+		plugin2 := plugin_mock.NewMockPlugin(ctrl)
+		ps.plugins.insert(&client.PluginInstance{
+			Plugin:   plugin1,
+			Provider: client_mock.NewMockProvider(ctrl),
+		})
+		ps.plugins.insert(&client.PluginInstance{
+			Plugin:   plugin2,
+			Provider: client_mock.NewMockProvider(ctrl),
+		})
+
+		// Expect the callbacks in reverse-order of execution, plugins in order added
+		gomock.InOrder(
+			plugin1.EXPECT().PostTestHook(gomock.Any(), gomock.Any()),
+			plugin2.EXPECT().PostTestHook(gomock.Any(), gomock.Any()),
+			plugin1.EXPECT().PostBuildHook(gomock.Any(), gomock.Any()),
+			plugin2.EXPECT().PostBuildHook(gomock.Any(), gomock.Any()),
+		)
+
+		// Hook interceptors
+		buildInterceptor := ps.BuildHooksInterceptor(streams)
+		testInterceptor := ps.TestHooksInterceptor(streams)
+
+		err := buildInterceptor(ctx, cmd, []string{}, func(ctx context.Context, cmd *cobra.Command, args []string) error {
+			return testInterceptor(ctx, cmd, args, func(ctx context.Context, cmd *cobra.Command, args []string) error {
+				return nil
+			})
+		})
+
+		g.Expect(err).To(BeNil())
+	})
+
+	t.Run("returns pass nested interceptor errors to parent", func(t *testing.T) {
+		g := NewGomegaWithT(t)
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		// Setup
+		var stdout strings.Builder
+		streams := ioutils.Streams{Stdout: &stdout, Stderr: &stdout}
+		ctx := context.Background()
+		cmd := createInterceptorCommand()
+
+		// Plugin to be invoked
+		ps := NewPluginSystem().(*pluginSystem)
+		plugin := plugin_mock.NewMockPlugin(ctrl)
+		ps.plugins.insert(&client.PluginInstance{
+			Plugin:   plugin,
+			Provider: client_mock.NewMockProvider(ctrl),
+		})
+
+		// Expect the callbacks in reverse-order of execution
+		gomock.InOrder(
+			plugin.EXPECT().PostRunHook(gomock.Any(), gomock.Any()),
+			plugin.EXPECT().PostTestHook(gomock.Any(), gomock.Any()),
+			plugin.EXPECT().PostBuildHook(gomock.Any(), gomock.Any()),
+		)
+
+		// Hook interceptors
+		buildInterceptor := ps.BuildHooksInterceptor(streams)
+		testInterceptor := ps.TestHooksInterceptor(streams)
+		runInterceptor := ps.RunHooksInterceptor(streams)
+
+		// Return error in nested interceptor
+		err := buildInterceptor(ctx, cmd, []string{}, func(ctx context.Context, cmd *cobra.Command, args []string) error {
+			return testInterceptor(ctx, cmd, args, func(ctx context.Context, cmd *cobra.Command, args []string) error {
+				return runInterceptor(ctx, cmd, args, func(ctx context.Context, cmd *cobra.Command, args []string) error {
+					return fmt.Errorf("test error")
+				})
+			})
+		})
+
+		g.Expect(err).To(MatchError("test error"))
+	})
+
+	t.Run("parent interceptor errors override child errors", func(t *testing.T) {
+		g := NewGomegaWithT(t)
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		// Setup
+		var stdout strings.Builder
+		streams := ioutils.Streams{Stdout: &stdout, Stderr: &stdout}
+		ctx := context.Background()
+		cmd := createInterceptorCommand()
+
+		// Plugin to be invoked
+		ps := NewPluginSystem().(*pluginSystem)
+		plugin := plugin_mock.NewMockPlugin(ctrl)
+		ps.plugins.insert(&client.PluginInstance{
+			Plugin:   plugin,
+			Provider: client_mock.NewMockProvider(ctrl),
+		})
+
+		// Expect the callbacks in reverse-order of execution
+		gomock.InOrder(
+			plugin.EXPECT().PostRunHook(gomock.Any(), gomock.Any()),
+			plugin.EXPECT().PostTestHook(gomock.Any(), gomock.Any()),
+			plugin.EXPECT().PostBuildHook(gomock.Any(), gomock.Any()),
+		)
+
+		// Hook interceptors
+		buildInterceptor := ps.BuildHooksInterceptor(streams)
+		testInterceptor := ps.TestHooksInterceptor(streams)
+		runInterceptor := ps.RunHooksInterceptor(streams)
+
+		// Override error of nested interceptor
+		err := buildInterceptor(ctx, cmd, []string{}, func(ctx context.Context, cmd *cobra.Command, args []string) error {
+			return testInterceptor(ctx, cmd, args, func(ctx context.Context, cmd *cobra.Command, args []string) error {
+				runInterceptor(ctx, cmd, args, func(ctx context.Context, cmd *cobra.Command, args []string) error {
+					return fmt.Errorf("error 1")
+				})
+				return fmt.Errorf("error 2")
+			})
+		})
+
+		g.Expect(err).To(MatchError("error 2"))
+	})
+
+	t.Run("ExitCode is not modified on error from interceptor", func(t *testing.T) {
+		g := NewGomegaWithT(t)
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		// Setup
+		var stdout strings.Builder
+		streams := ioutils.Streams{Stdout: &stdout, Stderr: &stdout}
+		ctx := context.Background()
+		cmd := createInterceptorCommand()
+
+		ps := NewPluginSystem().(*pluginSystem)
+
+		// Hook interceptor returning an error
+		runInterceptor := ps.RunHooksInterceptor(streams)
+		err := runInterceptor(ctx, cmd, []string{}, func(ctx context.Context, cmd *cobra.Command, args []string) error {
+			return &aspecterrors.ExitError{
+				Err:      fmt.Errorf("error 1"),
+				ExitCode: 123,
+			}
+		})
+
+		g.Expect(err).NotTo(BeNil())
+		g.Expect(err.(*aspecterrors.ExitError).Err).To(MatchError("error 1"))
+		g.Expect(err.(*aspecterrors.ExitError).ExitCode).To(Equal(123))
+	})
+
+	t.Run("ExitCode set to 1 on interceptor error of type aspecterrors.ExitError when a plugin returns an error", func(t *testing.T) {
+		g := NewGomegaWithT(t)
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		// Setup
+		var stdout strings.Builder
+		streams := ioutils.Streams{Stdout: &stdout, Stderr: &stdout}
+		ctx := context.Background()
+		cmd := createInterceptorCommand()
+
+		ps := NewPluginSystem().(*pluginSystem)
+
+		// Plugin returning an error
+		plugin := plugin_mock.NewMockPlugin(ctrl)
+		plugin.EXPECT().
+			PostRunHook(gomock.Any(), gomock.Any()).
+			DoAndReturn(func(
+				isInteractiveMode bool,
+				promptRunner ioutils.PromptRunner,
+			) error {
+				return fmt.Errorf("plugin error")
+			})
+		ps.plugins.insert(&client.PluginInstance{
+			Plugin:   plugin,
+			Provider: client_mock.NewMockProvider(ctrl),
+		})
+
+		// Hook interceptors
+		runInterceptor := ps.RunHooksInterceptor(streams)
+		err := runInterceptor(ctx, cmd, []string{}, func(ctx context.Context, cmd *cobra.Command, args []string) error {
+			return &aspecterrors.ExitError{
+				Err:      fmt.Errorf("interceptor error"),
+				ExitCode: 123,
+			}
+		})
+
+		g.Expect(err).NotTo(BeNil())
+		g.Expect(err.(*aspecterrors.ExitError).Err).To(MatchError("interceptor error"))
+		g.Expect(err.(*aspecterrors.ExitError).ExitCode).To(Equal(1))
+	})
+}
+
+func TestConfigure(t *testing.T) {
+	t.Run("fails when Finder fails to find plugin config file", func(t *testing.T) {
+		g := NewGomegaWithT(t)
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		var stdout strings.Builder
+		streams := ioutils.Streams{Stdout: &stdout, Stderr: &stdout}
+
+		finder := loader_mock.NewMockFinder(ctrl)
+		finder.EXPECT().Find().Return("", errors.New("finder"))
+
+		ps := &pluginSystem{finder: finder}
+
+		err := ps.Configure(streams)
+
+		g.Expect(err).To(MatchError("failed to configure plugin system: finder"))
+	})
+
+	t.Run("fails when Parser fails to parse plugin config file", func(t *testing.T) {
+		g := NewGomegaWithT(t)
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		var stdout strings.Builder
+		streams := ioutils.Streams{Stdout: &stdout, Stderr: &stdout}
+
+		finder := loader_mock.NewMockFinder(ctrl)
+		finder.EXPECT().Find().Return("/foo/bar", nil)
+
+		parser := loader_mock.NewMockParser(ctrl)
+		parser.EXPECT().Parse("/foo/bar").Return(
+			[]loader.AspectPlugin{},
+			errors.New("parser"),
+		)
+
+		ps := &pluginSystem{
+			finder: finder,
+			parser: parser,
+		}
+
+		err := ps.Configure(streams)
+
+		g.Expect(err).To(MatchError("failed to configure plugin system: parser"))
+	})
+
+	t.Run("works when 0 plugins are found in config file", func(t *testing.T) {
+		g := NewGomegaWithT(t)
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		var stdout strings.Builder
+		streams := ioutils.Streams{Stdout: &stdout, Stderr: &stdout}
+
+		finder := loader_mock.NewMockFinder(ctrl)
+		finder.EXPECT().Find().Return("/foo/bar", nil)
+
+		parser := loader_mock.NewMockParser(ctrl)
+		parser.EXPECT().Parse("/foo/bar").Return([]loader.AspectPlugin{}, nil)
+
+		ps := &pluginSystem{
+			finder: finder,
+			parser: parser,
+		}
+
+		err := ps.Configure(streams)
+
+		g.Expect(err).To(BeNil())
+	})
+
+	t.Run("creates and persists each plugin after invoking plugin.Setup()", func(t *testing.T) {
+		g := NewGomegaWithT(t)
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		var stdout strings.Builder
+		streams := ioutils.Streams{Stdout: &stdout, Stderr: &stdout}
+
+		testPlugin := loader.AspectPlugin{
+			Name:     "test plugin",
+			From:     "...",
+			LogLevel: "debug",
+		}
+		testPlugin2 := loader.AspectPlugin{
+			Name:     "test plugin2",
+			From:     "...",
+			LogLevel: "debug",
+		}
+
+		p1 := plugin_mock.NewMockPlugin(ctrl)
+		p1.EXPECT().Setup(gomock.Any())
+		p2 := plugin_mock.NewMockPlugin(ctrl)
+		p2.EXPECT().Setup(gomock.Any())
+
+		finder := loader_mock.NewMockFinder(ctrl)
+		finder.EXPECT().Find().Return("/foo/bar", nil)
+
+		parser := loader_mock.NewMockParser(ctrl)
+		parser.EXPECT().Parse("/foo/bar").Return(
+			[]loader.AspectPlugin{testPlugin, testPlugin2},
+			nil,
+		)
+
+		factory := client_mock.NewMockFactory(ctrl)
+		factory.EXPECT().New(testPlugin, streams).Return(
+			&client.PluginInstance{
+				Plugin:   p1,
+				Provider: client_mock.NewMockProvider(ctrl),
+			},
+			nil,
+		)
+		factory.EXPECT().New(testPlugin2, streams).Return(
+			&client.PluginInstance{
+				Plugin:   p2,
+				Provider: client_mock.NewMockProvider(ctrl),
+			},
+			nil,
+		)
+
+		ps := &pluginSystem{
+			finder:        finder,
+			parser:        parser,
+			clientFactory: factory,
+			plugins:       &PluginList{},
+		}
+
+		err := ps.Configure(streams)
+
+		g.Expect(err).To(BeNil())
+		g.Expect(ps.plugins.head.payload.Plugin).To(Equal(p1))
+		g.Expect(ps.plugins.tail.payload.Plugin).To(Equal(p2))
+	})
+
+	t.Run("fails when a plugin initialization fails", func(t *testing.T) {
+		g := NewGomegaWithT(t)
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		var stdout strings.Builder
+		streams := ioutils.Streams{Stdout: &stdout, Stderr: &stdout}
+
+		testPlugin := loader.AspectPlugin{
+			Name:     "test plugin",
+			From:     "...",
+			LogLevel: "debug",
+		}
+		testPlugin2 := loader.AspectPlugin{
+			Name:     "test plugin2",
+			From:     "...",
+			LogLevel: "debug",
+		}
+
+		p1 := plugin_mock.NewMockPlugin(ctrl)
+		p1.EXPECT().Setup(gomock.Any())
+
+		finder := loader_mock.NewMockFinder(ctrl)
+		finder.EXPECT().Find().Return("/foo/bar", nil)
+
+		parser := loader_mock.NewMockParser(ctrl)
+		parser.EXPECT().Parse("/foo/bar").Return(
+			[]loader.AspectPlugin{testPlugin, testPlugin2},
+			nil,
+		)
+
+		factory := client_mock.NewMockFactory(ctrl)
+		factory.EXPECT().New(testPlugin, streams).Return(
+			&client.PluginInstance{
+				Plugin:   p1,
+				Provider: client_mock.NewMockProvider(ctrl),
+			},
+			nil,
+		)
+		factory.EXPECT().New(testPlugin2, streams).Return(
+			&client.PluginInstance{},
+			errors.New("plugin New() error"),
+		)
+
+		ps := &pluginSystem{
+			finder:        finder,
+			parser:        parser,
+			clientFactory: factory,
+			plugins:       &PluginList{},
+		}
+
+		err := ps.Configure(streams)
+
+		g.Expect(err).To(MatchError("failed to configure plugin system: plugin New() error"))
+	})
+
+	t.Run("fails when a plugin setup fails", func(t *testing.T) {
+		g := NewGomegaWithT(t)
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		var stdout strings.Builder
+		streams := ioutils.Streams{Stdout: &stdout, Stderr: &stdout}
+
+		testPlugin := loader.AspectPlugin{
+			Name:     "test plugin",
+			From:     "...",
+			LogLevel: "debug",
+		}
+		testPlugin2 := loader.AspectPlugin{
+			Name:     "test plugin2",
+			From:     "...",
+			LogLevel: "debug",
+		}
+
+		p1 := plugin_mock.NewMockPlugin(ctrl)
+		p1.EXPECT().Setup(gomock.Any())
+		p2 := plugin_mock.NewMockPlugin(ctrl)
+		p2.EXPECT().Setup(gomock.Any()).Return(errors.New("setup error"))
+
+		finder := loader_mock.NewMockFinder(ctrl)
+		finder.EXPECT().Find().Return("/foo/bar", nil)
+
+		parser := loader_mock.NewMockParser(ctrl)
+		parser.EXPECT().Parse("/foo/bar").Return(
+			[]loader.AspectPlugin{testPlugin, testPlugin2},
+			nil,
+		)
+
+		factory := client_mock.NewMockFactory(ctrl)
+		factory.EXPECT().New(testPlugin, streams).Return(
+			&client.PluginInstance{
+				Plugin:   p1,
+				Provider: client_mock.NewMockProvider(ctrl),
+			},
+			nil,
+		)
+		factory.EXPECT().New(testPlugin2, streams).Return(
+			&client.PluginInstance{
+				Plugin:   p2,
+				Provider: client_mock.NewMockProvider(ctrl),
+			},
+			nil,
+		)
+
+		ps := &pluginSystem{
+			finder:        finder,
+			parser:        parser,
+			clientFactory: factory,
+			plugins:       &PluginList{},
+		}
+
+		err := ps.Configure(streams)
+
+		g.Expect(err).To(MatchError("failed to configure plugin system: setup error"))
+	})
+
+	t.Run("marshaled properties are passed to plugin.Setup", func(t *testing.T) {
+		g := NewGomegaWithT(t)
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		var stdout strings.Builder
+		streams := ioutils.Streams{Stdout: &stdout, Stderr: &stdout}
+
+		propertiesMap := make(map[string]interface{})
+		propertiesBytes, _ := yaml.Marshal(propertiesMap)
+		file := plugin.NewAspectPluginFile("/foo/bar")
+		setupConfig := plugin.NewSetupConfig(file, propertiesBytes)
+
+		testPlugin := loader.AspectPlugin{
+			Name:       "test plugin",
+			From:       "...",
+			LogLevel:   "debug",
+			Properties: propertiesMap,
+		}
+
+		p1 := plugin_mock.NewMockPlugin(ctrl)
+		p1.EXPECT().Setup(setupConfig)
+
+		finder := loader_mock.NewMockFinder(ctrl)
+		finder.EXPECT().Find().Return("/foo/bar", nil)
+
+		parser := loader_mock.NewMockParser(ctrl)
+		parser.EXPECT().Parse("/foo/bar").Return([]loader.AspectPlugin{testPlugin}, nil)
+
+		factory := client_mock.NewMockFactory(ctrl)
+		factory.EXPECT().New(testPlugin, streams).Return(
+			&client.PluginInstance{
+				Plugin:   p1,
+				Provider: client_mock.NewMockProvider(ctrl),
+			},
+			nil,
+		)
+
+		ps := &pluginSystem{
+			finder:        finder,
+			parser:        parser,
+			clientFactory: factory,
+			plugins:       &PluginList{},
+		}
+
+		err := ps.Configure(streams)
+
+		g.Expect(err).To(BeNil())
+	})
+}
