@@ -6,8 +6,6 @@ go_library(
     importpath = "github.com/aspect-build/silo/cli/core/pkg/aspect/print",
     visibility = ["//visibility:public"],
     deps = [
-        "//cli/core/pkg/aspecterrors",
-        "//cli/core/pkg/bazel",
         "//cli/core/pkg/ioutils",
         "@com_github_bazelbuild_buildtools//edit:go_default_library",
         "@com_github_spf13_cobra//:cobra",
