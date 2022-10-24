@@ -724,6 +724,14 @@ def go_dependencies():
         version = "v1.8.0",
     )
     go_repository(
+        name = "com_github_gorilla_websocket",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/gorilla/websocket",
+        sum = "h1:+/TMaTYc4QFitKJxsQ7Yye35DkWvkdLcvGKqM+x0Ufc=",
+        version = "v1.4.2",
+    )
+
+    go_repository(
         name = "com_github_gosuri_uitable",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/gosuri/uitable",
@@ -1437,6 +1445,14 @@ def go_dependencies():
         sum = "h1:trlNQbNUG3OdDrDil03MCb1H2o9nJ1x4/5LYw7byDE0=",
         version = "v1.9.0",
     )
+    go_repository(
+        name = "com_github_slack_go_slack",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/slack-go/slack",
+        sum = "h1:GN7revxEMax4amCc3El9a+9SGnjmBvSUobs0QnO6ZO8=",
+        version = "v0.11.3",
+    )
+
     go_repository(
         name = "com_github_spaolacci_murmur3",
         build_file_proto_mode = "disable_global",
