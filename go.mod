@@ -6,12 +6,12 @@ require (
 	github.com/aspect-build/talkie v0.0.0-00010101000000-000000000000
 	github.com/avast/retry-go/v4 v4.3.0
 	github.com/bazelbuild/bazel-gazelle v0.28.0
-	github.com/bazelbuild/bazelisk v1.14.1
+	github.com/bazelbuild/bazelisk v1.15.0
 	github.com/bazelbuild/buildtools v0.0.0-20221004120235-7186f635531b
 	github.com/bazelbuild/rules_go v0.35.0
 	github.com/bmatcuk/doublestar v1.3.4
 	github.com/emirpasic/gods v1.18.1
-	github.com/evanw/esbuild v0.15.12
+	github.com/evanw/esbuild v0.15.13
 	github.com/fatih/color v1.13.0
 	github.com/go-test/deep v1.0.8
 	github.com/golang/mock v1.6.0
@@ -22,17 +22,17 @@ require (
 	github.com/manifoldco/promptui v0.9.0
 	github.com/mattn/go-isatty v0.0.16
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/onsi/ginkgo/v2 v2.4.0
+	github.com/onsi/ginkgo/v2 v2.5.0
 	github.com/onsi/gomega v1.24.0
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/sirupsen/logrus v1.9.0
-	github.com/slack-go/slack v0.11.3
+	github.com/slack-go/slack v0.11.4
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/pflag v1.0.5
-	github.com/spf13/viper v1.13.0
+	github.com/spf13/viper v1.14.0
 	golang.org/x/sync v0.1.0
-	google.golang.org/genproto v0.0.0-20221027153422-115e99e71e1c
+	google.golang.org/genproto v0.0.0-20221107162902-2d387536bcdd
 	google.golang.org/grpc v1.50.1
 	google.golang.org/protobuf v1.28.1
 	gopkg.in/yaml.v2 v2.4.0
@@ -42,7 +42,8 @@ require (
 )
 
 require (
-	cloud.google.com/go/compute v1.10.0 // indirect
+	cloud.google.com/go/compute v1.12.1 // indirect
+	cloud.google.com/go/compute/metadata v0.2.1 // indirect
 	github.com/BurntSushi/toml v1.2.0 // indirect
 	github.com/GoogleCloudPlatform/cloudsql-proxy v0.0.0-20200501161113-5e9e23d7cb91 // indirect
 	github.com/alessio/shellescape v1.4.1 // indirect
@@ -62,8 +63,8 @@ require (
 	github.com/google/go-querystring v1.0.0 // indirect
 	github.com/google/safetext v0.0.0-20220905092116-b49f7bc46da2 // indirect
 	github.com/google/uuid v1.3.0 // indirect
-	github.com/googleapis/enterprise-certificate-proxy v0.1.0 // indirect
-	github.com/googleapis/gax-go/v2 v2.4.0 // indirect
+	github.com/googleapis/enterprise-certificate-proxy v0.2.0 // indirect
+	github.com/googleapis/gax-go/v2 v2.6.0 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-retryablehttp v0.6.6 // indirect
@@ -100,7 +101,7 @@ require (
 	golang.org/x/text v0.4.0 // indirect
 	golang.org/x/time v0.0.0-20220922220347-f3bd1da661af // indirect
 	golang.org/x/tools v0.2.0 // indirect
-	google.golang.org/api v0.96.0 // indirect
+	google.golang.org/api v0.102.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	k8s.io/klog/v2 v2.80.1 // indirect
