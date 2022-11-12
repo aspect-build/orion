@@ -1,4 +1,0 @@
-alias(
-    name = "core",
-    actual = "//cli/core/cmd/aspect",
-)
