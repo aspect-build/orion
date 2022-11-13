@@ -3,8 +3,8 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 go_library(
     name = "flags",
     srcs = [
+        "aspect_flags.go",
         "bazel_flags.go",
-        "config.go",
         "interceptor.go",
         "multi_string.go",
         "noable_bool.go",
@@ -12,13 +12,12 @@ go_library(
     importpath = "github.com/aspect-build/silo/cli/core/pkg/aspect/root/flags",
     visibility = ["//visibility:public"],
     deps = [
+        "//cli/core/bazel/flags",
         "//cli/core/pkg/bazel",
         "//cli/core/pkg/interceptors",
         "//cli/core/pkg/ioutils",
-        "@com_github_mitchellh_go_homedir//:go-homedir",
         "@com_github_spf13_cobra//:cobra",
         "@com_github_spf13_pflag//:pflag",
-        "@com_github_spf13_viper//:viper",
     ],
 )
 

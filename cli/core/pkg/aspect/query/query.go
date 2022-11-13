@@ -23,8 +23,8 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/aspect-build/silo/cli/core/pkg/aspect/query/shared"
+	"github.com/aspect-build/silo/cli/core/pkg/aspect/root/config"
 	"github.com/aspect-build/silo/cli/core/pkg/bazel"
-	"github.com/aspect-build/silo/cli/core/pkg/configutils"
 	"github.com/aspect-build/silo/cli/core/pkg/ioutils"
 )
 
@@ -131,7 +131,7 @@ func (q *Query) checkConfig(baseUseKey string, baseInquiredKey string, question 
 
 		q.Prefs.Set(baseUseKey, err == nil)
 
-		if err := configutils.Write(&q.Prefs); err != nil {
+		if err := config.Write(&q.Prefs); err != nil {
 			return fmt.Errorf("failed to update config file: %w", err)
 		}
 	}
