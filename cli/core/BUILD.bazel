@@ -1,3 +1,7 @@
+# The ts gazelle plugin wants to add ts_project entries in cli/core/pkg/aspect/BUILD.bazel.
+# This prevents that until we can address the underlying issue.
+# gazelle:ts_extension disabled
+
 exports_files([
     "LICENSE",
     "README.md",
