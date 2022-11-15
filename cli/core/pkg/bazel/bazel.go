@@ -27,6 +27,7 @@ import (
 
 	"github.com/aspect-build/silo/cli/core/bazel/analysis"
 	"github.com/aspect-build/silo/cli/core/bazel/flags"
+	rootFlags "github.com/aspect-build/silo/cli/core/pkg/aspect/root/flags"
 	"github.com/aspect-build/silo/cli/core/pkg/bazel/workspace"
 	"github.com/aspect-build/silo/cli/core/pkg/ioutils"
 
@@ -159,7 +160,7 @@ func (b *bazel) InitializeStartupFlags(args []string) ([]string, error) {
 			if command == "startup" {
 				allStartupFlags = append(allStartupFlags, flagName)
 				if flagInfo.GetHasNegativeFlag() {
-					allStartupFlags = append(allStartupFlags, flags.NoName(flagName))
+					allStartupFlags = append(allStartupFlags, rootFlags.NoFlagName(flagName))
 				}
 			}
 		}
