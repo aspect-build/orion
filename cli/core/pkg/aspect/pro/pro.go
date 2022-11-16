@@ -21,6 +21,7 @@ import (
 	"fmt"
 
 	"github.com/aspect-build/silo/cli/core/pkg/aspect/root/config"
+	"github.com/aspect-build/silo/cli/core/pkg/bazel/workspace"
 	"github.com/aspect-build/silo/cli/core/pkg/ioutils"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
@@ -95,7 +96,16 @@ func enableProForUser() error {
 func enableProForWorkspace() error {
 	workspaceConfig, err := config.LoadWorkspaceConfig()
 	if err != nil {
-		return err
+		// Ignore err if it is a workspace.NotFoundError
+		if _, ok := err.(*workspace.NotFoundError); !ok {
+			return err
+		}
+	}
+
+	if workspaceConfig == nil {
+		// We're are not currently in a Bazel workspace
+		fmt.Println("Run 'aspect pro' in a Bazel workspace to enable Aspect CLI Pro features for that workspace")
+		return nil
 	}
 
 	version, err := config.ParseConfigVersion(workspaceConfig.GetString("version"))

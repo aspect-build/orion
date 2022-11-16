@@ -7,6 +7,7 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//cli/core/pkg/aspect/root/config",
+        "//cli/core/pkg/bazel/workspace",
         "//cli/core/pkg/ioutils",
         "@com_github_manifoldco_promptui//:promptui",
         "@com_github_spf13_cobra//:cobra",
