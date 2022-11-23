@@ -4,14 +4,14 @@ go 1.19
 
 require (
 	github.com/aspect-build/talkie v0.0.0-00010101000000-000000000000
-	github.com/avast/retry-go/v4 v4.3.0
+	github.com/avast/retry-go/v4 v4.3.1
 	github.com/bazelbuild/bazel-gazelle v0.28.0
 	github.com/bazelbuild/bazelisk v1.15.0
 	github.com/bazelbuild/buildtools v0.0.0-20221110131218-762712d8ce3f
-	github.com/bazelbuild/rules_go v0.35.0
+	github.com/bazelbuild/rules_go v0.36.0
 	github.com/bmatcuk/doublestar v1.3.4
 	github.com/emirpasic/gods v1.18.1
-	github.com/evanw/esbuild v0.15.13
+	github.com/evanw/esbuild v0.15.15
 	github.com/fatih/color v1.13.0
 	github.com/go-test/deep v1.0.8
 	github.com/golang/mock v1.6.0
@@ -22,7 +22,7 @@ require (
 	github.com/manifoldco/promptui v0.9.0
 	github.com/mattn/go-isatty v0.0.16
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/onsi/ginkgo/v2 v2.5.0
+	github.com/onsi/ginkgo/v2 v2.5.1
 	github.com/onsi/gomega v1.24.1
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/pmezard/go-difflib v1.0.0
@@ -33,8 +33,8 @@ require (
 	github.com/spf13/viper v1.14.0
 	golang.org/x/exp v0.0.0-20221114191408-850992195362
 	golang.org/x/sync v0.1.0
-	google.golang.org/genproto v0.0.0-20221111202108-142d8a6fa32e
-	google.golang.org/grpc v1.50.1
+	google.golang.org/genproto v0.0.0-20221118155620-16455021b5e6
+	google.golang.org/grpc v1.51.0
 	google.golang.org/protobuf v1.28.1
 	gopkg.in/yaml.v2 v2.4.0
 	gopkg.in/yaml.v3 v3.0.1
@@ -97,7 +97,7 @@ require (
 	golang.org/x/crypto v0.1.0 // indirect
 	golang.org/x/mod v0.6.0 // indirect
 	golang.org/x/net v0.2.0 // indirect
-	golang.org/x/oauth2 v0.1.0 // indirect
+	golang.org/x/oauth2 v0.2.0 // indirect
 	golang.org/x/sys v0.2.0 // indirect
 	golang.org/x/text v0.4.0 // indirect
 	golang.org/x/time v0.0.0-20220922220347-f3bd1da661af // indirect

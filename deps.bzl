@@ -45,8 +45,8 @@ def go_dependencies():
         name = "com_github_avast_retry_go_v4",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/avast/retry-go/v4",
-        sum = "h1:cqI48aXx0BExKoM7XPklDpoHAg7/srPPLAfWG5z62jo=",
-        version = "v4.3.0",
+        sum = "h1:Mtg11F9PdAIMkMiio2RKcYauoVHjl2aB3zQJJlzD4cE=",
+        version = "v4.3.1",
     )
     go_repository(
         name = "com_github_azure_go_ansiterm",
@@ -123,8 +123,8 @@ def go_dependencies():
         name = "com_github_bazelbuild_rules_go",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bazelbuild/rules_go",
-        sum = "h1:ViPR65vOrg74JKntAUFY6qZkheBKGB6to7wFd8gCRU4=",
-        version = "v0.35.0",
+        sum = "h1:hKvFRTyZEoHeIjPe/Kd8RL9cP9s3hoeMlO8vywdXSfY=",
+        version = "v0.36.0",
     )
     go_repository(
         name = "com_github_beorn7_perks",
@@ -389,8 +389,8 @@ def go_dependencies():
         name = "com_github_evanw_esbuild",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/evanw/esbuild",
-        sum = "h1:te8r0UKusPzGgn8ylltb33Ffsbum+3tQDyHcg6MOwn8=",
-        version = "v0.15.13",
+        sum = "h1:8T3LwQ7vQV2AUdHb6EIQTUKp4f2lQpVW7ItoNZeT9UE=",
+        version = "v0.15.15",
     )
     go_repository(
         name = "com_github_exponent_io_jsonpath",
@@ -721,8 +721,8 @@ def go_dependencies():
         name = "com_github_grpc_ecosystem_grpc_gateway_v2",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/grpc-ecosystem/grpc-gateway/v2",
-        sum = "h1:fi9bGIUJOGzzrHBbP8NWbTfNC5fKO6X7kFw40TOqGB8=",
-        version = "v2.13.0",
+        sum = "h1:t7uX3JBHdVwAi3G7sSSdbsk8NfgA+LnUS88V/2EKaA0=",
+        version = "v2.14.0",
     )
     go_repository(
         name = "com_github_grpc_ecosystem_grpc_health_probe",
@@ -1211,8 +1211,8 @@ def go_dependencies():
         name = "com_github_onsi_ginkgo_v2",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/onsi/ginkgo/v2",
-        sum = "h1:TRtrvv2vdQqzkwrQ1ke6vtXf7IK34RBUJafIy1wMwls=",
-        version = "v2.5.0",
+        sum = "h1:auzK7OI497k6x4OvWq+TKAcpcSAlod0doAH72oIN0Jw=",
+        version = "v2.5.1",
     )
     go_repository(
         name = "com_github_onsi_gomega",
@@ -1442,8 +1442,8 @@ def go_dependencies():
         name = "com_github_stretchr_objx",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/stretchr/objx",
-        sum = "h1:M2gUjqZET1qApGOWNSnZ49BAIMX4F/1plDv3+l31EJ4=",
-        version = "v0.4.0",
+        sum = "h1:1zr/of2m5FGMsad5YfcqgdqdWrIhu+EBEJRhR1U7z/c=",
+        version = "v0.5.0",
     )
     go_repository(
         name = "com_github_stretchr_testify",
@@ -2584,15 +2584,15 @@ def go_dependencies():
         name = "org_golang_google_genproto",
         build_file_proto_mode = "disable_global",
         importpath = "google.golang.org/genproto",
-        sum = "h1:azcyH5lGzGy7pkLCbhPe0KkKxsM7c6UA/FZIXImKE7M=",
-        version = "v0.0.0-20221111202108-142d8a6fa32e",
+        sum = "h1:a2S6M0+660BgMNl++4JPlcAO/CjkqYItDEZwkoDQK7c=",
+        version = "v0.0.0-20221118155620-16455021b5e6",
     )
     go_repository(
         name = "org_golang_google_grpc",
         build_file_proto_mode = "disable_global",
         importpath = "google.golang.org/grpc",
-        sum = "h1:DS/BukOZWp8s6p4Dt/tOaJaTQyPyOoCcrjroHuCeLzY=",
-        version = "v1.50.1",
+        sum = "h1:E1eGv1FTqoLIdnBCZufiSHgKjlqG6fKFf6pPWtMTh8U=",
+        version = "v1.51.0",
     )
     go_repository(
         name = "org_golang_google_protobuf",
@@ -2654,8 +2654,8 @@ def go_dependencies():
         name = "org_golang_x_oauth2",
         build_file_proto_mode = "disable_global",
         importpath = "golang.org/x/oauth2",
-        sum = "h1:isLCZuhj4v+tYv7eskaN4v/TM+A1begWWgyVJDdl1+Y=",
-        version = "v0.1.0",
+        sum = "h1:GtQkldQ9m7yvzCL1V+LrYow3Khe0eJH0w7RbX/VbaIU=",
+        version = "v0.2.0",
     )
     go_repository(
         name = "org_golang_x_sync",
