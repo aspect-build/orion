@@ -21,7 +21,6 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/aspect-build/silo/cli/core/pkg/aspect/query/shared"
-	"github.com/aspect-build/silo/cli/core/pkg/aspect/root/flags"
 	"github.com/aspect-build/silo/cli/core/pkg/bazel"
 	"github.com/aspect-build/silo/cli/core/pkg/ioutils"
 )
@@ -58,26 +57,29 @@ func New(streams ioutils.Streams, bzl bazel.Bazel, isInteractive bool) *CQuery {
 }
 
 func (runner *CQuery) Run(cmd *cobra.Command, args []string) error {
-	flags, args := flags.SeparateFlagsFromArgs(args)
+	nonFlags, flags, err := bazel.ParseOutBazelFlags(cmd.CalledAs(), args)
+	if err != nil {
+		return err
+	}
 
 	presets, presetNames, err := shared.ProcessQueries(runner.Presets)
 	if err != nil {
 		return shared.GetPrettyError(cmd, err)
 	}
 
-	command, query, runReplacements, err := shared.SelectQuery(cmd.CalledAs(), presets, runner.Presets, presetNames, runner.Streams, args, runner.Select)
+	command, query, runReplacements, err := shared.SelectQuery(cmd.CalledAs(), presets, runner.Presets, presetNames, runner.Streams, nonFlags, runner.Select)
 	if err != nil {
 		return shared.GetPrettyError(cmd, err)
 	}
 
 	if runReplacements {
-		query, err = shared.ReplacePlaceholders(query, args, runner.Prompt)
+		query, err = shared.ReplacePlaceholders(query, nonFlags, runner.Prompt)
 		if err != nil {
 			return shared.GetPrettyError(cmd, err)
 		}
 
-		return shared.RunQuery(runner.Bzl, command, runner.Streams, flags, []string{query})
+		return shared.RunQuery(runner.Bzl, command, runner.Streams, append(flags, query))
 	} else {
-		return shared.RunQuery(runner.Bzl, command, runner.Streams, flags, args)
+		return shared.RunQuery(runner.Bzl, command, runner.Streams, args)
 	}
 }
