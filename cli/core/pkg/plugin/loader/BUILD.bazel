@@ -5,5 +5,5 @@ go_library(
     srcs = ["loader.go"],
     importpath = "github.com/aspect-build/silo/cli/core/pkg/plugin/loader",
     visibility = ["//visibility:public"],
-    deps = ["@in_gopkg_yaml_v2//:yaml_v2"],
+    deps = ["@io_k8s_sigs_yaml//:yaml"],
 )
