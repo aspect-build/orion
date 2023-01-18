@@ -109,6 +109,11 @@ def go_dependencies():
         build_file_generation = "on",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bazelbuild/bazelisk",
+        patch_args = ["-p1"],  # keep
+        patches = [
+            "//patches:com_github_bazelbuild_bazelisk_pr412.patch",
+            "//patches:com_github_bazelbuild_bazelisk_two_segment_forks.patch",
+        ],  #keep
         sum = "h1:1McZDI5cre1ZcyHP82Cg6PHJJ/99Lu3J6jMu9d0cNak=",
         version = "v1.15.0",
     )
