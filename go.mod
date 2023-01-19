@@ -12,7 +12,7 @@ require (
 	github.com/bazelbuild/rules_go v0.37.0
 	github.com/bmatcuk/doublestar/v4 v4.6.0
 	github.com/emirpasic/gods v1.18.1
-	github.com/evanw/esbuild v0.17.2
+	github.com/evanw/esbuild v0.17.3
 	github.com/fatih/color v1.13.0
 	github.com/go-test/deep v1.1.0
 	github.com/golang/mock v1.6.0
@@ -47,7 +47,7 @@ require (
 require (
 	cloud.google.com/go/compute v1.13.0 // indirect
 	cloud.google.com/go/compute/metadata v0.2.1 // indirect
-	github.com/BurntSushi/toml v1.2.0 // indirect
+	github.com/BurntSushi/toml v1.2.1 // indirect
 	github.com/GoogleCloudPlatform/cloudsql-proxy v0.0.0-20200501161113-5e9e23d7cb91 // indirect
 	github.com/alessio/shellescape v1.4.1 // indirect
 	github.com/bgentry/go-netrc v0.0.0-20140422174119-9fd32a8b3d3d // indirect
