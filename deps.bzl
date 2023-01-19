@@ -102,6 +102,7 @@ def go_dependencies():
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bazelbuild/bazel-gazelle",
         sum = "h1:uFYs0rkVtEwZ6PlVQAXkBrIvWtIljMG8YR67LGiopeY=",
+        # Ensure this version always matches the version of @bazel_gazelle set in fetch.bzl.
         version = "v0.29.0",
     )
     go_repository(
