@@ -23,13 +23,14 @@ import (
 	"path"
 	"strings"
 
-	semver "github.com/Masterminds/semver/v3"
 	"github.com/aspect-build/silo/cli/core/buildinfo"
 	"github.com/aspect-build/silo/cli/core/docs/bazelrc"
 	"github.com/aspect-build/silo/cli/core/pkg/aspect/init/template"
 	"github.com/aspect-build/silo/cli/core/pkg/bazel"
 	"github.com/aspect-build/silo/cli/core/pkg/bazel/workspace"
 	"github.com/aspect-build/silo/cli/core/pkg/ioutils"
+
+	semver "github.com/Masterminds/semver/v3"
 	"github.com/fatih/color"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
