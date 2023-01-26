@@ -8,8 +8,8 @@ require (
 	github.com/avast/retry-go/v4 v4.3.2
 	github.com/bazelbuild/bazel-gazelle v0.29.0
 	github.com/bazelbuild/bazelisk v1.15.0
-	github.com/bazelbuild/buildtools v0.0.0-20230113180850-180a94ab3a3a
-	github.com/bazelbuild/rules_go v0.37.0
+	github.com/bazelbuild/buildtools v0.0.0-20230126151539-bf454e7b8ec3
+	github.com/bazelbuild/rules_go v0.38.0
 	github.com/bmatcuk/doublestar/v4 v4.6.0
 	github.com/emirpasic/gods v1.18.1
 	github.com/evanw/esbuild v0.17.4
@@ -24,7 +24,7 @@ require (
 	github.com/mattn/go-isatty v0.0.17
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/onsi/ginkgo/v2 v2.7.0
-	github.com/onsi/gomega v1.25.0
+	github.com/onsi/gomega v1.26.0
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/sirupsen/logrus v1.9.0
@@ -32,11 +32,11 @@ require (
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.15.0
-	golang.org/x/exp v0.0.0-20230118134722-a68e582fa157
+	golang.org/x/exp v0.0.0-20230125214544-b3c2aaf6208d
 	golang.org/x/mod v0.7.0
 	golang.org/x/sync v0.1.0
-	google.golang.org/genproto v0.0.0-20230119192704-9d59e20e5cd1
-	google.golang.org/grpc v1.52.0
+	google.golang.org/genproto v0.0.0-20230125152338-dcaf20b6aeaa
+	google.golang.org/grpc v1.52.3
 	google.golang.org/protobuf v1.28.1
 	gopkg.in/yaml.v3 v3.0.1
 	sigs.k8s.io/kind v0.17.0

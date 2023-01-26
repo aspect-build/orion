@@ -73,15 +73,15 @@ def go_dependencies():
         name = "com_github_bazelbuild_buildtools",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bazelbuild/buildtools",
-        sum = "h1:ZOoMkjCQbJULtf6Z2o92nKA4eKzX6LjhkS7U3moWds0=",
-        version = "v0.0.0-20230113180850-180a94ab3a3a",
+        sum = "h1:ujxlhmZnCUYBKkBlWgNC/AQkMrR65RCQKX1rntbs0Tg=",
+        version = "v0.0.0-20230126151539-bf454e7b8ec3",
     )
     go_repository(
         name = "com_github_bazelbuild_rules_go",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bazelbuild/rules_go",
-        sum = "h1:vbnESGv/t2WgGEbXatwbXAS95dTx93Lv6Uh5QkVF13s=",
-        version = "v0.37.0",
+        sum = "h1:BY67VX6+Dka4FRQH7CDHmIXYOuPFr1YrrKYsboDC6hw=",
+        version = "v0.38.0",
     )
     go_repository(
         name = "com_github_beorn7_perks",
@@ -1154,8 +1154,8 @@ def go_dependencies():
         name = "com_github_onsi_gomega",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/onsi/gomega",
-        sum = "h1:Vw7br2PCDYijJHSfBOWhov+8cAnUf8MfMaIOV323l6Y=",
-        version = "v1.25.0",
+        sum = "h1:03cDLK28U6hWvCAns6NeydX3zIm4SF3ci69ulidS32Q=",
+        version = "v1.26.0",
     )
     go_repository(
         name = "com_github_opencontainers_go_digest",
@@ -2541,15 +2541,15 @@ def go_dependencies():
         name = "org_golang_google_genproto",
         build_file_proto_mode = "disable_global",
         importpath = "google.golang.org/genproto",
-        sum = "h1:wSjSSQW7LuPdv3m1IrSN33nVxH/kID6OIKy+FMwGB2k=",
-        version = "v0.0.0-20230119192704-9d59e20e5cd1",
+        sum = "h1:qQPhfbPO23fwm/9lQr91L1u62Zo6cm+zI+slZT+uf+o=",
+        version = "v0.0.0-20230125152338-dcaf20b6aeaa",
     )
     go_repository(
         name = "org_golang_google_grpc",
         build_file_proto_mode = "disable_global",
         importpath = "google.golang.org/grpc",
-        sum = "h1:kd48UiU7EHsV4rnLyOJRuP/Il/UHE7gdDAQ+SZI7nZk=",
-        version = "v1.52.0",
+        sum = "h1:pf7sOysg4LdgBqduXveGKrcEwbStiK2rtfghdzlUYDQ=",
+        version = "v1.52.3",
     )
     go_repository(
         name = "org_golang_google_protobuf",
@@ -2569,8 +2569,8 @@ def go_dependencies():
         name = "org_golang_x_exp",
         build_file_proto_mode = "disable_global",
         importpath = "golang.org/x/exp",
-        sum = "h1:fiNkyhJPUvxbRPbCqY/D9qdjmPzfHcpK3P4bM4gioSY=",
-        version = "v0.0.0-20230118134722-a68e582fa157",
+        sum = "h1:9Bio0JlZpJ1P4NXsK5i8Rf2MclrRzMGzJWOIkhZ5Um8=",
+        version = "v0.0.0-20230125214544-b3c2aaf6208d",
     )
     go_repository(
         name = "org_golang_x_image",
