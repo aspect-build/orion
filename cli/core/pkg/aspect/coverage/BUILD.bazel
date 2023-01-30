@@ -10,5 +10,6 @@ go_library(
         "//cli/core/pkg/bazel",
         "//cli/core/pkg/ioutils",
         "//cli/core/pkg/plugin/system/bep",
+        "@com_github_spf13_cobra//:cobra",
     ],
 )

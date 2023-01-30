@@ -17,12 +17,14 @@
 package build
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/aspect-build/silo/cli/core/pkg/aspecterrors"
 	"github.com/aspect-build/silo/cli/core/pkg/bazel"
 	"github.com/aspect-build/silo/cli/core/pkg/ioutils"
 	"github.com/aspect-build/silo/cli/core/pkg/plugin/system/bep"
+	"github.com/spf13/cobra"
 )
 
 // Build represents the aspect build command.
@@ -44,8 +46,10 @@ func New(
 
 // Run runs the aspect build command, calling `bazel build` with a local Build
 // Event Protocol backend used by Aspect plugins to subscribe to build events.
-func (runner *Build) Run(args []string, besBackend bep.BESBackend) (exitErr error) {
+func (runner *Build) Run(ctx context.Context, _ *cobra.Command, args []string) (exitErr error) {
+	besBackend := bep.BESBackendFromContext(ctx)
 	besBackendFlag := fmt.Sprintf("--bes_backend=%s", besBackend.Addr())
+
 	exitCode, bazelErr := runner.bzl.RunCommand(runner.Streams, nil, append([]string{"build", besBackendFlag}, args...)...)
 
 	// Process the subscribers errors before the Bazel one.

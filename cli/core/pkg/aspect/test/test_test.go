@@ -17,6 +17,7 @@
 package test_test
 
 import (
+	"context"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -25,6 +26,7 @@ import (
 	"github.com/aspect-build/silo/cli/core/pkg/aspect/test"
 	"github.com/aspect-build/silo/cli/core/pkg/bazel/mock"
 	"github.com/aspect-build/silo/cli/core/pkg/ioutils"
+	"github.com/aspect-build/silo/cli/core/pkg/plugin/system/bep"
 	bep_mock "github.com/aspect-build/silo/cli/core/pkg/plugin/system/bep/mock"
 )
 
@@ -53,7 +55,9 @@ func TestTest(t *testing.T) {
 			Errors().
 			Times(1)
 
+		ctx := bep.InjectBESBackend(context.Background(), besBackend)
+
 		b := test.New(streams, bzl)
-		g.Expect(b.Run([]string{}, besBackend)).Should(Succeed())
+		g.Expect(b.Run(ctx, nil, []string{})).Should(Succeed())
 	})
 }

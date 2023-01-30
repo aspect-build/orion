@@ -17,12 +17,14 @@
 package test
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/aspect-build/silo/cli/core/pkg/aspecterrors"
 	"github.com/aspect-build/silo/cli/core/pkg/bazel"
 	"github.com/aspect-build/silo/cli/core/pkg/ioutils"
 	"github.com/aspect-build/silo/cli/core/pkg/plugin/system/bep"
+	"github.com/spf13/cobra"
 )
 
 type Test struct {
@@ -37,11 +39,11 @@ func New(streams ioutils.Streams, bzl bazel.Bazel) *Test {
 	}
 }
 
-func (runner *Test) Run(args []string, besBackend bep.BESBackend) (exitErr error) {
+func (runner *Test) Run(ctx context.Context, _ *cobra.Command, args []string) (exitErr error) {
+	besBackend := bep.BESBackendFromContext(ctx)
 	besBackendFlag := fmt.Sprintf("--bes_backend=%s", besBackend.Addr())
 	bazelCmd := []string{"test", besBackendFlag}
 	bazelCmd = append(bazelCmd, args...)
-
 	exitCode, bazelErr := runner.bzl.RunCommand(runner.Streams, nil, bazelCmd...)
 
 	// Process the subscribers errors before the Bazel one.
