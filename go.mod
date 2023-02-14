@@ -5,14 +5,14 @@ go 1.19
 require (
 	github.com/Masterminds/semver/v3 v3.2.0
 	github.com/aspect-build/talkie v0.0.0-00010101000000-000000000000
-	github.com/avast/retry-go/v4 v4.3.2
+	github.com/avast/retry-go/v4 v4.3.3
 	github.com/bazelbuild/bazel-gazelle v0.29.0
-	github.com/bazelbuild/bazelisk v1.15.0
-	github.com/bazelbuild/buildtools v0.0.0-20230126151539-bf454e7b8ec3
-	github.com/bazelbuild/rules_go v0.38.0
+	github.com/bazelbuild/bazelisk v1.16.0
+	github.com/bazelbuild/buildtools v0.0.0-20230127124510-cf446296fb76
+	github.com/bazelbuild/rules_go v0.38.1
 	github.com/bmatcuk/doublestar/v4 v4.6.0
 	github.com/emirpasic/gods v1.18.1
-	github.com/evanw/esbuild v0.17.4
+	github.com/evanw/esbuild v0.17.8
 	github.com/fatih/color v1.14.1
 	github.com/go-test/deep v1.1.0
 	github.com/golang/mock v1.6.0
@@ -23,7 +23,7 @@ require (
 	github.com/manifoldco/promptui v0.9.0
 	github.com/mattn/go-isatty v0.0.17
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/onsi/ginkgo/v2 v2.7.0
+	github.com/onsi/ginkgo/v2 v2.8.1
 	github.com/onsi/gomega v1.26.0
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/pmezard/go-difflib v1.0.0
@@ -32,11 +32,11 @@ require (
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.15.0
-	golang.org/x/exp v0.0.0-20230125214544-b3c2aaf6208d
-	golang.org/x/mod v0.7.0
+	golang.org/x/exp v0.0.0-20230213192124-5e25df0256eb
+	golang.org/x/mod v0.8.0
 	golang.org/x/sync v0.1.0
-	google.golang.org/genproto v0.0.0-20230125152338-dcaf20b6aeaa
-	google.golang.org/grpc v1.52.3
+	google.golang.org/genproto v0.0.0-20230209215440-0dfe4f8abfcc
+	google.golang.org/grpc v1.53.0
 	google.golang.org/protobuf v1.28.1
 	gopkg.in/yaml.v3 v3.0.1
 	sigs.k8s.io/kind v0.17.0
@@ -44,7 +44,7 @@ require (
 )
 
 require (
-	cloud.google.com/go/compute v1.14.0 // indirect
+	cloud.google.com/go/compute v1.15.1 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	github.com/BurntSushi/toml v1.2.1 // indirect
 	github.com/GoogleCloudPlatform/cloudsql-proxy v0.0.0-20200501161113-5e9e23d7cb91 // indirect
@@ -95,12 +95,12 @@ require (
 	github.com/xanzy/go-gitlab v0.36.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	golang.org/x/crypto v0.5.0 // indirect
-	golang.org/x/net v0.5.0 // indirect
-	golang.org/x/oauth2 v0.3.0 // indirect
-	golang.org/x/sys v0.4.0 // indirect
-	golang.org/x/text v0.6.0 // indirect
+	golang.org/x/net v0.6.0 // indirect
+	golang.org/x/oauth2 v0.4.0 // indirect
+	golang.org/x/sys v0.5.0 // indirect
+	golang.org/x/text v0.7.0 // indirect
 	golang.org/x/time v0.1.0 // indirect
-	golang.org/x/tools v0.5.0 // indirect
+	golang.org/x/tools v0.6.0 // indirect
 	google.golang.org/api v0.107.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
