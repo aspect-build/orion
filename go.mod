@@ -5,7 +5,6 @@ go 1.19
 require (
 	github.com/Masterminds/semver/v3 v3.2.0
 	github.com/aspect-build/talkie v0.0.0-00010101000000-000000000000
-	github.com/avast/retry-go/v4 v4.3.3
 	github.com/bazelbuild/bazel-gazelle v0.29.0
 	github.com/bazelbuild/bazelisk v1.16.0
 	github.com/bazelbuild/buildtools v0.0.0-20230127124510-cf446296fb76
