@@ -1274,6 +1274,13 @@ def go_dependencies():
         version = "v2.1.0",
     )
     go_repository(
+        name = "com_github_sabhiram_go_gitignore",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/sabhiram/go-gitignore",
+        sum = "h1:OkMGxebDjyw0ULyrTYWeN0UNCCkmCWfjPnIA2W6oviI=",
+        version = "v0.0.0-20210923224102-525f6e181f06",
+    )
+    go_repository(
         name = "com_github_sagikazarmark_crypt",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/sagikazarmark/crypt",
