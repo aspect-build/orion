@@ -10,6 +10,8 @@ require (
 	github.com/bazelbuild/buildtools v0.0.0-20230127124510-cf446296fb76
 	github.com/bazelbuild/rules_go v0.38.1
 	github.com/bmatcuk/doublestar/v4 v4.6.0
+	github.com/buildbarn/bb-clientd v0.0.0-20230208184232-939beb99dc15
+	github.com/buildbarn/bb-remote-execution v0.0.0-20230213172655-e0ae60c4312e
 	github.com/emirpasic/gods v1.18.1
 	github.com/evanw/esbuild v0.17.8
 	github.com/fatih/color v1.14.1
@@ -52,10 +54,17 @@ require (
 require (
 	cloud.google.com/go/compute v1.18.0 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
+	cloud.google.com/go/longrunning v0.3.0 // indirect
 	github.com/BurntSushi/toml v1.2.1 // indirect
 	github.com/GoogleCloudPlatform/cloudsql-proxy v0.0.0-20200501161113-5e9e23d7cb91 // indirect
 	github.com/alessio/shellescape v1.4.1 // indirect
+	github.com/bazelbuild/remote-apis v0.0.0-20221109204407-3a21deee813d // indirect
+	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bgentry/go-netrc v0.0.0-20140422174119-9fd32a8b3d3d // indirect
+	github.com/buildbarn/bb-clientd/internal/mock v0.0.0-00010101000000-000000000000 // indirect
+	github.com/buildbarn/bb-storage v0.0.0-20230124100847-756fc23c9924 // indirect
+	github.com/buildbarn/bb-storage/internal/mock v0.0.0-00010101000000-000000000000 // indirect
+	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/chzyer/readline v1.5.1 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -68,6 +77,7 @@ require (
 	github.com/google/btree v1.1.2 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/go-github/v33 v33.0.0 // indirect
+	github.com/google/go-jsonnet v0.19.1 // indirect
 	github.com/google/go-querystring v1.0.0 // indirect
 	github.com/google/safetext v0.0.0-20220905092116-b49f7bc46da2 // indirect
 	github.com/google/uuid v1.3.0 // indirect
@@ -89,6 +99,7 @@ require (
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-sqlite3 v1.14.16 // indirect
+	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
 	github.com/mitchellh/go-testing-interface v1.14.1 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/oklog/run v1.1.0 // indirect
@@ -97,6 +108,10 @@ require (
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
 	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/prometheus/client_golang v1.14.0 // indirect
+	github.com/prometheus/client_model v0.3.0 // indirect
+	github.com/prometheus/common v0.37.0 // indirect
+	github.com/prometheus/procfs v0.8.0 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/spf13/afero v1.9.3 // indirect
@@ -134,3 +149,7 @@ require (
 )
 
 replace github.com/aspect-build/talkie => ./talkie
+
+replace github.com/buildbarn/bb-clientd/internal/mock => ./third_party/hack/github.com/buildbarn/bb-clientd/internal/mock
+
+replace github.com/buildbarn/bb-storage/internal/mock => ./third_party/hack/github.com/buildbarn/bb-storage/internal/mock
