@@ -379,8 +379,8 @@ def go_dependencies():
         name = "com_github_containerd_containerd",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/containerd/containerd",
-        sum = "h1:4wWexxzLNHNE46aIETc6ge4TofO550v+BlLoANrbses=",
-        version = "v1.6.15",
+        sum = "h1:qZbsLvmyu+Vlty0/Ex5xc0z2YtKpIsb5n45mAMI+2Ns=",
+        version = "v1.6.18",
     )
     go_repository(
         name = "com_github_coreos_go_semver",
