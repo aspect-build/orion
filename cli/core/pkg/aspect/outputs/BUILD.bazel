@@ -4,7 +4,6 @@ go_library(
     name = "outputs",
     srcs = [
         "hash.go",
-        "outputpathpersistency.go",
         "outputs.go",
     ],
     importpath = "github.com/aspect-build/silo/cli/core/pkg/aspect/outputs",
@@ -12,11 +11,7 @@ go_library(
     deps = [
         "//cli/core/pkg/bazel",
         "//cli/core/pkg/ioutils",
-        "@com_github_buildbarn_bb_clientd//pkg/outputpathpersistency",
-        "@com_github_buildbarn_bb_remote_execution//pkg/proto/outputpathpersistency",
         "@com_github_spf13_cobra//:cobra",
-        "@org_golang_x_exp//slices",
         "@org_golang_x_mod//sumdb/dirhash",
-        "@org_golang_x_sync//errgroup",
     ],
 )
