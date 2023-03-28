@@ -1472,6 +1472,14 @@ def go_dependencies():
         version = "v1.0.0",
     )
     go_repository(
+        name = "com_github_msolo_jsonr",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/msolo/jsonr",
+        sum = "h1:qi6wMDUEwRJy1YUDBna2gMzeOuor3cnCdkslJpt8lsI=",
+        version = "v0.0.0-20201112025421-5694020ddb6a",
+    )
+
+    go_repository(
         name = "com_github_munnerz_goautoneg",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/munnerz/goautoneg",
