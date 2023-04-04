@@ -33,6 +33,7 @@ require (
 	github.com/sabhiram/go-gitignore v0.0.0-20210923224102-525f6e181f06
 	github.com/sirupsen/logrus v1.9.0
 	github.com/slack-go/slack v0.12.1
+	github.com/smacker/go-tree-sitter v0.0.0-20230113054119-af7e2ef5fed6
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.15.0

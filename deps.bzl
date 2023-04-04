@@ -1704,6 +1704,14 @@ def go_dependencies():
         version = "v0.12.1",
     )
     go_repository(
+        name = "com_github_smacker_go_tree_sitter",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/smacker/go-tree-sitter",
+        sum = "h1:FX6rwoAcx8JXrO9WHbV2yxBCgH9LlGT2LYWPi/4jtOE=",
+        version = "v0.0.0-20230113054119-af7e2ef5fed6",
+    )
+
+    go_repository(
         name = "com_github_spf13_afero",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/spf13/afero",
@@ -1773,6 +1781,7 @@ def go_dependencies():
         sum = "h1:X1TuBLAMDFbaTAChgCBLu3DU3UPyELpnF2jjJ2cz/S8=",
         version = "v1.4.2",
     )
+
     go_repository(
         name = "com_github_tmthrgd_go_hex",
         build_file_proto_mode = "disable_global",
