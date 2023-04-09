@@ -2,7 +2,4 @@
 # This prevents that until we can address the underlying issue.
 # gazelle:js disabled
 
-exports_files([
-    "LICENSE",
-    "README.md",
-])
+exports_files(["LICENSE"])
