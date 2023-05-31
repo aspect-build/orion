@@ -33,8 +33,8 @@ import (
 	"github.com/aspect-build/silo/cli/core/pkg/ioutils"
 	"github.com/aspect-build/silo/cli/core/pkg/plugin/client"
 	client_mock "github.com/aspect-build/silo/cli/core/pkg/plugin/client/mock"
-	"github.com/aspect-build/silo/cli/core/pkg/plugin/sdk/v1alpha3/plugin"
-	plugin_mock "github.com/aspect-build/silo/cli/core/pkg/plugin/sdk/v1alpha3/plugin/mock"
+	"github.com/aspect-build/silo/cli/core/pkg/plugin/sdk/v1alpha4/plugin"
+	plugin_mock "github.com/aspect-build/silo/cli/core/pkg/plugin/sdk/v1alpha4/plugin/mock"
 	"github.com/aspect-build/silo/cli/core/pkg/plugin/types"
 )
 

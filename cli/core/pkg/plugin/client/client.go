@@ -30,8 +30,8 @@ import (
 	goplugin "github.com/hashicorp/go-plugin"
 
 	"github.com/aspect-build/silo/cli/core/pkg/ioutils"
-	"github.com/aspect-build/silo/cli/core/pkg/plugin/sdk/v1alpha3/config"
-	"github.com/aspect-build/silo/cli/core/pkg/plugin/sdk/v1alpha3/plugin"
+	"github.com/aspect-build/silo/cli/core/pkg/plugin/sdk/v1alpha4/config"
+	"github.com/aspect-build/silo/cli/core/pkg/plugin/sdk/v1alpha4/plugin"
 	"github.com/aspect-build/silo/cli/core/pkg/plugin/types"
 )
 
@@ -48,7 +48,7 @@ func NewFactory() Factory {
 // ExecuteCustomCommand method so that the Core can ask over gRPC for a specific command to
 // be executed. `cmdName` is the name of the custom command the plugin created.
 type CustomCommandExecutor interface {
-	ExecuteCustomCommand(cmdName string, ctx context.Context, args []string) error
+	ExecuteCustomCommand(cmdName string, ctx context.Context, args []string, bazelStartupArgs []string) error
 }
 
 type clientFactory struct {
