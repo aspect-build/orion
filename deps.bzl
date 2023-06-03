@@ -1468,8 +1468,8 @@ def go_dependencies():
         name = "com_github_msolo_jsonr",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/msolo/jsonr",
-        sum = "h1:qi6wMDUEwRJy1YUDBna2gMzeOuor3cnCdkslJpt8lsI=",
-        version = "v0.0.0-20201112025421-5694020ddb6a",
+        sum = "h1:0Sp4veJAXi8l4LqzEzEZRovLnEHKuo6L0pYa6b23BJ8=",
+        version = "v0.0.0-20230325054138-b14a608f43e2",
     )
 
     go_repository(

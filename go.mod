@@ -24,7 +24,7 @@ require (
 	github.com/manifoldco/promptui v0.9.0
 	github.com/mattn/go-isatty v0.0.17
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/msolo/jsonr v0.0.0-20201112025421-5694020ddb6a
+	github.com/msolo/jsonr v0.0.0-20230325054138-b14a608f43e2
 	github.com/onsi/ginkgo/v2 v2.8.1
 	github.com/onsi/gomega v1.27.0
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
