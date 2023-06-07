@@ -1,0 +1,20 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "parser",
+    srcs = ["parser.go"],
+    importpath = "github.com/aspect-build/silo/cli/core/gazelle/kotlin/parser",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//cli/core/gazelle/common/treesitter",
+        "@com_github_emirpasic_gods//sets/treeset",
+        "@com_github_smacker_go_tree_sitter//:go-tree-sitter",
+        "@com_github_smacker_go_tree_sitter//kotlin",
+    ],
+)
+
+go_test(
+    name = "parser_test",
+    srcs = ["parser_test.go"],
+    embed = [":parser"],
+)
