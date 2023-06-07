@@ -57,7 +57,13 @@ def go_dependencies():
         sum = "h1:xK2lYat7ZLaVVcIuj82J8kIro4V6kDe0AUDFboUCwcg=",
         version = "v1.0.0",
     )
-
+    go_repository(
+        name = "com_github_aristanetworks_goarista",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/aristanetworks/goarista",
+        sum = "h1:xnu1MpGNjnEooJ8lWa3YiU3330zMZISReAosjpZpLzg=",
+        version = "v0.0.0-20220328143245-64c8d3945829",
+    )
     go_repository(
         name = "com_github_armon_go_metrics",
         build_file_proto_mode = "disable_global",
@@ -226,6 +232,14 @@ def go_dependencies():
         sum = "h1:UQHMgLO+TxOElx5B5HZ4hJQsoJ/PvUvKRhJHDQXO8P8=",
         version = "v0.0.0-20210617225240-d185dfc1b5a1",
     )
+    go_repository(
+        name = "com_github_bazel_contrib_rules_jvm",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/bazel-contrib/rules_jvm",
+        sum = "h1:Sm5+nBadu14haQpSGejRXC3tMpAJI49RYbg93DfYVLo=",
+        version = "v0.13.0",
+    )
+
     go_repository(
         name = "com_github_bazelbuild_bazel_gazelle",
         build_file_proto_mode = "disable_global",
@@ -731,6 +745,7 @@ def go_dependencies():
         sum = "h1:A4xDbljILXROh+kObIiy5kIaPYD8e96x1tgBhUI5J+Y=",
         version = "v0.2.3",
     )
+
     go_repository(
         name = "com_github_gofrs_flock",
         build_file_proto_mode = "disable_global",
@@ -1689,6 +1704,7 @@ def go_dependencies():
         sum = "h1:73kH8U+JUqXU8lRuOHeVHaa/SZPifC7BkcraZVejAe8=",
         version = "v1.9.0",
     )
+
     go_repository(
         name = "com_github_rs_zerolog",
         build_file_proto_mode = "disable_global",
@@ -1728,8 +1744,8 @@ def go_dependencies():
         name = "com_github_sergi_go_diff",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/sergi/go-diff",
-        sum = "h1:we8PVUC3FE2uYfodKH/nBHMSetSfHDR6scGdBi+erh0=",
-        version = "v1.1.0",
+        sum = "h1:XU+rvMAioB0UC3q1MFrIQy4Vo5/4VsRDQQXHsEya6xQ=",
+        version = "v1.2.0",
     )
     go_repository(
         name = "com_github_shopspring_decimal",
