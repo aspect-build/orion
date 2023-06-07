@@ -11,7 +11,7 @@ require (
 	github.com/bazelbuild/buildtools v0.0.0-20230510134650-37bd1811516d
 	github.com/bazelbuild/rules_go v0.39.1
 	github.com/bmatcuk/doublestar/v4 v4.6.0
-	github.com/buildbarn/bb-remote-execution v0.0.0-20230317073405-cc53bcef4f91
+	github.com/buildbarn/bb-remote-execution v0.0.0-20230530091041-a8ab44291fce
 	github.com/emirpasic/gods v1.18.1
 	github.com/evanw/esbuild v0.17.19
 	github.com/fatih/color v1.15.0
@@ -53,7 +53,7 @@ require (
 	sigs.k8s.io/yaml v1.3.0
 )
 
-require github.com/buildbarn/bb-storage v0.0.0-20230317062200-2cbf9f602b09 // indirect
+require github.com/buildbarn/bb-storage v0.0.0-20230517082930-1eb2bad58bdb // indirect
 
 require (
 	cloud.google.com/go/compute v1.19.0 // indirect
@@ -156,6 +156,6 @@ replace github.com/buildbarn/bb-clientd/internal/mock => ./third_party/hack/gith
 
 replace github.com/buildbarn/bb-storage/internal/mock => ./third_party/hack/github.com/buildbarn/bb-storage/internal/mock
 
-replace github.com/gordonklaus/ineffassign => github.com/gordonklaus/ineffassign v0.0.0-20201223204552-cba2d2a1d5d9
+replace github.com/gordonklaus/ineffassign => github.com/gordonklaus/ineffassign v0.0.0-20230107090616-13ace0543b28
 
-replace mvdan.cc/gofumpt => mvdan.cc/gofumpt v0.3.0
+replace mvdan.cc/gofumpt => mvdan.cc/gofumpt v0.5.0

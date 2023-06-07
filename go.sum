@@ -70,10 +70,10 @@ github.com/bmatcuk/doublestar/v4 v4.6.0 h1:HTuxyug8GyFbRkrffIpzNCSK4luc0TY3wzXvz
 github.com/bmatcuk/doublestar/v4 v4.6.0/go.mod h1:xBQ8jztBU6kakFMg+8WGxn0c6z1fTSPVIjEY1Wr7jzc=
 github.com/buildbarn/bb-clientd v0.0.0-20230414074313-677f2e45487b h1:SEWmOyFjln4O3GsKQKh5uUtlHojH0Ttjw9SUOGoG9D0=
 github.com/buildbarn/bb-clientd v0.0.0-20230414074313-677f2e45487b/go.mod h1:4uVAU0s6d6jaiTPXmckwY+Oq4NgIapbtSEv4r9sqvFE=
-github.com/buildbarn/bb-remote-execution v0.0.0-20230317073405-cc53bcef4f91 h1:Ar1pvZDTvWd3cFBEO5myCd+LXXsbkfWz3mSSM7j+l8k=
-github.com/buildbarn/bb-remote-execution v0.0.0-20230317073405-cc53bcef4f91/go.mod h1:g5gPALS5Wi4OBTJ6htoXefVlfVmAvsIdHrTvu/+IvPM=
-github.com/buildbarn/bb-storage v0.0.0-20230317062200-2cbf9f602b09 h1:9uuv//cjVvfJBuoMcNw265YkcVw03ERWzxcw8Xv9nxE=
-github.com/buildbarn/bb-storage v0.0.0-20230317062200-2cbf9f602b09/go.mod h1:3pOaOB5jffn+CFnXtvQ+4UWs1ADZIYmo0OTqDaM4o+M=
+github.com/buildbarn/bb-remote-execution v0.0.0-20230530091041-a8ab44291fce h1:1kz0jArK1WT7gK+/CnonAS+YTyv5/8Wb18sNuSpGMUA=
+github.com/buildbarn/bb-remote-execution v0.0.0-20230530091041-a8ab44291fce/go.mod h1:JgykhOPOPrD73rbzAPmt7eRCNIY1o9X8D+jhU/xoW7s=
+github.com/buildbarn/bb-storage v0.0.0-20230517082930-1eb2bad58bdb h1:3Iq+u738bzJE1aY2K2SQyMqCLnjfA/mhWdUgMW4r2cs=
+github.com/buildbarn/bb-storage v0.0.0-20230517082930-1eb2bad58bdb/go.mod h1:3pOaOB5jffn+CFnXtvQ+4UWs1ADZIYmo0OTqDaM4o+M=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/cespare/xxhash/v2 v2.1.1/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=
 github.com/cespare/xxhash/v2 v2.2.0 h1:DC2CZ1Ep5Y4k3ZQ899DldepgrayRUGE6BBZ/cd9Cj44=
