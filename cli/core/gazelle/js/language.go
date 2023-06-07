@@ -1,7 +1,7 @@
 package gazelle
 
 import (
-	git "github.com/aspect-build/silo/cli/core/gazelle/js/git"
+	git "github.com/aspect-build/silo/cli/core/gazelle/common/git"
 	pnpm "github.com/aspect-build/silo/cli/core/gazelle/js/pnpm"
 	"github.com/aspect-build/silo/cli/core/gazelle/js/typescript"
 	"github.com/bazelbuild/bazel-gazelle/config"
