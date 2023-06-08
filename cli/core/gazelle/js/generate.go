@@ -12,7 +12,7 @@ import (
 
 	gazelle "github.com/aspect-build/silo/cli/core/gazelle/common"
 	. "github.com/aspect-build/silo/cli/core/gazelle/common/log"
-	parser "github.com/aspect-build/silo/cli/core/gazelle/js/parser/esbuild"
+	parser "github.com/aspect-build/silo/cli/core/gazelle/js/parser/treesitter"
 	pnpm "github.com/aspect-build/silo/cli/core/gazelle/js/pnpm"
 	"github.com/bazelbuild/bazel-gazelle/label"
 	"github.com/bazelbuild/bazel-gazelle/language"

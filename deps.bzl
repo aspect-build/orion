@@ -254,7 +254,7 @@ def go_dependencies():
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bazelbuild/bazelisk",
         patch_args = ["-p1"],  # keep
-        patches = ["//patches:com_github_bazelbuild_bazelisk_two_segment_forks.patch"],  #keep
+        patches = ["//patches:com_github_bazelbuild_bazelisk_two_segment_forks.patch"],  # keep
         sum = "h1:TDt+a1PYrnBF9on3WRJUisXXFhCMrhcNo8OebyS5Q34=",
         version = "v1.17.0",
     )
@@ -901,7 +901,7 @@ def go_dependencies():
         build_file_proto_mode = "disable_global",
         importpath = "github.com/google/triage-party",
         patch_args = ["-p1"],  # keep
-        patches = ["//patches:com_github_google_triage_party.patch"],  #keep
+        patches = ["//patches:com_github_google_triage_party.patch"],  # keep
         sum = "h1:GdCY4gEID5YBDYjg+fHInx5qneFsqRFDW3x1E+DIML0=",
         version = "v1.4.0",
     )
