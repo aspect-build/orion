@@ -15,6 +15,7 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//cli/core/gazelle/js",
+        "//cli/core/gazelle/kotlin",
         "//cli/core/pkg/aspect/configure/internal/module",
         "//cli/core/pkg/aspect/configure/internal/wspace",
         "//cli/core/pkg/ioutils",
