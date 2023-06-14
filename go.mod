@@ -6,14 +6,14 @@ require (
 	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/aspect-build/talkie v0.0.0-00010101000000-000000000000
 	github.com/bazel-contrib/rules_jvm v0.13.0
-	github.com/bazelbuild/bazel-gazelle v0.31.0
+	github.com/bazelbuild/bazel-gazelle v0.31.1
 	github.com/bazelbuild/bazelisk v1.17.0
 	github.com/bazelbuild/buildtools v0.0.0-20230510134650-37bd1811516d
 	github.com/bazelbuild/rules_go v0.39.1
 	github.com/bmatcuk/doublestar/v4 v4.6.0
 	github.com/buildbarn/bb-remote-execution v0.0.0-20230530091041-a8ab44291fce
 	github.com/emirpasic/gods v1.18.1
-	github.com/evanw/esbuild v0.17.19
+	github.com/evanw/esbuild v0.18.2
 	github.com/fatih/color v1.15.0
 	github.com/go-test/deep v1.1.0
 	github.com/golang/mock v1.6.0
@@ -25,8 +25,8 @@ require (
 	github.com/mattn/go-isatty v0.0.19
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/msolo/jsonr v0.0.0-20230325054138-b14a608f43e2
-	github.com/onsi/ginkgo/v2 v2.9.7
-	github.com/onsi/gomega v1.27.7
+	github.com/onsi/ginkgo/v2 v2.10.0
+	github.com/onsi/gomega v1.27.8
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/rabbitmq/amqp091-go v1.8.1
@@ -156,6 +156,6 @@ replace github.com/buildbarn/bb-clientd/internal/mock => ./third_party/hack/gith
 
 replace github.com/buildbarn/bb-storage/internal/mock => ./third_party/hack/github.com/buildbarn/bb-storage/internal/mock
 
-replace github.com/gordonklaus/ineffassign => github.com/gordonklaus/ineffassign v0.0.0-20230107090616-13ace0543b28
+replace github.com/gordonklaus/ineffassign => github.com/gordonklaus/ineffassign v0.0.0-20230610083614-0e73809eb601
 
 replace mvdan.cc/gofumpt => mvdan.cc/gofumpt v0.5.0
