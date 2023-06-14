@@ -244,9 +244,9 @@ def go_dependencies():
         name = "com_github_bazelbuild_bazel_gazelle",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bazelbuild/bazel-gazelle",
-        sum = "h1:D5oumrfJODIy/6jMxx8Aq4LtmXeyvqhsZ136NySl3fQ=",
+        sum = "h1:ROyUyUHzoEdvoOs1e0haxJx1l5EjZX6AOqiKdVlaBbg=",
         # Ensure this version always matches the version of @bazel_gazelle set in fetch.bzl.
-        version = "v0.31.0",
+        version = "v0.31.1",
     )
     go_repository(
         name = "com_github_bazelbuild_bazelisk",
@@ -564,8 +564,8 @@ def go_dependencies():
         name = "com_github_evanw_esbuild",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/evanw/esbuild",
-        sum = "h1:JdzNCvfFEoUCXKHhdP326Vn2mhCu8PybXeBDHaSRyWo=",
-        version = "v0.17.19",
+        sum = "h1:W/yrvXgH+zTCeG5+M1I2SJo3DSgLwdPDtdD0kbvJeZ8=",
+        version = "v0.18.2",
     )
     go_repository(
         name = "com_github_exponent_io_jsonpath",
@@ -945,8 +945,8 @@ def go_dependencies():
         build_file_proto_mode = "disable_global",
         importpath = "github.com/gordonklaus/ineffassign",
         replace = "github.com/gordonklaus/ineffassign",
-        sum = "h1:9alfqbrhuD+9fLZ4iaAVwhlp5PEhmnBt7yvK2Oy5C1U=",
-        version = "v0.0.0-20230107090616-13ace0543b28",
+        sum = "h1:mrEEilTAUmaAORhssPPkxj84TsHrPMLBGW2Z4SoTxm8=",
+        version = "v0.0.0-20230610083614-0e73809eb601",
     )
     go_repository(
         name = "com_github_gorilla_mux",
@@ -1009,8 +1009,8 @@ def go_dependencies():
         name = "com_github_grpc_ecosystem_grpc_health_probe",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/grpc-ecosystem/grpc-health-probe",
-        sum = "h1:j0nTrvunOfU9VBl1EYBUV7d+y9lBWwZO/ThX80ksygU=",
-        version = "v0.4.18",
+        sum = "h1:5l07whRGbAaBNdY/ytPoHxAUtEAWir9zISFfiQRptpM=",
+        version = "v0.4.19",
     )
     go_repository(
         name = "com_github_hanwen_go_fuse_v2",
@@ -1433,8 +1433,8 @@ def go_dependencies():
         name = "com_github_microsoft_go_winio",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/Microsoft/go-winio",
-        sum = "h1:slsWYD/zyx7lCXoZVlvQrj0hPTM1HI4+v1sIda2yDvg=",
-        version = "v0.6.0",
+        sum = "h1:9/kr64B9VUZrLm5YYwbGtUJnMgqWVOdUAXu6Migciow=",
+        version = "v0.6.1",
     )
     go_repository(
         name = "com_github_mitchellh_copystructure",
@@ -1567,15 +1567,15 @@ def go_dependencies():
         name = "com_github_onsi_ginkgo_v2",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/onsi/ginkgo/v2",
-        sum = "h1:06xGQy5www2oN160RtEZoTvnP2sPhEfePYmCDc2szss=",
-        version = "v2.9.7",
+        sum = "h1:sfUl4qgLdvkChZrWCYndY2EAu9BRIw1YphNAzy1VNWs=",
+        version = "v2.10.0",
     )
     go_repository(
         name = "com_github_onsi_gomega",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/onsi/gomega",
-        sum = "h1:fVih9JD6ogIiHUN6ePK7HJidyEDpWGVB5mzM7cWNXoU=",
-        version = "v1.27.7",
+        sum = "h1:gegWiwZjBsf2DgiSbf5hpokZ98JVDMcWkUiigk6/KXc=",
+        version = "v1.27.8",
     )
     go_repository(
         name = "com_github_opencontainers_go_digest",
@@ -1822,8 +1822,8 @@ def go_dependencies():
         name = "com_github_spiffe_go_spiffe_v2",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/spiffe/go-spiffe/v2",
-        sum = "h1:Z31Ycaf2Z5DF38sQGmp+iGKjBhBlSzfAq68bfy67Mxw=",
-        version = "v2.1.4",
+        sum = "h1:4SdizuQieFyL9eNU+SPiCArH4kynzaKOOj0VvM8R7Xo=",
+        version = "v2.1.6",
     )
     go_repository(
         name = "com_github_stretchr_objx",
