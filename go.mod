@@ -5,15 +5,15 @@ go 1.20
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/aspect-build/talkie v0.0.0-00010101000000-000000000000
-	github.com/bazel-contrib/rules_jvm v0.13.0
+	github.com/bazel-contrib/rules_jvm v0.14.0
 	github.com/bazelbuild/bazel-gazelle v0.31.1
 	github.com/bazelbuild/bazelisk v1.17.0
 	github.com/bazelbuild/buildtools v0.0.0-20230510134650-37bd1811516d
-	github.com/bazelbuild/rules_go v0.40.0
+	github.com/bazelbuild/rules_go v0.40.1
 	github.com/bmatcuk/doublestar/v4 v4.6.0
-	github.com/buildbarn/bb-remote-execution v0.0.0-20230616145815-13b8a35f4aeb
+	github.com/buildbarn/bb-remote-execution v0.0.0-20230706125845-2b8c1fb4e26d
 	github.com/emirpasic/gods v1.18.1
-	github.com/evanw/esbuild v0.18.10
+	github.com/evanw/esbuild v0.18.11
 	github.com/fatih/color v1.15.0
 	github.com/go-test/deep v1.1.0
 	github.com/golang/mock v1.6.0
@@ -43,27 +43,27 @@ require (
 	github.com/uptrace/bun/driver/pgdriver v1.1.14
 	github.com/uptrace/bun/driver/sqliteshim v1.1.14
 	golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df
-	golang.org/x/mod v0.11.0
+	golang.org/x/mod v0.12.0
 	golang.org/x/sync v0.3.0
-	google.golang.org/genproto v0.0.0-20230626202813-9b080da550b3
-	google.golang.org/genproto/googleapis/api v0.0.0-20230626202813-9b080da550b3
-	google.golang.org/grpc v1.56.1
+	google.golang.org/genproto v0.0.0-20230629202037-9506855d4529
+	google.golang.org/genproto/googleapis/api v0.0.0-20230706202418-f51705677e13
+	google.golang.org/grpc v1.56.2
 	google.golang.org/protobuf v1.31.0
 	gopkg.in/yaml.v3 v3.0.1
 	sigs.k8s.io/yaml v1.3.0
 )
 
-require github.com/buildbarn/bb-storage v0.0.0-20230517082930-1eb2bad58bdb // indirect
+require github.com/buildbarn/bb-storage v0.0.0-20230629193729-d6a051ca744d // indirect
 
 require (
-	cloud.google.com/go/compute v1.19.1 // indirect
+	cloud.google.com/go/compute v1.19.3 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	cloud.google.com/go/longrunning v0.4.1 // indirect
 	github.com/GoogleCloudPlatform/cloudsql-proxy v0.0.0-20200501161113-5e9e23d7cb91 // indirect
-	github.com/bazelbuild/remote-apis v0.0.0-20230411132548-35aee1c4a425 // indirect
+	github.com/bazelbuild/remote-apis v0.0.0-20230627201705-068363a3625e // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bgentry/go-netrc v0.0.0-20140422174119-9fd32a8b3d3d // indirect
-	github.com/buildbarn/bb-clientd v0.0.0-20230414074313-677f2e45487b
+	github.com/buildbarn/bb-clientd v0.0.0-20230630045827-25fd4b186d2d
 	github.com/buildbarn/bb-clientd/internal/mock v0.0.0-00010101000000-000000000000 // indirect
 	github.com/buildbarn/bb-storage/internal/mock v0.0.0-00010101000000-000000000000 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
@@ -79,13 +79,13 @@ require (
 	github.com/google/btree v1.1.2 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/go-github/v33 v33.0.0 // indirect
-	github.com/google/go-jsonnet v0.19.1 // indirect
+	github.com/google/go-jsonnet v0.20.0 // indirect
 	github.com/google/go-querystring v1.0.0 // indirect
 	github.com/google/pprof v0.0.0-20221118152302-e6195bd50e26 // indirect
-	github.com/google/s2a-go v0.1.3 // indirect
+	github.com/google/s2a-go v0.1.4 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.3 // indirect
-	github.com/googleapis/gax-go/v2 v2.8.0 // indirect
+	github.com/googleapis/gax-go/v2 v2.10.0 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-retryablehttp v0.6.6 // indirect
@@ -109,10 +109,10 @@ require (
 	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
 	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
 	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
-	github.com/prometheus/client_golang v1.15.1 // indirect
+	github.com/prometheus/client_golang v1.16.0 // indirect
 	github.com/prometheus/client_model v0.3.0 // indirect
 	github.com/prometheus/common v0.42.0 // indirect
-	github.com/prometheus/procfs v0.9.0 // indirect
+	github.com/prometheus/procfs v0.10.1 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/spf13/afero v1.9.5 // indirect
@@ -131,9 +131,9 @@ require (
 	golang.org/x/text v0.9.0 // indirect
 	golang.org/x/time v0.1.0 // indirect
 	golang.org/x/tools v0.9.3 // indirect
-	google.golang.org/api v0.122.0 // indirect
+	google.golang.org/api v0.125.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20230530153820-e85fd2cbaebc // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20230629202037-9506855d4529 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	k8s.io/klog/v2 v2.90.1 // indirect
