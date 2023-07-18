@@ -5,15 +5,15 @@ go 1.20
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/aspect-build/talkie v0.0.0-00010101000000-000000000000
-	github.com/bazel-contrib/rules_jvm v0.14.0
-	github.com/bazelbuild/bazel-gazelle v0.31.1
+	github.com/bazel-contrib/rules_jvm v0.15.0
+	github.com/bazelbuild/bazel-gazelle v0.32.0
 	github.com/bazelbuild/bazelisk v1.17.0
 	github.com/bazelbuild/buildtools v0.0.0-20230510134650-37bd1811516d
-	github.com/bazelbuild/rules_go v0.40.1
+	github.com/bazelbuild/rules_go v0.41.0
 	github.com/bmatcuk/doublestar/v4 v4.6.0
-	github.com/buildbarn/bb-remote-execution v0.0.0-20230706125845-2b8c1fb4e26d
+	github.com/buildbarn/bb-remote-execution v0.0.0-20230713095744-d791ebca8448
 	github.com/emirpasic/gods v1.18.1
-	github.com/evanw/esbuild v0.18.11
+	github.com/evanw/esbuild v0.18.13
 	github.com/fatih/color v1.15.0
 	github.com/go-test/deep v1.1.0
 	github.com/golang/mock v1.6.0
@@ -42,11 +42,11 @@ require (
 	github.com/uptrace/bun/dialect/sqlitedialect v1.1.14
 	github.com/uptrace/bun/driver/pgdriver v1.1.14
 	github.com/uptrace/bun/driver/sqliteshim v1.1.14
-	golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df
+	golang.org/x/exp v0.0.0-20230713183714-613f0c0eb8a1
 	golang.org/x/mod v0.12.0
 	golang.org/x/sync v0.3.0
-	google.golang.org/genproto v0.0.0-20230629202037-9506855d4529
-	google.golang.org/genproto/googleapis/api v0.0.0-20230706202418-f51705677e13
+	google.golang.org/genproto v0.0.0-20230711160842-782d3b101e98
+	google.golang.org/genproto/googleapis/api v0.0.0-20230711160842-782d3b101e98
 	google.golang.org/grpc v1.56.2
 	google.golang.org/protobuf v1.31.0
 	gopkg.in/yaml.v3 v3.0.1
@@ -56,9 +56,9 @@ require (
 require github.com/buildbarn/bb-storage v0.0.0-20230629193729-d6a051ca744d // indirect
 
 require (
-	cloud.google.com/go/compute v1.19.3 // indirect
+	cloud.google.com/go/compute v1.20.1 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
-	cloud.google.com/go/longrunning v0.4.1 // indirect
+	cloud.google.com/go/longrunning v0.5.1 // indirect
 	github.com/GoogleCloudPlatform/cloudsql-proxy v0.0.0-20200501161113-5e9e23d7cb91 // indirect
 	github.com/bazelbuild/remote-apis v0.0.0-20230627201705-068363a3625e // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
@@ -85,7 +85,7 @@ require (
 	github.com/google/s2a-go v0.1.4 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.3 // indirect
-	github.com/googleapis/gax-go/v2 v2.10.0 // indirect
+	github.com/googleapis/gax-go/v2 v2.11.0 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-retryablehttp v0.6.6 // indirect
@@ -131,9 +131,9 @@ require (
 	golang.org/x/text v0.9.0 // indirect
 	golang.org/x/time v0.1.0 // indirect
 	golang.org/x/tools v0.9.3 // indirect
-	google.golang.org/api v0.125.0 // indirect
+	google.golang.org/api v0.126.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20230629202037-9506855d4529 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20230706204954-ccb25ca9f130 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	k8s.io/klog/v2 v2.90.1 // indirect
