@@ -566,13 +566,6 @@ def go_dependencies():
         version = "v5.6.0",
     )
     go_repository(
-        name = "com_github_evanw_esbuild",
-        build_file_proto_mode = "disable_global",
-        importpath = "github.com/evanw/esbuild",
-        sum = "h1:yoUC0+I4FzHMip2ZCNTsy+e2GdJf994/T0EzxaggqRg=",
-        version = "v0.18.13",
-    )
-    go_repository(
         name = "com_github_exponent_io_jsonpath",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/exponent-io/jsonpath",

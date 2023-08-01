@@ -13,7 +13,6 @@ require (
 	github.com/bmatcuk/doublestar/v4 v4.6.0
 	github.com/buildbarn/bb-remote-execution v0.0.0-20230713095744-d791ebca8448
 	github.com/emirpasic/gods v1.18.1
-	github.com/evanw/esbuild v0.18.13
 	github.com/fatih/color v1.15.0
 	github.com/go-test/deep v1.1.0
 	github.com/golang/mock v1.6.0
