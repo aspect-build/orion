@@ -9,8 +9,8 @@ go_library(
     importpath = "github.com/aspect-build/silo/cli/core/gazelle/js/typescript",
     visibility = ["//visibility:public"],
     deps = [
+        "//cli/core/gazelle/common/log",
         "@com_github_msolo_jsonr//:jsonr",
-        "@com_github_sirupsen_logrus//:logrus",
     ],
 )
 
