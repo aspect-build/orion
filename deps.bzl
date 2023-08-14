@@ -242,10 +242,8 @@ def go_dependencies():
         name = "com_github_bazel_contrib_rules_jvm",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bazel-contrib/rules_jvm",
-        patch_args = ["-p1"],  # keep
-        patches = ["//patches:com_github_bazel_contrib_rules_jvm-gazelle.patch"],  # keep
-        sum = "h1:vHMsra8BO4NjFZ91+EIVnpf2Yt86KXg7A26kEAWBfwU=",
-        version = "v0.15.0",
+        sum = "h1:oJxriPrBPGxugqkQiFceyzuBYgaFiUBTFM8xhrErPKs=",
+        version = "v0.17.1-0.20230814153054-0ce5d051291b",
     )
     go_repository(
         name = "com_github_bazelbuild_bazel_gazelle",
