@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
-	github.com/aspect-build/talkie v0.0.0-00010101000000-000000000000
+	github.com/aspect-build/talkie v0.0.0-20230811175044-f3f845f74d26
 	github.com/bazel-contrib/rules_jvm v0.17.1-0.20230814153054-0ce5d051291b
 	github.com/bazelbuild/bazel-gazelle v0.32.0
 	github.com/bazelbuild/bazelisk v1.17.0
@@ -149,8 +149,6 @@ require (
 	modernc.org/strutil v1.1.3 // indirect
 	modernc.org/token v1.1.0 // indirect
 )
-
-replace github.com/aspect-build/talkie => ./talkie
 
 replace github.com/buildbarn/bb-clientd/internal/mock => ./third_party/hack/github.com/buildbarn/bb-clientd/internal/mock
 

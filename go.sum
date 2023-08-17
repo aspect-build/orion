@@ -50,6 +50,8 @@ github.com/GoogleCloudPlatform/cloudsql-proxy v0.0.0-20200501161113-5e9e23d7cb91
 github.com/Masterminds/semver/v3 v3.2.1 h1:RN9w6+7QoMeJVGyfmbcgs28Br8cvmnucEXnY0rYXWg0=
 github.com/Masterminds/semver/v3 v3.2.1/go.mod h1:qvl/7zhW3nngYb5+80sSMF+FG2BjYrf8m9wsX0PNOMQ=
 github.com/antihax/optional v1.0.0/go.mod h1:uupD/76wgC+ih3iEmQUL+0Ugr19nfwCT1kdvxnR2qWY=
+github.com/aspect-build/talkie v0.0.0-20230811175044-f3f845f74d26 h1:CciYWXkJ70YWs/QOzMZxa/D1QfjL1L6KJ3/SpLUMihU=
+github.com/aspect-build/talkie v0.0.0-20230811175044-f3f845f74d26/go.mod h1:LmAYQ9mQATqePKfa5L+tvr1c+rNfduDGMxjR6OrUT10=
 github.com/bazel-contrib/rules_jvm v0.17.1-0.20230814153054-0ce5d051291b h1:oJxriPrBPGxugqkQiFceyzuBYgaFiUBTFM8xhrErPKs=
 github.com/bazel-contrib/rules_jvm v0.17.1-0.20230814153054-0ce5d051291b/go.mod h1:tZ4zJRqWBNjRdaU+eE9ppdRZBrjWAYfaRYoe3bBwsCc=
 github.com/bazelbuild/bazel-gazelle v0.32.0 h1:bYmCr7SL8LAAdmh5l4LeFLvpQmMitneKuKPrjmEVHZw=
