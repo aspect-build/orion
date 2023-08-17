@@ -85,6 +85,14 @@ def go_dependencies():
         version = "v0.0.0-20200428143746-21a406dcc535",
     )
     go_repository(
+        name = "com_github_aspect_build_talkie",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/aspect-build/talkie",
+        sum = "h1:CciYWXkJ70YWs/QOzMZxa/D1QfjL1L6KJ3/SpLUMihU=",
+        version = "v0.0.0-20230811175044-f3f845f74d26",
+    )
+
+    go_repository(
         name = "com_github_avast_retry_go_v4",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/avast/retry-go/v4",
