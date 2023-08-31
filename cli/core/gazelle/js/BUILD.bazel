@@ -27,6 +27,7 @@ go_library(
         "//cli/core/gazelle/js/node",
         "//cli/core/gazelle/js/parser/treesitter",
         "//cli/core/gazelle/js/pnpm",
+        "//cli/core/gazelle/js/proto",
         "//cli/core/gazelle/js/typescript",
         "@bazel_gazelle//config:go_default_library",
         "@bazel_gazelle//label:go_default_library",
@@ -51,7 +52,10 @@ go_test(
 # Internal only for tests
 gazelle_binary(
     name = "gazelle_js_binary",
-    languages = [":js"],
+    languages = [
+        "@bazel_gazelle//language/proto:go_default_library",
+        ":js",
+    ],
     visibility = ["//visibility:private"],
 )
 
