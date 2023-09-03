@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
+	github.com/alphadose/haxmap v1.3.0
 	github.com/aspect-build/talkie v0.0.0-20230811175044-f3f845f74d26
 	github.com/bazel-contrib/rules_jvm v0.17.1-0.20230814153054-0ce5d051291b
 	github.com/bazelbuild/bazel-gazelle v0.32.0
@@ -29,6 +30,7 @@ require (
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/rabbitmq/amqp091-go v1.8.1
+	github.com/rogpeppe/go-internal v1.9.0
 	github.com/rs/zerolog v1.29.1
 	github.com/sabhiram/go-gitignore v0.0.0-20210923224102-525f6e181f06
 	github.com/sirupsen/logrus v1.9.3
@@ -37,13 +39,14 @@ require (
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.16.0
+	github.com/tejzpr/ordered-concurrently/v3 v3.0.1
+	github.com/twmb/murmur3 v1.1.8
 	github.com/uptrace/bun v1.1.14
 	github.com/uptrace/bun/dialect/pgdialect v1.1.14
 	github.com/uptrace/bun/dialect/sqlitedialect v1.1.14
 	github.com/uptrace/bun/driver/pgdriver v1.1.14
 	github.com/uptrace/bun/driver/sqliteshim v1.1.14
 	golang.org/x/exp v0.0.0-20230713183714-613f0c0eb8a1
-	golang.org/x/mod v0.12.0
 	golang.org/x/sync v0.3.0
 	google.golang.org/genproto v0.0.0-20230711160842-782d3b101e98
 	google.golang.org/genproto/googleapis/api v0.0.0-20230711160842-782d3b101e98
@@ -53,7 +56,10 @@ require (
 	sigs.k8s.io/yaml v1.3.0
 )
 
-require github.com/buildbarn/bb-storage v0.0.0-20230629193729-d6a051ca744d // indirect
+require (
+	github.com/buildbarn/bb-storage v0.0.0-20230629193729-d6a051ca744d // indirect
+	golang.org/x/mod v0.12.0 // indirect
+)
 
 require (
 	cloud.google.com/go/compute v1.20.1 // indirect
