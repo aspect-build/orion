@@ -8,7 +8,7 @@ go_library(
     deps = [
         "//cli/core/gazelle/common/treesitter",
         "//cli/core/gazelle/js/parser",
-        "@com_github_sirupsen_logrus//:logrus",
+        "//cli/core/pkg/logger",
         "@com_github_smacker_go_tree_sitter//:go-tree-sitter",
         "@com_github_smacker_go_tree_sitter//typescript/tsx",
         "@com_github_smacker_go_tree_sitter//typescript/typescript",

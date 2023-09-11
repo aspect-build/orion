@@ -5,7 +5,7 @@ import (
 	"path"
 	"path/filepath"
 
-	. "github.com/aspect-build/silo/cli/core/gazelle/common/log"
+	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
 	"github.com/bazelbuild/bazel-gazelle/language"
 )
 
