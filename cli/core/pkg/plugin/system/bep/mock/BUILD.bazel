@@ -22,6 +22,7 @@ go_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//cli/core/pkg/plugin/system/bep",  # keep
+        "//cli/core/pkg/plugin/system/besproxy",  # keep
         "@com_github_golang_mock//gomock",  # keep
         "@org_golang_google_grpc//:grpc",  # keep
     ],

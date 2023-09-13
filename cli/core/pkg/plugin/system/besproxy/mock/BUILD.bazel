@@ -1,0 +1,30 @@
+load("@bazel_gomock//:gomock.bzl", "gomock")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+# gazelle:exclude mock_besproxy_test.go
+
+gomock(
+    name = "mock_besproxy_source",
+    out = "mock_besproxy_test.go",
+    interfaces = ["BESProxy"],
+    library = "//cli/core/pkg/plugin/system/besproxy",
+    package = "mock",
+    visibility = ["//visibility:private"],
+)
+
+go_library(
+    name = "mock",
+    srcs = [
+        "doc.go",
+        ":mock_besproxy_source",  # keep
+    ],
+    importpath = "github.com/aspect-build/silo/cli/core/pkg/plugin/system/besproxy/mock",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//cli/core/pkg/plugin/system/besproxy",  # keep
+        "@com_github_golang_mock//gomock",  # keep
+        "@go_googleapis//google/devtools/build/v1:build_go_proto",  # keep
+        "@org_golang_google_grpc//:grpc",  # keep
+        "@org_golang_google_protobuf//types/known/emptypb",  # keep
+    ],
+)
