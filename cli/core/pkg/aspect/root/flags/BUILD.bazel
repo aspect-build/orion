@@ -8,6 +8,7 @@ go_library(
         "interceptor.go",
         "multi_string.go",
         "noable_bool.go",
+        "utils.go",
     ],
     importpath = "github.com/aspect-build/silo/cli/core/pkg/aspect/root/flags",
     visibility = ["//visibility:public"],
