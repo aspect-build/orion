@@ -93,12 +93,12 @@ github.com/asaskevich/govalidator v0.0.0-20200428143746-21a406dcc535 h1:4daAzAu0
 github.com/asaskevich/govalidator v0.0.0-20200428143746-21a406dcc535/go.mod h1:oGkLhpf+kjZl6xBf758TQhh5XrAeiJv/7FRz/2spLIg=
 github.com/bazel-contrib/rules_jvm v0.17.1-0.20230814153054-0ce5d051291b h1:oJxriPrBPGxugqkQiFceyzuBYgaFiUBTFM8xhrErPKs=
 github.com/bazel-contrib/rules_jvm v0.17.1-0.20230814153054-0ce5d051291b/go.mod h1:tZ4zJRqWBNjRdaU+eE9ppdRZBrjWAYfaRYoe3bBwsCc=
-github.com/bazelbuild/bazel-gazelle v0.32.0 h1:bYmCr7SL8LAAdmh5l4LeFLvpQmMitneKuKPrjmEVHZw=
-github.com/bazelbuild/bazel-gazelle v0.32.0/go.mod h1:Ul0pqz50f5wxz0QNzsZ+mrEu4AVAVJZEB5xLnHgIG9c=
+github.com/bazelbuild/bazel-gazelle v0.33.0 h1:WnJGYk1bMIjw8FCYA/UxKBK/Y6hUnOItrtR+vjFIIKo=
+github.com/bazelbuild/bazel-gazelle v0.33.0/go.mod h1:6BWjSqjc2gr7YfzMRCbkHiJZy5YRxIKj7iLButu58Jk=
 github.com/bazelbuild/bazelisk v1.17.0 h1:TDt+a1PYrnBF9on3WRJUisXXFhCMrhcNo8OebyS5Q34=
 github.com/bazelbuild/bazelisk v1.17.0/go.mod h1:nWNmVF7yKsUt3EWCBCrqUeMNQpbB+DAphHIeckV1ov4=
-github.com/bazelbuild/buildtools v0.0.0-20230510134650-37bd1811516d h1:Fl1FfItZp34QIQmmDTbZXHB5XA6JfbNNfH7tRRGWvQo=
-github.com/bazelbuild/buildtools v0.0.0-20230510134650-37bd1811516d/go.mod h1:689QdV3hBP7Vo9dJMmzhoYIyo/9iMhEmHkJcnaPRCbo=
+github.com/bazelbuild/buildtools v0.0.0-20230831140646-386244e73fc4 h1:6Z/4LXt5mdhuFAx4QhwM0D5pTs1ljYGmhgF3O9OCMF0=
+github.com/bazelbuild/buildtools v0.0.0-20230831140646-386244e73fc4/go.mod h1:689QdV3hBP7Vo9dJMmzhoYIyo/9iMhEmHkJcnaPRCbo=
 github.com/bazelbuild/remote-apis v0.0.0-20230627201705-068363a3625e h1:9y3QOU3OkdPxvV1q1bPDg5F+R8bwcRboyJlAD0x76vw=
 github.com/bazelbuild/remote-apis v0.0.0-20230627201705-068363a3625e/go.mod h1:ry8Y6CkQqCVcYsjPOlLXDX2iRVjOnjogdNwhvHmRcz8=
 github.com/bazelbuild/rules_go v0.41.0 h1:JzlRxsFNhlX+g4drDRPhIaU5H5LnI978wdMJ0vK4I+k=
@@ -1001,8 +1001,8 @@ golang.org/x/sys v0.0.0-20221013171732-95e765b1cc43/go.mod h1:oPkhp1MJrh7nUepCBc
 golang.org/x/sys v0.2.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.4.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.6.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
-golang.org/x/sys v0.10.0 h1:SqMFp9UcQJZa+pmYuAKjd9xq1f0j5rLcDIk0mj4qAsA=
-golang.org/x/sys v0.10.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+golang.org/x/sys v0.12.0 h1:CM0HF96J0hcLAwsHPJZjfdNzs0gftsLfgKt57wWHJ0o=
+golang.org/x/sys v0.12.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1/go.mod h1:bj7SfCRtBDWHUb9snDiAeCFNEtKQo2Wmx5Cou7ajbmo=
 golang.org/x/term v0.0.0-20210927222741-03fcf44c2211/go.mod h1:jbD1KX2456YbFQfuXm/mYQcufACuNUgVhRMnK/tPxf8=
 golang.org/x/term v0.2.0/go.mod h1:TVmDHMZPmdnySmBfhjOoOdhjzdE1h4u1VwSiw2l1Nuc=

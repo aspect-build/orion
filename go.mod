@@ -6,9 +6,9 @@ require (
 	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/alphadose/haxmap v1.3.0
 	github.com/bazel-contrib/rules_jvm v0.17.1-0.20230814153054-0ce5d051291b
-	github.com/bazelbuild/bazel-gazelle v0.32.0
+	github.com/bazelbuild/bazel-gazelle v0.33.0
 	github.com/bazelbuild/bazelisk v1.17.0
-	github.com/bazelbuild/buildtools v0.0.0-20230510134650-37bd1811516d
+	github.com/bazelbuild/buildtools v0.0.0-20230831140646-386244e73fc4
 	github.com/bazelbuild/rules_go v0.41.0
 	github.com/bmatcuk/doublestar/v4 v4.6.0
 	github.com/buildbarn/bb-remote-execution v0.0.0-20230713095744-d791ebca8448
@@ -209,7 +209,7 @@ require (
 	golang.org/x/mod v0.12.0 // indirect
 	golang.org/x/net v0.10.0 // indirect
 	golang.org/x/oauth2 v0.8.0 // indirect
-	golang.org/x/sys v0.10.0 // indirect
+	golang.org/x/sys v0.12.0 // indirect
 	golang.org/x/text v0.11.0 // indirect
 	golang.org/x/time v0.1.0 // indirect
 	golang.org/x/tools v0.9.3 // indirect
