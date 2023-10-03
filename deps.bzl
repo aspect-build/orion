@@ -299,9 +299,9 @@ def go_dependencies():
         name = "com_github_bazelbuild_bazel_gazelle",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bazelbuild/bazel-gazelle",
-        sum = "h1:bYmCr7SL8LAAdmh5l4LeFLvpQmMitneKuKPrjmEVHZw=",
+        sum = "h1:WnJGYk1bMIjw8FCYA/UxKBK/Y6hUnOItrtR+vjFIIKo=",
         # Ensure this version always matches the version of @bazel_gazelle set in fetch.bzl.
-        version = "v0.32.0",
+        version = "v0.33.0",
     )
     go_repository(
         name = "com_github_bazelbuild_bazelisk",
@@ -317,8 +317,8 @@ def go_dependencies():
         name = "com_github_bazelbuild_buildtools",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bazelbuild/buildtools",
-        sum = "h1:Fl1FfItZp34QIQmmDTbZXHB5XA6JfbNNfH7tRRGWvQo=",
-        version = "v0.0.0-20230510134650-37bd1811516d",
+        sum = "h1:6Z/4LXt5mdhuFAx4QhwM0D5pTs1ljYGmhgF3O9OCMF0=",
+        version = "v0.0.0-20230831140646-386244e73fc4",
     )
     go_repository(
         name = "com_github_bazelbuild_remote_apis",
@@ -4326,8 +4326,8 @@ def go_dependencies():
         name = "org_golang_x_sys",
         build_file_proto_mode = "disable_global",
         importpath = "golang.org/x/sys",
-        sum = "h1:SqMFp9UcQJZa+pmYuAKjd9xq1f0j5rLcDIk0mj4qAsA=",
-        version = "v0.10.0",
+        sum = "h1:CM0HF96J0hcLAwsHPJZjfdNzs0gftsLfgKt57wWHJ0o=",
+        version = "v0.12.0",
     )
     go_repository(
         name = "org_golang_x_term",
@@ -4357,6 +4357,14 @@ def go_dependencies():
         sum = "h1:Gn1I8+64MsuTb/HpH+LmQtNas23LhUVr3rYZ0eKuaMM=",
         version = "v0.9.3",
     )
+    go_repository(
+        name = "org_golang_x_tools_go_vcs",
+        build_file_proto_mode = "disable_global",
+        importpath = "golang.org/x/tools/go/vcs",
+        sum = "h1:cOIJqWBl99H1dH5LWizPa+0ImeeJq3t3cJjaeOWUAL4=",
+        version = "v0.1.0-deprecated",
+    )
+
     go_repository(
         name = "org_golang_x_xerrors",
         build_file_proto_mode = "disable_global",
