@@ -2260,8 +2260,8 @@ def go_dependencies():
         name = "com_github_msolo_jsonr",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/msolo/jsonr",
-        sum = "h1:0Sp4veJAXi8l4LqzEzEZRovLnEHKuo6L0pYa6b23BJ8=",
-        version = "v0.0.0-20230325054138-b14a608f43e2",
+        sum = "h1:A8w3/wSixa6RqN8bLYQ9mayk+d8xxq6jQCmlKs/jCRo=",
+        version = "v0.0.0-20231023064044-62fbfc3a0313",
     )
     go_repository(
         name = "com_github_munnerz_goautoneg",

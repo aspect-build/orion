@@ -583,8 +583,8 @@ github.com/monochromegane/go-gitignore v0.0.0-20200626010858-205db1a8cc00 h1:n6/
 github.com/monochromegane/go-gitignore v0.0.0-20200626010858-205db1a8cc00/go.mod h1:Pm3mSP3c5uWn86xMLZ5Sa7JB9GsEZySvHYXCTK4E9q4=
 github.com/morikuni/aec v1.0.0 h1:nP9CBfwrvYnBRgY6qfDQkygYDmYwOilePFkwzv4dU8A=
 github.com/morikuni/aec v1.0.0/go.mod h1:BbKIizmSmc5MMPqRYbxO4ZU0S0+P200+tUnFx7PXmsc=
-github.com/msolo/jsonr v0.0.0-20230325054138-b14a608f43e2 h1:0Sp4veJAXi8l4LqzEzEZRovLnEHKuo6L0pYa6b23BJ8=
-github.com/msolo/jsonr v0.0.0-20230325054138-b14a608f43e2/go.mod h1:6qRblG2m4u2fk3x59GT4awRlwvZbnZ3P1RmFZrDjVwk=
+github.com/msolo/jsonr v0.0.0-20231023064044-62fbfc3a0313 h1:A8w3/wSixa6RqN8bLYQ9mayk+d8xxq6jQCmlKs/jCRo=
+github.com/msolo/jsonr v0.0.0-20231023064044-62fbfc3a0313/go.mod h1:6qRblG2m4u2fk3x59GT4awRlwvZbnZ3P1RmFZrDjVwk=
 github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 h1:C3w9PqII01/Oq1c1nUAm88MOHcQC9l5mIlSMApZMrHA=
 github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822/go.mod h1:+n7T8mK8HuQTcFwEeznm/DIxMOiR9yIdICNftLE1DvQ=
 github.com/mwitkow/go-conntrack v0.0.0-20161129095857-cc309e4a2223/go.mod h1:qRWi+5nqEBWmkhHvq77mSJWrCKwh8bxhgT7d/eI7P4U=
