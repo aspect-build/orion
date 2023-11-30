@@ -12,6 +12,7 @@ require (
 	github.com/bazelbuild/rules_go v0.42.0
 	github.com/bmatcuk/doublestar/v4 v4.6.1
 	github.com/buildbarn/bb-remote-execution v0.0.0-20230713095744-d791ebca8448
+	github.com/buildkite/terminal v3.2.0+incompatible
 	github.com/emirpasic/gods v1.18.1
 	github.com/fatih/color v1.16.0
 	github.com/go-test/deep v1.1.0
@@ -39,7 +40,7 @@ require (
 	github.com/twmb/murmur3 v1.1.8
 	golang.org/x/exp v0.0.0-20230713183714-613f0c0eb8a1
 	golang.org/x/sync v0.4.0
-	google.golang.org/genproto v0.0.0-20231106174013-bbf56f31fb17
+	google.golang.org/genproto v0.0.0-20231120223509-83a465c0220f
 	google.golang.org/grpc v1.59.0
 	google.golang.org/protobuf v1.31.0
 	gopkg.in/yaml.v3 v3.0.1
@@ -123,7 +124,7 @@ require (
 	go.opentelemetry.io/otel/metric v1.16.0 // indirect
 	go.opentelemetry.io/otel/trace v1.16.0 // indirect
 	go.starlark.net v0.0.0-20210223155950-e043a3d3c984 // indirect
-	golang.org/x/term v0.14.0 // indirect
+	golang.org/x/term v0.15.0 // indirect
 	golang.org/x/tools/go/vcs v0.1.0-deprecated // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	k8s.io/api v0.27.3 // indirect
@@ -206,17 +207,17 @@ require (
 	github.com/subosito/gotenv v1.4.2 // indirect
 	github.com/xanzy/go-gitlab v0.36.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	golang.org/x/crypto v0.15.0 // indirect
+	golang.org/x/crypto v0.16.0 // indirect
 	golang.org/x/mod v0.13.0 // indirect
-	golang.org/x/net v0.18.0 // indirect
+	golang.org/x/net v0.19.0 // indirect
 	golang.org/x/oauth2 v0.13.0 // indirect
-	golang.org/x/sys v0.14.0 // indirect
+	golang.org/x/sys v0.15.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/time v0.1.0 // indirect
 	google.golang.org/api v0.149.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20231030173426-d783a09b4405 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20231120223509-83a465c0220f // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20231106174013-bbf56f31fb17 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20231127180814-3a041ad873d4 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	k8s.io/klog/v2 v2.100.1 // indirect
