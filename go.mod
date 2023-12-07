@@ -48,6 +48,8 @@ require (
 	sigs.k8s.io/yaml v1.4.0
 )
 
+replace github.com/smacker/go-tree-sitter v0.0.0-20230501083651-a7d92773b3aa => github.com/aspect-forks/go-tree-sitter v0.0.0-20230720070738-0d0a9f78d8f8
+
 require (
 	github.com/AdaLogics/go-fuzz-headers v0.0.0-20230106234847-43070de90fa1 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20210617225240-d185dfc1b5a1 // indirect
