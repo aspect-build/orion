@@ -8,6 +8,7 @@ import (
 	"time"
 
 	common "github.com/aspect-build/silo/cli/core/gazelle/common"
+	starlark "github.com/aspect-build/silo/cli/core/gazelle/common/starlark"
 	node "github.com/aspect-build/silo/cli/core/gazelle/js/node"
 	proto "github.com/aspect-build/silo/cli/core/gazelle/js/proto"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
@@ -58,13 +59,17 @@ func (ts *Resolver) Imports(c *config.Config, r *rule.Rule, f *rule.File) []reso
 	case TsConfigKind:
 		return ts.tsconfigImports(r, f)
 	default:
-		return ts.sourceFileImports(r, f)
+		return ts.sourceFileImports(c, r, f)
 	}
 }
 
 // TypeScript-importable ImportSpecs from a set of source files.
-func (ts *Resolver) sourceFileImports(r *rule.Rule, f *rule.File) []resolve.ImportSpec {
-	srcs := r.AttrStrings("srcs")
+func (ts *Resolver) sourceFileImports(c *config.Config, r *rule.Rule, f *rule.File) []resolve.ImportSpec {
+	srcs, err := starlark.ExpandSrcs(c.RepoRoot, f.Pkg, r.Attr("srcs"))
+	if err != nil {
+		BazelLog.Warnf("Failed to expand srcs of %s:%s - %v", f.Pkg, r.Name(), err)
+		return []resolve.ImportSpec{}
+	}
 
 	provides := make([]resolve.ImportSpec, 0, len(srcs)+1)
 

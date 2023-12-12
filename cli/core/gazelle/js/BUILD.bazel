@@ -23,6 +23,7 @@ go_library(
     deps = [
         "//cli/core/gazelle/common",
         "//cli/core/gazelle/common/git",
+        "//cli/core/gazelle/common/starlark",
         "//cli/core/gazelle/js/node",
         "//cli/core/gazelle/js/parser",
         "//cli/core/gazelle/js/parser/treesitter",

@@ -2831,6 +2831,13 @@ def go_dependencies():
         version = "v0.0.3-0.20170626215501-b2862e3d0a77",
     )
     go_repository(
+        name = "com_github_yargevad_filepathx",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/yargevad/filepathx",
+        sum = "h1:SYcT+N3tYGi+NvazubCNlvgIPbzAk7i7y2dwg3I5FYc=",
+        version = "v1.0.0",
+    )
+    go_repository(
         name = "com_github_yuin_goldmark",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/yuin/goldmark",
@@ -4115,8 +4122,8 @@ def go_dependencies():
         name = "net_starlark_go",
         build_file_proto_mode = "disable_global",
         importpath = "go.starlark.net",
-        sum = "h1:xwwDQW5We85NaTk2APgoN9202w/l0DVGp+GZMfsrh7s=",
-        version = "v0.0.0-20210223155950-e043a3d3c984",
+        sum = "h1:bxH+EXOo87zEOwKDdZ8Tevgi6irRbqheRm/fr293c58=",
+        version = "v0.0.0-20211203141949-70c0e40ae128",
     )
     go_repository(
         name = "org_bazil_fuse",
