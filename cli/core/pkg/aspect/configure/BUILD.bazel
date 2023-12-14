@@ -18,6 +18,7 @@ go_library(
         "//cli/core/gazelle/kotlin",
         "//cli/core/pkg/aspect/configure/internal/module",
         "//cli/core/pkg/aspect/configure/internal/wspace",
+        "//cli/core/pkg/aspecterrors",
         "//cli/core/pkg/ioutils",
         "@bazel_gazelle//config:go_default_library",
         "@bazel_gazelle//flag:go_default_library",
