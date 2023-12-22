@@ -21,7 +21,6 @@ import (
 	"fmt"
 
 	"github.com/aspect-build/silo/cli/core/buildinfo"
-	"github.com/aspect-build/silo/cli/core/pkg/aspecterrors"
 	"github.com/aspect-build/silo/cli/core/pkg/bazel"
 	"github.com/aspect-build/silo/cli/core/pkg/ioutils"
 	"github.com/spf13/cobra"
@@ -60,13 +59,5 @@ func (runner *Version) Run(ctx context.Context, cmd *cobra.Command, args []strin
 
 	bazelCmd := []string{"version"}
 	bazelCmd = append(bazelCmd, args...)
-	if exitCode, err := runner.bzl.RunCommand(runner.Streams, nil, bazelCmd...); exitCode != 0 {
-		err = &aspecterrors.ExitError{
-			Err:      err,
-			ExitCode: exitCode,
-		}
-		return err
-	}
-
-	return nil
+	return runner.bzl.RunCommand(runner.Streams, nil, bazelCmd...)
 }

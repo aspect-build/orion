@@ -19,7 +19,6 @@ package fetch
 import (
 	"context"
 
-	"github.com/aspect-build/silo/cli/core/pkg/aspecterrors"
 	"github.com/aspect-build/silo/cli/core/pkg/bazel"
 	"github.com/aspect-build/silo/cli/core/pkg/ioutils"
 	"github.com/spf13/cobra"
@@ -40,14 +39,5 @@ func New(streams ioutils.Streams, bzl bazel.Bazel) *Fetch {
 func (runner *Fetch) Run(ctx context.Context, _ *cobra.Command, args []string) error {
 	bazelCmd := []string{"fetch"}
 	bazelCmd = append(bazelCmd, args...)
-
-	if exitCode, err := runner.bzl.RunCommand(runner.Streams, nil, bazelCmd...); exitCode != 0 {
-		err = &aspecterrors.ExitError{
-			Err:      err,
-			ExitCode: exitCode,
-		}
-		return err
-	}
-
-	return nil
+	return runner.bzl.RunCommand(runner.Streams, nil, bazelCmd...)
 }

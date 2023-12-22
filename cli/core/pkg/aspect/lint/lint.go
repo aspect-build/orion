@@ -24,7 +24,6 @@ import (
 
 	"github.com/aspect-build/silo/cli/core/bazel/buildeventstream"
 	"github.com/aspect-build/silo/cli/core/pkg/aspect/root/flags"
-	"github.com/aspect-build/silo/cli/core/pkg/aspecterrors"
 	"github.com/aspect-build/silo/cli/core/pkg/bazel"
 	"github.com/aspect-build/silo/cli/core/pkg/ioutils"
 	"github.com/aspect-build/silo/cli/core/pkg/plugin/system/bep"
@@ -84,26 +83,20 @@ lint:
 		bazelCmd = flags.AddFlagToCommand(bazelCmd, besBackendFlag)
 	}
 
-	exitCode, bazelErr := runner.bzl.RunCommand(runner.Streams, nil, bazelCmd...)
+	err := runner.bzl.RunCommand(runner.Streams, nil, bazelCmd...)
 
-	// Process the subscribers errors before the Bazel one.
+	// Check for subscriber errors
 	subscriberErrors := bep.BESErrors(ctx)
 	if len(subscriberErrors) > 0 {
 		for _, err := range subscriberErrors {
 			fmt.Fprintf(runner.Streams.Stderr, "Error: failed to run lint command: %v\n", err)
 		}
-		exitCode = 1
-	}
-
-	if exitCode != 0 {
-		err := &aspecterrors.ExitError{ExitCode: exitCode}
-		if bazelErr != nil {
-			err.Err = bazelErr
+		if err == nil {
+			err = fmt.Errorf("%v BES subscriber error(s)", len(subscriberErrors))
 		}
-		return err
 	}
 
-	return nil
+	return err
 }
 
 func (runner *Linter) BEPEventCallback(event *buildeventstream.BuildEvent) error {

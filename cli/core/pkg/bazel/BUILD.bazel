@@ -15,6 +15,7 @@ go_library(
         "//cli/core/buildinfo",
         "//cli/core/pkg/aspect/root/config",
         "//cli/core/pkg/aspect/root/flags",
+        "//cli/core/pkg/aspecterrors",
         "//cli/core/pkg/bazel/workspace",
         "//cli/core/pkg/ioutils",
         "@com_github_bazelbuild_bazelisk//core",

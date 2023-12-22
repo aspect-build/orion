@@ -22,8 +22,6 @@ import (
 	"github.com/aspect-build/silo/cli/core/pkg/bazel"
 	"github.com/aspect-build/silo/cli/core/pkg/ioutils"
 	"github.com/spf13/cobra"
-
-	"github.com/aspect-build/silo/cli/core/pkg/aspecterrors"
 )
 
 type Info struct {
@@ -41,14 +39,5 @@ func New(streams ioutils.Streams, bzl bazel.Bazel) *Info {
 func (runner *Info) Run(ctx context.Context, _ *cobra.Command, args []string) error {
 	bazelCmd := []string{"info"}
 	bazelCmd = append(bazelCmd, args...)
-
-	if exitCode, err := runner.bzl.RunCommand(runner.Streams, nil, bazelCmd...); exitCode != 0 {
-		err = &aspecterrors.ExitError{
-			Err:      err,
-			ExitCode: exitCode,
-		}
-		return err
-	}
-
-	return nil
+	return runner.bzl.RunCommand(runner.Streams, nil, bazelCmd...)
 }

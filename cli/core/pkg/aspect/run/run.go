@@ -21,7 +21,6 @@ import (
 	"fmt"
 
 	"github.com/aspect-build/silo/cli/core/pkg/aspect/root/flags"
-	"github.com/aspect-build/silo/cli/core/pkg/aspecterrors"
 	"github.com/aspect-build/silo/cli/core/pkg/bazel"
 	"github.com/aspect-build/silo/cli/core/pkg/ioutils"
 	"github.com/aspect-build/silo/cli/core/pkg/plugin/system/bep"
@@ -63,24 +62,18 @@ func (runner *Run) Run(ctx context.Context, _ *cobra.Command, args []string) (ex
 		bazelCmd = flags.AddFlagToCommand(bazelCmd, besBackendFlag)
 	}
 
-	exitCode, bazelErr := runner.bzl.RunCommand(runner.Streams, nil, bazelCmd...)
+	err := runner.bzl.RunCommand(runner.Streams, nil, bazelCmd...)
 
-	// Process the subscribers errors before the Bazel one.
+	// Check for subscriber errors
 	subscriberErrors := bep.BESErrors(ctx)
 	if len(subscriberErrors) > 0 {
 		for _, err := range subscriberErrors {
 			fmt.Fprintf(runner.Streams.Stderr, "Error: failed to run 'aspect run' command: %v\n", err)
 		}
-		exitCode = 1
-	}
-
-	if exitCode != 0 {
-		err := &aspecterrors.ExitError{ExitCode: exitCode}
-		if bazelErr != nil {
-			err.Err = bazelErr
+		if err == nil {
+			err = fmt.Errorf("%v BES subscriber error(s)", len(subscriberErrors))
 		}
-		return err
 	}
 
-	return nil
+	return err
 }
