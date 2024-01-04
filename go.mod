@@ -10,6 +10,7 @@ require (
 	github.com/bazelbuild/bazelisk v1.17.0
 	github.com/bazelbuild/buildtools v0.0.0-20231017121127-23aa65d4e117
 	github.com/bazelbuild/rules_go v0.42.0
+	github.com/bluekeyes/go-gitdiff v0.7.1
 	github.com/bmatcuk/doublestar/v4 v4.6.1
 	github.com/buildbarn/bb-remote-execution v0.0.0-20230713095744-d791ebca8448
 	github.com/buildkite/terminal v3.2.0+incompatible
