@@ -377,6 +377,13 @@ def go_dependencies():
         version = "v4.0.0",
     )
     go_repository(
+        name = "com_github_bluekeyes_go_gitdiff",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/bluekeyes/go-gitdiff",
+        sum = "h1:graP4ElLRshr8ecu0UtqfNTCHrtSyZd3DABQm/DWesQ=",
+        version = "v0.7.1",
+    )
+    go_repository(
         name = "com_github_bmatcuk_doublestar_v4",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bmatcuk/doublestar/v4",
