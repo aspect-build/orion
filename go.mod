@@ -5,11 +5,11 @@ go 1.20
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/alphadose/haxmap v1.3.0
-	github.com/bazel-contrib/rules_jvm v0.17.1-0.20230814153054-0ce5d051291b
-	github.com/bazelbuild/bazel-gazelle v0.34.0
+	github.com/bazel-contrib/rules_jvm v0.21.0
+	github.com/bazelbuild/bazel-gazelle v0.35.0
 	github.com/bazelbuild/bazelisk v1.17.0
-	github.com/bazelbuild/buildtools v0.0.0-20231017121127-23aa65d4e117
-	github.com/bazelbuild/rules_go v0.42.0
+	github.com/bazelbuild/buildtools v0.0.0-20231115204819-d4c9dccdfbb1
+	github.com/bazelbuild/rules_go v0.44.0
 	github.com/bluekeyes/go-gitdiff v0.7.1
 	github.com/bmatcuk/doublestar/v4 v4.6.1
 	github.com/buildbarn/bb-remote-execution v0.0.0-20230713095744-d791ebca8448
@@ -17,7 +17,7 @@ require (
 	github.com/emirpasic/gods v1.18.1
 	github.com/fatih/color v1.16.0
 	github.com/go-test/deep v1.1.0
-	github.com/golang/mock v1.6.0
+	github.com/golang/mock v1.7.0-rc.1
 	github.com/golang/protobuf v1.5.3
 	github.com/google/triage-party v1.4.0
 	github.com/hashicorp/go-hclog v1.5.0
@@ -33,19 +33,19 @@ require (
 	github.com/rs/zerolog v1.29.1
 	github.com/sabhiram/go-gitignore v0.0.0-20210923224102-525f6e181f06
 	github.com/slack-go/slack v0.12.2
-	github.com/smacker/go-tree-sitter v0.0.0-20230501083651-a7d92773b3aa
+	github.com/smacker/go-tree-sitter v0.0.0-20231219031718-233c2f923ac7
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.16.0
 	github.com/tejzpr/ordered-concurrently/v3 v3.0.1
 	github.com/twmb/murmur3 v1.1.8
 	github.com/yargevad/filepathx v1.0.0
-	go.starlark.net v0.0.0-20211203141949-70c0e40ae128
-	golang.org/x/exp v0.0.0-20230713183714-613f0c0eb8a1
-	golang.org/x/sync v0.4.0
-	google.golang.org/genproto v0.0.0-20231120223509-83a465c0220f
-	google.golang.org/grpc v1.59.0
-	google.golang.org/protobuf v1.31.0
+	go.starlark.net v0.0.0-20231121155337-90ade8b19d09
+	golang.org/x/exp v0.0.0-20240112132812-db7319d0e0e3
+	golang.org/x/sync v0.6.0
+	google.golang.org/genproto v0.0.0-20240116215550-a9fa1716bcac
+	google.golang.org/grpc v1.60.1
+	google.golang.org/protobuf v1.32.0
 	gopkg.in/yaml.v3 v3.0.1
 	helm.sh/helm/v3 v3.12.3
 	sigs.k8s.io/yaml v1.4.0
@@ -216,16 +216,16 @@ require (
 	github.com/xanzy/go-gitlab v0.36.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	golang.org/x/crypto v0.17.0 // indirect
-	golang.org/x/mod v0.13.0 // indirect
+	golang.org/x/mod v0.14.0 // indirect
 	golang.org/x/net v0.19.0 // indirect
 	golang.org/x/oauth2 v0.13.0 // indirect
 	golang.org/x/sys v0.15.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/time v0.1.0 // indirect
 	google.golang.org/api v0.149.0 // indirect
-	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20231106174013-bbf56f31fb17 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20231127180814-3a041ad873d4 // indirect
+	google.golang.org/appengine v1.6.8 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20240102182953-50ed04b92917 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240102182953-50ed04b92917 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	k8s.io/klog/v2 v2.100.1 // indirect
