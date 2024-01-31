@@ -26,6 +26,7 @@ require (
 	github.com/manifoldco/promptui v0.9.0
 	github.com/mattn/go-isatty v0.0.20
 	github.com/mitchellh/go-homedir v1.1.0
+	github.com/mitchellh/go-wordwrap v1.0.1
 	github.com/msolo/jsonr v0.0.0-20231023064044-62fbfc3a0313
 	github.com/onsi/gomega v1.27.8
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
@@ -109,7 +110,6 @@ require (
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-runewidth v0.0.9 // indirect
 	github.com/mitchellh/copystructure v1.2.0 // indirect
-	github.com/mitchellh/go-wordwrap v1.0.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
 	github.com/moby/locker v1.0.1 // indirect
 	github.com/moby/spdystream v0.2.0 // indirect
