@@ -2238,8 +2238,8 @@ def go_dependencies():
         name = "com_github_mitchellh_go_wordwrap",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/mitchellh/go-wordwrap",
-        sum = "h1:6GlHJ/LTGMrIJbwgdqdl2eEH8o+Exx/0m8ir9Gns0u4=",
-        version = "v1.0.0",
+        sum = "h1:TLuKupo69TCn6TQSyGxwI1EblZZEsQ0vMlAFQflz0v0=",
+        version = "v1.0.1",
     )
     go_repository(
         name = "com_github_mitchellh_gox",
