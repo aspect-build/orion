@@ -23,6 +23,7 @@ import (
 	"os"
 	"strings"
 
+	bzl "github.com/aspect-build/silo/cli/core/gazelle/bzl" 
 	js "github.com/aspect-build/silo/cli/core/gazelle/js"
 	kotlin "github.com/aspect-build/silo/cli/core/gazelle/kotlin"
 	"github.com/aspect-build/silo/cli/core/pkg/aspecterrors"
@@ -79,6 +80,12 @@ func (runner *Configure) Run(_ context.Context, cmd *cobra.Command, args []strin
 	if viper.GetBool("configure.languages.kotlin") {
 		languages = append(languages, kotlin.NewLanguage())
 		languageKeys = append(languageKeys, "kotlin")
+	}
+
+	viper.SetDefault("configure.languages.bzl", false)
+	if viper.GetBool("configure.languages.bzl") {
+		languages = append(languages, bzl.NewLanguage())
+		languageKeys = append(languageKeys, "bzl")
 	}
 
 	if len(languageKeys) == 0 {
