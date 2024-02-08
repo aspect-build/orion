@@ -8,7 +8,7 @@ load("@aspect_bazel_lib//lib:directory_path.bzl", "make_directory_path")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 
 # buildifier: disable=function-docstring-args
-def write_go_generated_source_files(name, target, output_files):
+def write_go_generated_source_files(name, src, output_files, **kwargs):
     """Wrapper around write_source_files that extracts from the "go_generated_srcs" output group.
 
     See here where the output_group gets populated:
@@ -19,7 +19,7 @@ def write_go_generated_source_files(name, target, output_files):
 
     native.filegroup(
         name = files_target,
-        srcs = [target],
+        srcs = [src],
         output_group = "go_generated_srcs",
     )
 
@@ -35,4 +35,5 @@ def write_go_generated_source_files(name, target, output_files):
             output_file: make_directory_path("_{}_dirpath".format(output_file), dir_target, output_file)
             for output_file in output_files
         },
+        **kwargs
     )
