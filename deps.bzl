@@ -73,8 +73,8 @@ def go_dependencies():
         name = "com_github_alphadose_haxmap",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/alphadose/haxmap",
-        sum = "h1:C/2LboOnPCZP27GmmSXOcwx360st0P8N0fTJ3voefKc=",
-        version = "v1.3.0",
+        sum = "h1:KmZh75duO1tC8pt3LmUwoTYiZ9sh4K52FX8p7/yrlqU=",
+        version = "v1.3.1",
     )
     go_repository(
         name = "com_github_antihax_optional",
@@ -150,8 +150,8 @@ def go_dependencies():
         name = "com_github_bazel_contrib_rules_jvm",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bazel-contrib/rules_jvm",
-        sum = "h1:CWwMI1iJu/db1Jpczn6VMcnhVvHsF+kLgKtYGzc/+8U=",
-        version = "v0.21.0",
+        sum = "h1:L680/OahFk82wyoUKCifxV1br6FHmgyDZ+2+hvvOQ6Y=",
+        version = "v0.24.0",
     )
     go_repository(
         name = "com_github_bazelbuild_bazel_gazelle",
@@ -182,8 +182,8 @@ def go_dependencies():
         name = "com_github_bazelbuild_rules_go",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bazelbuild/rules_go",
-        sum = "h1:uJStI9o5obVWSwquy9WxKNWfZxf2sKA2rpEsX6x5RVM=",
-        version = "v0.44.0",
+        sum = "h1:kuiC/mK1SKoZ0lyX5gD9uVBGFWOoXT3I4W/ose6Jouo=",
+        version = "v0.45.1",
     )
     go_repository(
         name = "com_github_beorn7_perks",
@@ -1346,8 +1346,8 @@ def go_dependencies():
         name = "com_github_hashicorp_go_hclog",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/hashicorp/go-hclog",
-        sum = "h1:bI2ocEMgcVlz55Oj1xZNBsVi900c7II+fWDyV9o+13c=",
-        version = "v1.5.0",
+        sum = "h1:NOtoftovWkDheyUM/8JW3QMiXyxJK3uHRK7wV04nD2I=",
+        version = "v1.6.2",
     )
     go_repository(
         name = "com_github_hashicorp_go_immutable_radix",
@@ -2179,15 +2179,15 @@ def go_dependencies():
         name = "com_github_onsi_ginkgo_v2",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/onsi/ginkgo/v2",
-        sum = "h1:WgqUCUt/lT6yXoQ8Wef0fsNn5cAuMK7+KT9UFRz2tcU=",
-        version = "v2.11.0",
+        sum = "h1:79HwNRBAZHOEwrczrgSOPy+eFTTlIGELKy5as+ClttY=",
+        version = "v2.15.0",
     )
     go_repository(
         name = "com_github_onsi_gomega",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/onsi/gomega",
-        sum = "h1:gegWiwZjBsf2DgiSbf5hpokZ98JVDMcWkUiigk6/KXc=",
-        version = "v1.27.8",
+        sum = "h1:KYppCUK+bUgAZwHOu7EXVBKyQA6ILvOESHkn/tgoqvo=",
+        version = "v1.31.1",
     )
     go_repository(
         name = "com_github_open_policy_agent_opa",
@@ -2396,15 +2396,15 @@ def go_dependencies():
         name = "com_github_rs_xid",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/rs/xid",
-        sum = "h1:qd7wPTDkN6KQx2VmMBLrpHkiyQwgFXRnkOLacUiaSNY=",
-        version = "v1.4.0",
+        sum = "h1:mKX4bl4iPYJtEIxp6CYiUuLQ/8DYMoz0PUdtGgMFRVc=",
+        version = "v1.5.0",
     )
     go_repository(
         name = "com_github_rs_zerolog",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/rs/zerolog",
-        sum = "h1:cO+d60CHkknCbvzEWxP0S9K6KqyTjrCNUy1LdQLCGPc=",
-        version = "v1.29.1",
+        sum = "h1:keLypqrlIjaFsbmJOBdB/qvyF8KEtCWHwobLp5l/mQ0=",
+        version = "v1.32.0",
     )
     go_repository(
         name = "com_github_rubenv_sql_migrate",
@@ -2494,8 +2494,8 @@ def go_dependencies():
         name = "com_github_smacker_go_tree_sitter",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/smacker/go-tree-sitter",
-        sum = "h1:PeBjmUlvTGvg6SyM4u7pyk8YCmdbgdFcGrwf7dRBV80=",
-        version = "v0.0.0-20231219031718-233c2f923ac7",
+        sum = "h1:R/llJPJbmFU6IZrGratTux9Qmqu/GWvDZtF2xFKsHT8=",
+        version = "v0.0.0-20240208112414-ad6369327388",
     )
     go_repository(
         name = "com_github_smartystreets_assertions",
@@ -4034,8 +4034,8 @@ def go_dependencies():
         name = "net_starlark_go",
         build_file_proto_mode = "disable_global",
         importpath = "go.starlark.net",
-        sum = "h1:hzy3LFnSN8kuQK8h9tHl4ndF6UruMj47OqwqsS+/Ai4=",
-        version = "v0.0.0-20231121155337-90ade8b19d09",
+        sum = "h1:LmbG8Pq7KDGkglKVn8VpZOZj6vb9b8nKEGcg9l03epM=",
+        version = "v0.0.0-20240123142251-f86470692795",
     )
     go_repository(
         name = "org_bazil_fuse",

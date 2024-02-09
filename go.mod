@@ -4,12 +4,12 @@ go 1.20
 
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
-	github.com/alphadose/haxmap v1.3.0
-	github.com/bazel-contrib/rules_jvm v0.21.0
+	github.com/alphadose/haxmap v1.3.1
+	github.com/bazel-contrib/rules_jvm v0.24.0
 	github.com/bazelbuild/bazel-gazelle v0.35.0
 	github.com/bazelbuild/bazelisk v1.17.0
 	github.com/bazelbuild/buildtools v0.0.0-20231115204819-d4c9dccdfbb1
-	github.com/bazelbuild/rules_go v0.44.0
+	github.com/bazelbuild/rules_go v0.45.1
 	github.com/bluekeyes/go-gitdiff v0.7.1
 	github.com/bmatcuk/doublestar/v4 v4.6.1
 	github.com/buildkite/terminal v3.2.0+incompatible
@@ -20,27 +20,27 @@ require (
 	github.com/golang/mock v1.7.0-rc.1
 	github.com/golang/protobuf v1.5.3
 	github.com/google/triage-party v1.4.0
-	github.com/hashicorp/go-hclog v1.5.0
+	github.com/hashicorp/go-hclog v1.6.2
 	github.com/hashicorp/go-plugin v1.6.0
 	github.com/manifoldco/promptui v0.9.0
 	github.com/mattn/go-isatty v0.0.20
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/mitchellh/go-wordwrap v1.0.1
 	github.com/msolo/jsonr v0.0.0-20231023064044-62fbfc3a0313
-	github.com/onsi/gomega v1.27.8
+	github.com/onsi/gomega v1.31.1
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/rogpeppe/go-internal v1.10.0
-	github.com/rs/zerolog v1.29.1
+	github.com/rs/zerolog v1.32.0
 	github.com/slack-go/slack v0.12.2
-	github.com/smacker/go-tree-sitter v0.0.0-20231219031718-233c2f923ac7
+	github.com/smacker/go-tree-sitter v0.0.0-20240208112414-ad6369327388
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.16.0
 	github.com/tejzpr/ordered-concurrently/v3 v3.0.1
 	github.com/twmb/murmur3 v1.1.8
 	github.com/yargevad/filepathx v1.0.0
-	go.starlark.net v0.0.0-20231121155337-90ade8b19d09
+	go.starlark.net v0.0.0-20240123142251-f86470692795
 	golang.org/x/exp v0.0.0-20240112132812-db7319d0e0e3
 	golang.org/x/sync v0.6.0
 	google.golang.org/genproto v0.0.0-20240116215550-a9fa1716bcac
@@ -193,7 +193,6 @@ require (
 	github.com/mitchellh/go-testing-interface v1.14.1 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/oklog/run v1.1.0 // indirect
-	github.com/onsi/ginkgo/v2 v2.11.0 // indirect
 	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
 	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
 	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
@@ -224,6 +223,6 @@ require (
 	k8s.io/klog/v2 v2.100.1 // indirect
 )
 
-replace github.com/gordonklaus/ineffassign => github.com/gordonklaus/ineffassign v0.0.0-20230610083614-0e73809eb601
+replace github.com/gordonklaus/ineffassign => github.com/gordonklaus/ineffassign v0.1.0
 
-replace mvdan.cc/gofumpt => mvdan.cc/gofumpt v0.5.0
+replace mvdan.cc/gofumpt => mvdan.cc/gofumpt v0.6.0
