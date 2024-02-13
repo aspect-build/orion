@@ -30,6 +30,7 @@ require (
 	github.com/onsi/gomega v1.31.1
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/pmezard/go-difflib v1.0.0
+	github.com/reviewdog/errorformat v0.0.0-20231214114315-6dd01ea41b1f
 	github.com/rogpeppe/go-internal v1.10.0
 	github.com/rs/zerolog v1.32.0
 	github.com/slack-go/slack v0.12.2
@@ -98,6 +99,8 @@ require (
 	github.com/gregjones/httpcache v0.0.0-20180305231024-9cad4c3443a7 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
+	github.com/haya14busa/go-checkstyle v0.0.0-20170303121022-5e9d09f51fa1 // indirect
+	github.com/haya14busa/go-sarif v0.0.0-20210102043135-e2c5fed2fa3d // indirect
 	github.com/huandu/xstrings v1.4.0 // indirect
 	github.com/imdario/mergo v0.3.13 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
