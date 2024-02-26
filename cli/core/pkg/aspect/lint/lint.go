@@ -21,13 +21,16 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net/url"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
 
 	"github.com/aspect-build/silo/cli/core/bazel/buildeventstream"
 	"github.com/aspect-build/silo/cli/core/pkg/aspect/root/flags"
 	"github.com/aspect-build/silo/cli/core/pkg/bazel"
+	"github.com/aspect-build/silo/cli/core/pkg/bazel/workspace"
 	"github.com/aspect-build/silo/cli/core/pkg/ioutils"
 	"github.com/aspect-build/silo/cli/core/pkg/plugin/system/bep"
 	"github.com/bluekeyes/go-gitdiff/gitdiff"
@@ -46,11 +49,12 @@ type Linter struct {
 
 type LintBEPHandler struct {
 	ioutils.Streams
-	report  bool
-	fix     bool
-	diff    bool
-	output  string
-	reports map[string]*buildeventstream.NamedSetOfFiles
+	report        bool
+	fix           bool
+	diff          bool
+	output        string
+	reports       map[string]*buildeventstream.NamedSetOfFiles
+	workspaceRoot string
 }
 
 // Align with rules_lint
@@ -60,14 +64,15 @@ const (
 	LINT_RESULT_REGEX = ".*aspect_rules_lint.*"
 )
 
-func newLintBEPHandler(streams ioutils.Streams, printReport, applyFix, printDiff bool, output string) *LintBEPHandler {
+func newLintBEPHandler(streams ioutils.Streams, printReport, applyFix, printDiff bool, output string, workspaceRoot string) *LintBEPHandler {
 	return &LintBEPHandler{
-		Streams: streams,
-		report:  printReport,
-		fix:     applyFix,
-		diff:    printDiff,
-		output:  output,
-		reports: make(map[string]*buildeventstream.NamedSetOfFiles),
+		Streams:       streams,
+		report:        printReport,
+		fix:           applyFix,
+		diff:          printDiff,
+		output:        output,
+		reports:       make(map[string]*buildeventstream.NamedSetOfFiles),
+		workspaceRoot: workspaceRoot,
 	}
 }
 
@@ -102,8 +107,8 @@ lint:
 	output, _ := cmd.Flags().GetString("output")
 
 	bazelCmd := []string{"build"}
+	bazelCmd = append(bazelCmd, args...)
 	bazelCmd = append(bazelCmd, fmt.Sprintf("--aspects=%s", strings.Join(linters, ",")))
-	bazelCmd = append(bazelCmd, cmd.Flags().Args()...)
 
 	outputGroups := []string{}
 	if applyFix || printDiff {
@@ -127,7 +132,17 @@ lint:
 		besBackendFlag := fmt.Sprintf("--bes_backend=%s", besBackend.Addr())
 		bazelCmd = flags.AddFlagToCommand(bazelCmd, besBackendFlag)
 
-		lintBEPHandler := newLintBEPHandler(runner.Streams, printReport, applyFix, printDiff, output)
+		workingDirectory, err := os.Getwd()
+		if err != nil {
+			return fmt.Errorf("failed to get current working directory: %w", err)
+		}
+		finder := workspace.DefaultFinder
+		workspaceRoot, err := finder.Find(workingDirectory)
+		if err != nil {
+			return fmt.Errorf("failed to find workspace root: %w", err)
+		}
+
+		lintBEPHandler := newLintBEPHandler(runner.Streams, printReport, applyFix, printDiff, output, workspaceRoot)
 		besBackend.RegisterSubscriber(lintBEPHandler.BEPEventCallback)
 	}
 
@@ -276,10 +291,10 @@ func (runner *LintBEPHandler) outputLintResultSarif(label string, f *buildevents
 		fm = []string{`%f:%l:\\t%m`}
 	case "ruff":
 		fm = []string{
-				`%f:%l:%c: %t%n %m`,
-				`%-GFound %n error%.%#`,
-				`%-G[*] %n fixable%.%#`,
-			}
+			`%f:%l:%c: %t%n %m`,
+			`%-GFound %n error%.%#`,
+			`%-G[*] %n fixable%.%#`,
+		}
 	case "buf":
 		fm = []string{
 			`--buf-plugin_out: %f:%l:%c:%m`,
@@ -297,7 +312,7 @@ func (runner *LintBEPHandler) outputLintResultSarif(label string, f *buildevents
 	if err != nil {
 		return err
 	}
-	
+
 	var ewriter writer.Writer
 	var sarifOpt writer.SarifOption
 	sarifOpt.ToolName = linter
@@ -312,7 +327,7 @@ func (runner *LintBEPHandler) outputLintResultSarif(label string, f *buildevents
 			}
 		}()
 	}
-	
+
 	s := efm.NewScanner(strings.NewReader(lineResult))
 	for s.Scan() {
 		if err := ewriter.Write(s.Entry()); err != nil {
@@ -323,19 +338,32 @@ func (runner *LintBEPHandler) outputLintResultSarif(label string, f *buildevents
 	return nil
 }
 
-func (runner *LintBEPHandler) readBEPFile(f *buildeventstream.File) (string, error) {
-	// TODO: use f.GetContents()?
+func (runner *LintBEPHandler) readBEPFile(file *buildeventstream.File) (string, error) {
+	resultsFile := ""
 
-	if strings.HasPrefix(f.GetUri(), "file://") {
-		localFilePath := strings.TrimPrefix(f.GetUri(), "file://")
-		lintResultBuf, err := os.ReadFile(localFilePath)
+	switch f := file.File.(type) {
+	case *buildeventstream.File_Uri:
+		uri, err := url.Parse(f.Uri)
 		if err != nil {
-			return "", err
+			return "", fmt.Errorf("unable to parse URI %s: %v", f.Uri, err)
 		}
-		return string(lintResultBuf), nil
+		if uri.Scheme == "file" {
+			resultsFile = filepath.Clean(uri.Path)
+		} else if uri.Scheme == "bytestream" {
+			// Because we set --experimental_remote_download_regex, we can depend on the results file being
+			// in the output tree even when using a remote cache with build without the bytes.
+			resultsFile = path.Join(runner.workspaceRoot, path.Join(file.PathPrefix...), file.Name)
+		} else {
+			return "", fmt.Errorf("unsupported BES file uri %v", f.Uri)
+		}
+	default:
+		return "", fmt.Errorf("unsupported BES file type")
 	}
 
-	// TODO: support bytestream://
+	buf, err := os.ReadFile(resultsFile)
+	if err != nil {
+		return "", fmt.Errorf("failed to read lint results file %s: %v", resultsFile, err)
+	}
 
-	return "", fmt.Errorf("failed to extract lint result file")
+	return string(buf), nil
 }
