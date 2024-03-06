@@ -29,7 +29,6 @@ import (
 
 	"github.com/aspect-build/silo/cli/core/bazel/analysis"
 	"github.com/aspect-build/silo/cli/core/bazel/flags"
-	"github.com/aspect-build/silo/cli/core/buildinfo"
 	"github.com/aspect-build/silo/cli/core/pkg/aspecterrors"
 	"github.com/aspect-build/silo/cli/core/pkg/bazel/workspace"
 	"github.com/aspect-build/silo/cli/core/pkg/ioutils"
@@ -142,14 +141,10 @@ func (b *bazel) HandleReenteringAspect(streams ioutils.Streams, args []string, a
 		return false, err
 	}
 
-	if bazelisk.AspectShouldReenter {
-		if !aspectLockVersion {
-			repos := createRepositories()
-			err := bazelisk.Run(args, repos, streams, b.env, nil)
-			return true, err
-		} else {
-			fmt.Fprintf(streams.Stderr, "Locking Aspect CLI version to %s %s which differs from the version configured in .bazeliskrc or the Aspect CLI config file\n", buildinfo.Current().GnuName(), buildinfo.Current().Version())
-		}
+	if bazelisk.AspectShouldReenter && !aspectLockVersion {
+		repos := createRepositories()
+		err := bazelisk.Run(args, repos, streams, b.env, nil)
+		return true, err
 	}
 
 	return false, nil
