@@ -23,7 +23,7 @@ import (
 	"os"
 	"strings"
 
-	bzl "github.com/aspect-build/silo/cli/core/gazelle/bzl" 
+	bzl "github.com/aspect-build/silo/cli/core/gazelle/bzl"
 	js "github.com/aspect-build/silo/cli/core/gazelle/js"
 	kotlin "github.com/aspect-build/silo/cli/core/gazelle/kotlin"
 	"github.com/aspect-build/silo/cli/core/pkg/aspecterrors"
