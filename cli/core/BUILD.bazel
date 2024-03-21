@@ -1,1 +1,3 @@
+# Run gazelle to create bzl_libraries for all packages below this one
+# gazelle:lang starlark
 exports_files(["LICENSE"])
