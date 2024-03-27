@@ -1,9 +1,9 @@
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
-    name = "modquery",
-    srcs = ["modquery.go"],
-    importpath = "github.com/aspect-build/silo/cli/core/pkg/aspect/modquery",
+    name = "mod",
+    srcs = ["mod.go"],
+    importpath = "github.com/aspect-build/silo/cli/core/pkg/aspect/mod",
     visibility = ["//visibility:public"],
     deps = [
         "//cli/core/pkg/bazel",
