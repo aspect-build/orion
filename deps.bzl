@@ -1157,8 +1157,8 @@ def go_dependencies():
         importpath = "github.com/google/triage-party",
         patch_args = ["-p1"],  # keep
         patches = ["//patches:com_github_google_triage_party.patch"],  # keep
-        sum = "h1:GdCY4gEID5YBDYjg+fHInx5qneFsqRFDW3x1E+DIML0=",
-        version = "v1.4.0",
+        sum = "h1:AAhTHQ6QEPG7vGgFoepA+NS4Fo+ryPM+YOL8dua4QZU=",
+        version = "v1.6.0",
     )
     go_repository(
         name = "com_github_google_uuid",
@@ -1700,13 +1700,6 @@ def go_dependencies():
         version = "v1.0.1",
     )
     go_repository(
-        name = "com_github_maruel_panicparse",
-        build_file_proto_mode = "disable_global",
-        importpath = "github.com/maruel/panicparse",
-        sum = "h1:etK4QAf/Spw8eyowKbOHRkOfhblp/kahGUy96RvbMjI=",
-        version = "v1.5.0",
-    )
-    go_repository(
         name = "com_github_masterminds_goutils",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/Masterminds/goutils",
@@ -1796,13 +1789,6 @@ def go_dependencies():
         importpath = "github.com/matttproud/golang_protobuf_extensions/v2",
         sum = "h1:jWpvCLoY8Z/e3VKvlsiIGKtc+UG6U5vzxaoagmhXfyg=",
         version = "v2.0.0",
-    )
-    go_repository(
-        name = "com_github_mgutz_ansi",
-        build_file_proto_mode = "disable_global",
-        importpath = "github.com/mgutz/ansi",
-        sum = "h1:j7+1HpAFS1zy5+Q4qx1fWh90gTKwiN4QCGoY9TWyyO4=",
-        version = "v0.0.0-20170206155736-9520e82c474b",
     )
     go_repository(
         name = "com_github_microsoft_go_winio",

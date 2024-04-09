@@ -19,7 +19,7 @@ require (
 	github.com/go-test/deep v1.1.0
 	github.com/golang/mock v1.7.0-rc.1
 	github.com/golang/protobuf v1.5.3
-	github.com/google/triage-party v1.4.0
+	github.com/google/triage-party v1.6.0
 	github.com/hashicorp/go-hclog v1.6.2
 	github.com/hashicorp/go-plugin v1.6.0
 	github.com/manifoldco/promptui v0.9.0
