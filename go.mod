@@ -52,7 +52,7 @@ require (
 	sigs.k8s.io/yaml v1.4.0
 )
 
-replace github.com/smacker/go-tree-sitter v0.0.0-20230501083651-a7d92773b3aa => github.com/aspect-forks/go-tree-sitter v0.0.0-20230720070738-0d0a9f78d8f8
+replace github.com/smacker/go-tree-sitter => github.com/aspect-forks/go-tree-sitter v0.0.0-20240410072049-f693d9ae793b
 
 require github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.36.3
 
