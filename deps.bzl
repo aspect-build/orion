@@ -2354,9 +2354,8 @@ def go_dependencies():
         name = "com_github_smacker_go_tree_sitter",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/smacker/go-tree-sitter",
-        replace = "github.com/aspect-forks/go-tree-sitter",
-        sum = "h1:TtMzCsCts52TvmV2VID6gfcOFpw/L67JU3PPVwfvHHQ=",
-        version = "v0.0.0-20240410072049-f693d9ae793b",
+        sum = "h1:Cb8njhEbNgGk5lQMM/r1FWvrKT+ysH8H0WV9NAIKAu8=",
+        version = "v0.0.0-20240423010953-8ba036550382",
     )
     go_repository(
         name = "com_github_soheilhy_cmux",
