@@ -34,7 +34,7 @@ require (
 	github.com/rogpeppe/go-internal v1.10.0
 	github.com/rs/zerolog v1.32.0
 	github.com/slack-go/slack v0.12.2
-	github.com/smacker/go-tree-sitter v0.0.0-20240208112414-ad6369327388
+	github.com/smacker/go-tree-sitter v0.0.0-20240423010953-8ba036550382
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.16.0
@@ -51,8 +51,6 @@ require (
 	helm.sh/helm/v3 v3.14.2
 	sigs.k8s.io/yaml v1.4.0
 )
-
-replace github.com/smacker/go-tree-sitter => github.com/aspect-forks/go-tree-sitter v0.0.0-20240410072049-f693d9ae793b
 
 require github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.36.3
 
