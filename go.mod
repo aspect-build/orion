@@ -1,6 +1,8 @@
 module github.com/aspect-build/silo
 
-go 1.20
+go 1.21.4
+
+toolchain go1.21.10
 
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
