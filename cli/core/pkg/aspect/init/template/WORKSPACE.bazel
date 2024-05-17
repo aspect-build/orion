@@ -1,4 +1,0 @@
-# Created by Aspect CLI   https://github.com/aspect-build/silo/cli/core
-#
-# This file is a marker indicating the root of a Bazel workspace.
-# See MODULE.bazel for dependency information.
