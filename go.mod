@@ -54,6 +54,7 @@ require (
 
 require (
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.36.3
+	github.com/charmbracelet/huh v0.3.0
 	github.com/hay-kot/scaffold v0.0.99
 	github.com/sourcegraph/go-diff v0.7.0
 )
@@ -74,7 +75,6 @@ require (
 	github.com/charmbracelet/bubbles v0.17.2-0.20240108170749-ec883029c8e6 // indirect
 	github.com/charmbracelet/bubbletea v0.25.0 // indirect
 	github.com/charmbracelet/glamour v0.7.0 // indirect
-	github.com/charmbracelet/huh v0.3.0 // indirect
 	github.com/charmbracelet/lipgloss v0.10.0 // indirect
 	github.com/cloudflare/circl v1.3.7 // indirect
 	github.com/containerd/console v1.0.4-0.20230313162750-1ae8d489ac81 // indirect
