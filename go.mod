@@ -55,6 +55,7 @@ require (
 require (
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.36.3
 	github.com/hay-kot/scaffold v0.0.99
+	github.com/sourcegraph/go-diff v0.7.0
 )
 
 require (

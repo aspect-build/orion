@@ -1371,6 +1371,20 @@ def go_dependencies():
         version = "v1.3.1",
     )
     go_repository(
+        name = "com_github_shurcool_go",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/shurcooL/go",
+        sum = "h1:MZM7FHLqUHYI0Y/mQAt3d2aYa0SiNms/hFqC9qJYolM=",
+        version = "v0.0.0-20180423040247-9e1955d9fb6e",
+    )
+    go_repository(
+        name = "com_github_shurcool_go_goon",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/shurcooL/go-goon",
+        sum = "h1:llrF3Fs4018ePo4+G/HV/uQUqEI1HMDjCeOf2V6puPc=",
+        version = "v0.0.0-20170922171312-37c2f522c041",
+    )
+    go_repository(
         name = "com_github_sirupsen_logrus",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/sirupsen/logrus",
@@ -1397,6 +1411,13 @@ def go_dependencies():
         importpath = "github.com/smacker/go-tree-sitter",
         sum = "h1:Cb8njhEbNgGk5lQMM/r1FWvrKT+ysH8H0WV9NAIKAu8=",
         version = "v0.0.0-20240423010953-8ba036550382",
+    )
+    go_repository(
+        name = "com_github_sourcegraph_go_diff",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/sourcegraph/go-diff",
+        sum = "h1:9uLlrd5T46OXs5qpp8L/MTltk0zikUGi0sNNyCpA8G0=",
+        version = "v0.7.0",
     )
     go_repository(
         name = "com_github_spf13_afero",
