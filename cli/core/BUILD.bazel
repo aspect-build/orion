@@ -1,3 +1,4 @@
 # Run gazelle to create bzl_libraries for all packages below this one
-# gazelle:lang starlark
+# NB: keep in sync with top-level gazelle:lang directive
+# gazelle:lang js,go,proto,starlark
 exports_files(["LICENSE"])
