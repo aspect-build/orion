@@ -867,6 +867,20 @@ def go_dependencies():
         version = "v0.0.99",
     )
     go_repository(
+        name = "com_github_haya14busa_go_checkstyle",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/haya14busa/go-checkstyle",
+        sum = "h1:biVg9rs1Vl8LAwrkjlssTaEn2csIl3LKoQVEJrWGmJ8=",
+        version = "v0.0.0-20170303121022-5e9d09f51fa1",
+    )
+    go_repository(
+        name = "com_github_haya14busa_go_sarif",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/haya14busa/go-sarif",
+        sum = "h1:2uCbyMhWNFYI+HkRqXfIeTq5pTPxQM68yG+INJ2gvq8=",
+        version = "v0.0.0-20210102043135-e2c5fed2fa3d",
+    )
+    go_repository(
         name = "com_github_hexops_gotextdiff",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/hexops/gotextdiff",
@@ -1306,6 +1320,13 @@ def go_dependencies():
         importpath = "github.com/PuerkitoBio/goquery",
         sum = "h1:uQxhNlArOIdbrH1tr0UXwdVFgDcZDrZVdcpygAcwmWM=",
         version = "v1.8.1",
+    )
+    go_repository(
+        name = "com_github_reviewdog_errorformat",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/reviewdog/errorformat",
+        sum = "h1:y9BDlVuHOxSJK4PQNGhxtcZyAtK9TLcPy5kKbcIezDA=",
+        version = "v0.0.0-20231214114315-6dd01ea41b1f",
     )
     go_repository(
         name = "com_github_rivo_uniseg",
