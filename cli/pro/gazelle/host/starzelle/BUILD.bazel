@@ -1,0 +1,19 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "starzelle",
+    srcs = [
+        "plugin.go",
+        "sdk.go",
+    ],
+    importpath = "github.com/aspect-build/silo/cli/pro/gazelle/host/starzelle",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//cli/core/gazelle/common/starlark",
+        "//cli/core/gazelle/common/starlark/utils",
+        "//cli/core/pkg/logger",
+        "//cli/pro/gazelle/host/plugin",
+        "@bazel_gazelle//rule:go_default_library",
+        "@net_starlark_go//starlark",
+    ],
+)

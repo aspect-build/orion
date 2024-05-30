@@ -1,0 +1,42 @@
+load("//cli/core/gazelle:gazelle.bzl", "gazelle_generation_test")
+
+# kotlin
+[
+    gazelle_generation_test(
+        name = "%s_test" % test_workspace.replace("/WORKSPACE", "").replace("kotlin/", "kotlin-"),
+        data = [
+            "//cli/pro/gazelle/plugins:kotlin.lang.star",
+            "//cli/pro/gazelle/plugins:maven.star",
+        ],
+        dir = test_workspace.replace("/WORKSPACE", ""),
+        gazelle_binary = "//cli/pro/gazelle/host:gazelle_host_binary",
+    )
+    for test_workspace in glob(["kotlin/**/WORKSPACE"])
+    if test_workspace.replace("/WORKSPACE", "").replace("kotlin/", "") not in [
+        "rules_jvm-maven",  # TODO: maven
+    ]
+]
+
+# bzl
+[
+    gazelle_generation_test(
+        name = "%s_test" % test_workspace.replace("/WORKSPACE", "").replace("bzl/", "bzl-"),
+        data = [
+            "//cli/pro/gazelle/plugins:bzl.lang.star",
+        ],
+        dir = test_workspace.replace("/WORKSPACE", ""),
+        gazelle_binary = "//cli/pro/gazelle/host:gazelle_host_binary",
+    )
+    for test_workspace in glob(["bzl/**/WORKSPACE"])
+    # TODO: remove opt-outs
+    if test_workspace.replace("/WORKSPACE", "").replace("bzl/", "") not in [
+        "bazel_tools",
+        "defaultvisibility",
+        "empty",
+        "external",
+        "multidir",
+        "private",
+        "tests",
+        "relative_import",
+    ]
+]

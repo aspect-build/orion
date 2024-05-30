@@ -1,0 +1,25 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "plugin",
+    srcs = [
+        "analyze_context.go",
+        "database.go",
+        "plugin.go",
+        "queries.go",
+        "query.go",
+        "query_match.go",
+        "starzelle.go",
+        "target.go",
+    ],
+    importpath = "github.com/aspect-build/silo/cli/pro/gazelle/host/plugin",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//cli/core/gazelle/common/starlark/utils",
+        "//cli/core/gazelle/common/treesitter",
+        "@bazel_gazelle//rule:go_default_library",
+        "@com_github_emirpasic_gods//utils",
+        "@net_starlark_go//starlark",
+        "@net_starlark_go//starlarkstruct",
+    ],
+)
