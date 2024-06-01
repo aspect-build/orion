@@ -68,9 +68,9 @@ func (h *GazelleHost) loadStarzellePlugins() {
 	}
 
 	if len(builtinPlugins) == 0 {
-		BazelLog.Warnf("No builtin plugins found in %q", builtinPluginDir)
+		BazelLog.Tracef("No configure plugins found in %q", builtinPluginDir)
 	} else {
-		BazelLog.Infof("Loading builtin plugins from %q: %v", builtinPluginDir, builtinPlugins)
+		BazelLog.Infof("Loading configure plugins from %q: %v", builtinPluginDir, builtinPlugins)
 	}
 
 	for _, p := range builtinPlugins {
