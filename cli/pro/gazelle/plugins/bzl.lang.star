@@ -3,11 +3,9 @@ BZL_LIBRARY = "bzl_library"
 LANG_NAME = "starlark"
 BZL_EXT = ".bzl"
 
-LANG_RULES = {
-    BZL_LIBRARY: {
-        "From": "@bazel_skylib//:bzl_library.bzl",
-    },
-}
+starzelle.AddKind(BZL_LIBRARY, {
+    "From": "@bazel_skylib//:bzl_library.bzl",
+})
 
 def Prepare(_):
     return starzelle.PrepareResult(
@@ -76,7 +74,6 @@ def DeclareTargets(ctx):
 starzelle.AddLanguagePlugin(
     id = LANG_NAME,
     properties = {},
-    rules = LANG_RULES,
     prepare = Prepare,
     declare = DeclareTargets,
 )

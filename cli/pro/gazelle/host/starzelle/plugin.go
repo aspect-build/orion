@@ -28,6 +28,7 @@ var EmptyDeclareTargetsResult = plugin.DeclareTargetsResult{}
 // A starzelle file may include multiple plugins, hooks etc.
 type StarzelleProxy interface {
 	Plugins() []plugin.Plugin
+	Kinds() []plugin.RuleKind
 }
 
 var _ StarzelleProxy = (*starzelleState)(nil)
@@ -35,11 +36,15 @@ var _ StarzelleProxy = (*starzelleState)(nil)
 type starzelleState struct {
 	pluginPath string
 	plugins    []plugin.Plugin
+	kinds      []plugin.RuleKind
 }
 
 // Plugins implements StarzelleProxy.
 func (s *starzelleState) Plugins() []plugin.Plugin {
 	return s.plugins
+}
+func (s *starzelleState) Kinds() []plugin.RuleKind {
+	return s.kinds
 }
 
 func LoadProxy(pluginPath string) (StarzelleProxy, error) {
@@ -48,6 +53,7 @@ func LoadProxy(pluginPath string) (StarzelleProxy, error) {
 	state := starzelleState{
 		pluginPath: pluginPath,
 		plugins:    make([]plugin.Plugin, 0),
+		kinds:      make([]plugin.RuleKind, 0),
 	}
 	evalState := make(map[string]interface{})
 	evalState[proxyStateKey] = &state
@@ -66,13 +72,13 @@ func LoadProxy(pluginPath string) (StarzelleProxy, error) {
 	return &state, nil
 }
 
-func (s *starzelleState) AddLanguagePlugin(pluginId starlark.String, properties *starlark.Dict, kinds *starlark.Dict, prepare, analyze, declare *starlark.Function) {
-	var pluginKinds map[string]plugin.PluginRule
+func (s *starzelleState) AddKind(name starlark.String, attributes *starlark.Dict) {
+	s.kinds = append(s.kinds, readRuleKind(name, attributes))
+}
+
+func (s *starzelleState) AddLanguagePlugin(pluginId starlark.String, properties *starlark.Dict, prepare, analyze, declare *starlark.Function) {
 	var pluginProperties map[string]plugin.Property
 
-	if kinds != nil {
-		pluginKinds = starUtils.ReadMap2(kinds, readLanguageRule)
-	}
 	if properties != nil {
 		pluginProperties = starUtils.ReadMap(properties, readProperty)
 	}
@@ -80,7 +86,6 @@ func (s *starzelleState) AddLanguagePlugin(pluginId starlark.String, properties 
 	s.plugins = append(s.plugins, starzellePluginProxy{
 		name:       pluginId.GoString(),
 		pluginPath: s.pluginPath,
-		kinds:      pluginKinds,
 		properties: pluginProperties,
 		prepare:    prepare,
 		analyze:    analyze,
@@ -95,7 +100,6 @@ var _ plugin.Plugin = (*starzellePluginProxy)(nil)
 type starzellePluginProxy struct {
 	name                      string
 	pluginPath                string
-	kinds                     map[string]plugin.PluginRule
 	properties                map[string]plugin.Property
 	prepare, analyze, declare *starlark.Function
 }
@@ -104,10 +108,6 @@ var _ plugin.Plugin = (*starzellePluginProxy)(nil)
 
 func (p starzellePluginProxy) Name() string {
 	return p.name
-}
-
-func (p starzellePluginProxy) Rules() map[string]plugin.PluginRule {
-	return p.kinds
 }
 
 func (p starzellePluginProxy) Properties() map[string]plugin.Property {
@@ -164,8 +164,9 @@ func readDeclareTargetsResult(_ starlark.Value) plugin.DeclareTargetsResult {
 	return plugin.DeclareTargetsResult{}
 }
 
-func readLanguageRule(v starlark.Value) plugin.PluginRule {
-	return plugin.PluginRule{
+func readRuleKind(n starlark.String, v starlark.Value) plugin.RuleKind {
+	return plugin.RuleKind{
+		Name: n.GoString(),
 		From: starUtils.ReadMapStringEntry(v, "From"),
 		KindInfo: rule.KindInfo{
 			MatchAny:        starUtils.ReadOptionalMapEntry(v, "MatchAny", starUtils.ReadBool, false),

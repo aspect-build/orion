@@ -11,7 +11,6 @@ import (
 	plugin "github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
 	gazelleLanguage "github.com/bazelbuild/bazel-gazelle/language"
 	gazelleRule "github.com/bazelbuild/bazel-gazelle/rule"
-	"github.com/emirpasic/gods/sets/treeset"
 )
 
 const (
@@ -80,13 +79,6 @@ func (host *GazelleHost) convertPlugTargetsToGenerateResult(pluginTargets map[st
 	var result gazelleLanguage.GenerateResult
 
 	for pluginId, declareResults := range pluginTargets {
-		// TODO: don't rebuild this every time? Change `gazelle.CheckCollisionErrors`?
-		generatedKinds := treeset.NewWithStringComparator()
-		plugin := host.plugins[pluginId]
-		for r := range plugin.Rules() {
-			generatedKinds.Add(r)
-		}
-
 		for _, target := range declareResults {
 			// If marked for removal simply add to the empty list and continue
 			if target.Remove {
@@ -95,7 +87,7 @@ func (host *GazelleHost) convertPlugTargetsToGenerateResult(pluginTargets map[st
 			}
 
 			// Check for name-collisions with the rule being generated.
-			colError := gazelle.CheckCollisionErrors(target.Name, target.Kind, generatedKinds, args)
+			colError := gazelle.CheckCollisionErrors(target.Name, target.Kind, host.sourceRuleKinds, args)
 			if colError != nil {
 				fmt.Fprintf(os.Stderr, "Source rule generation error: %v\n", colError)
 				os.Exit(1)

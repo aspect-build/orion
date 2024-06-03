@@ -13,7 +13,6 @@ type Plugin interface {
 	// Static plugin metadata
 	Name() string
 	Properties() map[string]Property
-	Rules() map[string]PluginRule
 
 	// Prepare for generating targets
 	Prepare(ctx PrepareContext) PrepareResult
@@ -30,8 +29,9 @@ const (
 	PropertyType_Number  PropertyType = "number"
 )
 
-type PluginRule struct {
+type RuleKind struct {
 	rule.KindInfo
+	Name string
 	From string
 }
 

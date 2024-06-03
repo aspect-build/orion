@@ -15,7 +15,6 @@ import (
 func AddLanguagePlugin(t *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	var pluginId starlark.String
 	var properties *starlark.Dict
-	var rules *starlark.Dict
 	var prepare, analyze, declare *starlark.Function
 
 	err := starlark.UnpackArgs(
@@ -24,7 +23,6 @@ func AddLanguagePlugin(t *starlark.Thread, b *starlark.Builtin, args starlark.Tu
 		kwargs,
 		"id", &pluginId,
 		"properties?", &properties,
-		"rules?", &rules,
 		"prepare?", &prepare,
 		"analyze?", &analyze,
 		"declare?", &declare,
@@ -36,12 +34,30 @@ func AddLanguagePlugin(t *starlark.Thread, b *starlark.Builtin, args starlark.Tu
 	t.Local(proxyStateKey).(*starzelleState).AddLanguagePlugin(
 		pluginId,
 		properties,
-		rules,
 		prepare,
 		analyze,
 		declare,
 	)
 
+	return starlark.None, nil
+}
+
+func addKind(t *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
+	var kind starlark.String
+	var attributes *starlark.Dict
+
+	err := starlark.UnpackArgs(
+		"AddKind",
+		args,
+		kwargs,
+		"name", &kind,
+		"attributes?", &attributes,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	t.Local(proxyStateKey).(*starzelleState).AddKind(kind, attributes)
 	return starlark.None, nil
 }
 
@@ -193,6 +209,7 @@ var starzelleModule = starUtils.CreateModule(
 	"starzelle",
 	map[string]starUtils.ModuleFunction{
 		"AddLanguagePlugin": AddLanguagePlugin,
+		"AddKind":           addKind,
 		"Query":             NewQueryDefinition,
 		"PrepareResult":     NewPrepareResult,
 		"Import":            NewImport,
