@@ -52,7 +52,11 @@ func LoadProxy(pluginPath string) (StarzelleProxy, error) {
 	evalState := make(map[string]interface{})
 	evalState[proxyStateKey] = &state
 
-	_, err := starEval.Eval(pluginPath, starzelleModule, evalState)
+	libs := starlark.StringDict{
+		"starzelle": starzelleModule,
+	}
+
+	_, err := starEval.Eval(pluginPath, libs, evalState)
 	if err != nil {
 		BazelLog.Errorf("Failed to load configure plugin %q: %v", pluginPath, err)
 		fmt.Printf("Failed to load configure plugin %q: %v", pluginPath, err)

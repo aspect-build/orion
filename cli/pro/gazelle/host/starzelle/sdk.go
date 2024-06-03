@@ -189,20 +189,18 @@ func NewProperty(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, k
 	}, nil
 }
 
-var starzelleModule = map[string]starlark.Value{
-	"starzelle": starUtils.CreateModule(
-		"starzelle",
-		map[string]starUtils.ModuleFunction{
-			"AddLanguagePlugin": AddLanguagePlugin,
-			"Query":             NewQueryDefinition,
-			"PrepareResult":     NewPrepareResult,
-			"Import":            NewImport,
-			"Symbol":            NewSymbol,
-			"Property":          NewProperty,
-			"SourceExtensions":  NewSourceExtensions,
-			"SourceGlobs":       NewSourceGlobs,
-			"SourceFiles":       NewSourceFiles,
-		},
-		map[string]starlark.Value{},
-	),
-}
+var starzelleModule = starUtils.CreateModule(
+	"starzelle",
+	map[string]starUtils.ModuleFunction{
+		"AddLanguagePlugin": AddLanguagePlugin,
+		"Query":             NewQueryDefinition,
+		"PrepareResult":     NewPrepareResult,
+		"Import":            NewImport,
+		"Symbol":            NewSymbol,
+		"Property":          NewProperty,
+		"SourceExtensions":  NewSourceExtensions,
+		"SourceGlobs":       NewSourceGlobs,
+		"SourceFiles":       NewSourceFiles,
+	},
+	map[string]starlark.Value{},
+)
