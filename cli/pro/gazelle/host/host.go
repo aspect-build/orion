@@ -17,6 +17,7 @@ import (
 	"github.com/bazelbuild/bazel-gazelle/config"
 	gazelleLanguage "github.com/bazelbuild/bazel-gazelle/language"
 	"github.com/bazelbuild/bazel-gazelle/rule"
+	"github.com/emirpasic/gods/sets/treeset"
 )
 
 const GazelleLanguageName = "AspectConfigure"
@@ -28,6 +29,10 @@ type GazelleHost struct {
 	// Hosted plugins
 	// TODO: support enabling/disabling/adding in subdirs
 	plugins map[string]plugin.Plugin
+
+	// Metadata about rules being generated. May be pre-configured, potentially loaded from *.star etc
+	kinds           map[string]plugin.RuleKind
+	sourceRuleKinds *treeset.Set
 
 	// Ignore configurations for the workspace.
 	gitignore *git.GitIgnore
@@ -47,9 +52,11 @@ func NewLanguage() gazelleLanguage.Language {
 
 func NewHost() *GazelleHost {
 	l := &GazelleHost{
-		gitignore: git.NewGitIgnore(),
-		plugins:   make(map[string]plugin.Plugin),
-		database:  &plugin.Database{},
+		gitignore:       git.NewGitIgnore(),
+		plugins:         make(map[string]plugin.Plugin),
+		kinds:           make(map[string]plugin.RuleKind),
+		sourceRuleKinds: treeset.NewWithStringComparator(),
+		database:        &plugin.Database{},
 	}
 
 	return l
@@ -92,32 +99,42 @@ func (h *GazelleHost) addStarzellePlugin(defPath string) {
 		return
 	}
 
+	pluginRelPath := path.Base(defPath)
+
 	for _, plugin := range proxy.Plugins() {
-		BazelLog.Infof("Loaded plugin definition %q\n", plugin.Name())
+		BazelLog.Infof("Loaded plugin definition %q from %q", plugin.Name(), pluginRelPath)
 		h.AddPlugin(plugin)
+	}
+
+	for _, kind := range proxy.Kinds() {
+		BazelLog.Infof("Loaded kind %q from %q", kind.Name, pluginRelPath)
+		h.AddKind(kind)
 	}
 }
 
-func (h *GazelleHost) AddExtension(defPath string) {
-	h.addStarzellePlugin(defPath)
+func (h *GazelleHost) AddPlugin(plugin plugin.Plugin) {
+	if _, exists := h.plugins[plugin.Name()]; exists {
+		BazelLog.Errorf("Duplicate plugin %q", plugin.Name())
+	}
+
+	h.plugins[plugin.Name()] = plugin
 }
 
-func (h *GazelleHost) AddPlugin(plugin plugin.Plugin) {
-	h.plugins[plugin.Name()] = plugin
+func (h *GazelleHost) AddKind(k plugin.RuleKind) {
+	if _, exists := h.kinds[k.Name]; exists {
+		BazelLog.Errorf("Duplicate rule kind %q", k.Name)
+	}
+
+	h.sourceRuleKinds.Add(k.Name)
+	h.kinds[k.Name] = k
 }
 
 func (h *GazelleHost) Kinds() map[string]rule.KindInfo {
 	if h.gazelleKindInfo == nil {
 		h.gazelleKindInfo = make(map[string]rule.KindInfo, 0)
 
-		for _, plugin := range h.plugins {
-			for k, v := range plugin.Rules() {
-				if _, exists := h.gazelleKindInfo[k]; exists {
-					BazelLog.Warnf("Duplicate rule kind %q from plugin %q", k, plugin.Name())
-				}
-
-				h.gazelleKindInfo[k] = v.KindInfo
-			}
+		for k, v := range h.kinds {
+			h.gazelleKindInfo[k] = v.KindInfo
 		}
 	}
 
@@ -130,19 +147,17 @@ func (h *GazelleHost) Loads() []rule.LoadInfo {
 
 		loads := make(map[string]*rule.LoadInfo)
 
-		for _, plugin := range h.plugins {
-			for name, r := range plugin.Rules() {
-				from := r.From
+		for name, r := range h.kinds {
+			from := r.From
 
-				if loads[from] == nil {
-					loads[from] = &rule.LoadInfo{
-						Name:    from,
-						Symbols: make([]string, 0, 1),
-						After:   make([]string, 0),
-					}
+			if loads[from] == nil {
+				loads[from] = &rule.LoadInfo{
+					Name:    from,
+					Symbols: make([]string, 0, 1),
+					After:   make([]string, 0),
 				}
-				loads[from].Symbols = append(loads[from].Symbols, name)
 			}
+			loads[from].Symbols = append(loads[from].Symbols, name)
 		}
 
 		for _, load := range loads {

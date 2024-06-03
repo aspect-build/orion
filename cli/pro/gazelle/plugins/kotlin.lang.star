@@ -8,27 +8,27 @@ RULES_KOTLIN_REPO_NAME = "io_bazel_rules_kotlin"
 PROVIDER_NAME = "kt"
 
 LANG_NAME = "kotlin"
-LANG_RULES = {
-    KT_JVM_LIBRARY: {
-        "From": "@" + RULES_KOTLIN_REPO_NAME + "//kotlin:jvm.bzl",
-        "NonEmptyAttrs": {
-            "srcs": True,
-        },
-        "MergeableAttrs": {
-            "srcs": True,
-        },
-        "ResolveAttrs": {
-            "deps": True,
-        },
+
+starzelle.AddKind(KT_JVM_LIBRARY, {
+    "From": "@" + RULES_KOTLIN_REPO_NAME + "//kotlin:jvm.bzl",
+    "NonEmptyAttrs": {
+        "srcs": True,
     },
-    KT_JVM_BINARY: {
-        "From": "@" + RULES_KOTLIN_REPO_NAME + "//kotlin:jvm.bzl",
-        "NonEmptyAttrs": {
-            "srcs": True,
-            "main_class": True,
-        },
+    "MergeableAttrs": {
+        "srcs": True,
     },
-}
+    "ResolveAttrs": {
+        "deps": True,
+    },
+})
+
+starzelle.AddKind(KT_JVM_BINARY, {
+    "From": "@" + RULES_KOTLIN_REPO_NAME + "//kotlin:jvm.bzl",
+    "NonEmptyAttrs": {
+        "srcs": True,
+        "main_class": True,
+    },
+})
 
 def Prepare(_):
     return starzelle.PrepareResult(
@@ -199,7 +199,6 @@ def is_native(imp):
 starzelle.AddLanguagePlugin(
     id = LANG_NAME,
     properties = {},
-    rules = LANG_RULES,
     prepare = Prepare,
     declare = DeclareTargets,
 )
