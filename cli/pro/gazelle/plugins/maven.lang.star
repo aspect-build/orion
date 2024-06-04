@@ -4,10 +4,7 @@
 JAVA_MAVEN_INSTALL_FILE = "java_maven_install_file"
 DEFAULT_JAVA_MAVEN_INSTALL_FILE = "maven_install.json"
 
-print("hello")
-
 def prepare(_ctx):
-    print(_ctx)
     return starzelle.PrepareResult(
         # All source files to be processed
         sources = [
@@ -39,24 +36,20 @@ def prepare(_ctx):
     )
 
 def analyze_source(ctx):
-    print(ctx.source)
-    print(ctx.source.queries)
-    print(ctx.add_symbol)
-
-    for q in ctx.source.queries["imports"]:
+    for q in ctx.source.query_results["imports"]:
         dep = json.decode(q.captures["dep"])
-        coord = dep["coord"].split(":", 1)[0]
+
         if "packages" not in dep:
             continue
+
+        coord = dep["coord"].rsplit(":", 1)[0].replace(".", "_").replace(":", "_")
+
         for pkg in dep["packages"]:
             ctx.add_symbol(
                 id = pkg,
                 provider_type = "java_info",
-                label = "@maven//{}".format(coord),
+                label = "@maven//:{}".format(coord),
             )
-
-def declare(ctx):
-    pass
 
 starzelle.AddLanguagePlugin(
     id = "maven",
@@ -67,6 +60,5 @@ starzelle.AddLanguagePlugin(
         ),
     },
     prepare = prepare,
-    declare = declare,
     analyze = analyze_source,
 )
