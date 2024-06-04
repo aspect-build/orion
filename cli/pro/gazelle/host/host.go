@@ -125,16 +125,23 @@ func (h *GazelleHost) AddKind(k plugin.RuleKind) {
 		BazelLog.Errorf("Duplicate rule kind %q", k.Name)
 	}
 
-	h.sourceRuleKinds.Add(k.Name)
 	h.kinds[k.Name] = k
 }
 
 func (h *GazelleHost) Kinds() map[string]rule.KindInfo {
 	if h.gazelleKindInfo == nil {
-		h.gazelleKindInfo = make(map[string]rule.KindInfo, 0)
+		h.gazelleKindInfo = make(map[string]rule.KindInfo, len(h.kinds)+len(builtinKinds))
 
+		// Builtin
+		for _, k := range builtinKinds {
+			h.gazelleKindInfo[k.Name] = k.KindInfo
+			h.sourceRuleKinds.Add(k.Name)
+		}
+
+		// Configured by plugins, potentially overriding builtin
 		for k, v := range h.kinds {
 			h.gazelleKindInfo[k] = v.KindInfo
+			h.sourceRuleKinds.Add(k)
 		}
 	}
 
