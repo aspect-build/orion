@@ -43,11 +43,11 @@ type GazelleHost struct {
 	gazelleKindInfo   map[string]rule.KindInfo
 }
 
+var _ gazelleLanguage.Language = (*GazelleHost)(nil)
+
 // This is the entrypoint for the gazelle extension initialization.
 func NewLanguage() gazelleLanguage.Language {
-	host := NewHost()
-	host.loadStarzellePlugins()
-	return host
+	return NewHost()
 }
 
 func NewHost() *GazelleHost {
@@ -58,6 +58,8 @@ func NewHost() *GazelleHost {
 		sourceRuleKinds: treeset.NewWithStringComparator(),
 		database:        &plugin.Database{},
 	}
+
+	l.loadStarzellePlugins()
 
 	return l
 }
@@ -81,12 +83,10 @@ func (h *GazelleHost) loadStarzellePlugins() {
 	}
 
 	for _, p := range builtinPlugins {
-		h.addStarzellePlugin(p)
+		h.LoadPlugin(p)
 	}
-
-	// TODO: collect plugins configured in BUILD files or aspect cli config
 }
-func (h *GazelleHost) addStarzellePlugin(defPath string) {
+func (h *GazelleHost) LoadPlugin(defPath string) {
 	// Can not add new plugins after configuration/data-collection has started
 	if h.gazelleKindInfo != nil || h.gazelleLoadInfo != nil {
 		BazelLog.Fatalf("Cannot add plugin %q after configuration has started", defPath)
