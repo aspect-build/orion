@@ -8,7 +8,7 @@ require (
 	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/alphadose/haxmap v1.3.1
 	github.com/bazel-contrib/rules_jvm v0.24.0
-	github.com/bazelbuild/bazel-gazelle v0.36.0 // NOTE: keep in sync with fetch.bzl
+	github.com/bazelbuild/bazel-gazelle v0.37.0 // NOTE: keep in sync with fetch.bzl
 	github.com/bazelbuild/bazelisk v1.17.0
 	github.com/bazelbuild/buildtools v0.0.0-20240313121412-66c605173954
 	github.com/bazelbuild/rules_go v0.48.0 // NOTE: keep in sync with fetch.bzl

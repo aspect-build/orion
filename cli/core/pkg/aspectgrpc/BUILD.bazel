@@ -5,5 +5,5 @@ go_library(
     srcs = ["grpc.go"],
     importpath = "github.com/aspect-build/silo/cli/core/pkg/aspectgrpc",
     visibility = ["//visibility:public"],
-    deps = ["@org_golang_google_grpc//:go_default_library"],
+    deps = ["@org_golang_google_grpc//:grpc"],
 )
