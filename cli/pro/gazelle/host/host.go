@@ -44,6 +44,7 @@ type GazelleHost struct {
 }
 
 var _ gazelleLanguage.Language = (*GazelleHost)(nil)
+var _ plugin.PluginHost = (*GazelleHost)(nil)
 
 // This is the entrypoint for the gazelle extension initialization.
 func NewLanguage() gazelleLanguage.Language {
@@ -93,22 +94,10 @@ func (h *GazelleHost) LoadPlugin(defPath string) {
 		return
 	}
 
-	proxy, err := starzelle.LoadProxy(defPath)
+	err := starzelle.LoadProxy(h, defPath)
 	if err != nil {
 		BazelLog.Errorf("Failed to load plugin definition %q: %v", defPath, err)
 		return
-	}
-
-	pluginRelPath := path.Base(defPath)
-
-	for _, plugin := range proxy.Plugins() {
-		BazelLog.Infof("Loaded plugin definition %q from %q", plugin.Name(), pluginRelPath)
-		h.AddPlugin(plugin)
-	}
-
-	for _, kind := range proxy.Kinds() {
-		BazelLog.Infof("Loaded kind %q from %q", kind.Name, pluginRelPath)
-		h.AddKind(kind)
 	}
 }
 
@@ -117,6 +106,7 @@ func (h *GazelleHost) AddPlugin(plugin plugin.Plugin) {
 		BazelLog.Errorf("Duplicate plugin %q", plugin.Name())
 	}
 
+	BazelLog.Infof("Loaded plugin definition %q", plugin.Name())
 	h.plugins[plugin.Name()] = plugin
 }
 
@@ -125,6 +115,7 @@ func (h *GazelleHost) AddKind(k plugin.RuleKind) {
 		BazelLog.Errorf("Duplicate rule kind %q", k.Name)
 	}
 
+	BazelLog.Infof("Loaded kind %q", k.Name)
 	h.kinds[k.Name] = k
 }
 

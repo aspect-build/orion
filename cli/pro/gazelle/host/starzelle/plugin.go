@@ -24,36 +24,17 @@ var EmptyPrepareResult = plugin.PrepareResult{
 
 var EmptyDeclareTargetsResult = plugin.DeclareTargetsResult{}
 
-// A go interface into a single starzelle plugin file.
-// A starzelle file may include multiple plugins, hooks etc.
-type StarzelleProxy interface {
-	Plugins() []plugin.Plugin
-	Kinds() []plugin.RuleKind
-}
-
-var _ StarzelleProxy = (*starzelleState)(nil)
-
 type starzelleState struct {
 	pluginPath string
-	plugins    []plugin.Plugin
-	kinds      []plugin.RuleKind
+	host       plugin.PluginHost
 }
 
-// Plugins implements StarzelleProxy.
-func (s *starzelleState) Plugins() []plugin.Plugin {
-	return s.plugins
-}
-func (s *starzelleState) Kinds() []plugin.RuleKind {
-	return s.kinds
-}
-
-func LoadProxy(pluginPath string) (StarzelleProxy, error) {
+func LoadProxy(host plugin.PluginHost, pluginPath string) error {
 	BazelLog.Infof("Load configure plugin %q", pluginPath)
 
 	state := starzelleState{
 		pluginPath: pluginPath,
-		plugins:    make([]plugin.Plugin, 0),
-		kinds:      make([]plugin.RuleKind, 0),
+		host:       host,
 	}
 	evalState := make(map[string]interface{})
 	evalState[proxyStateKey] = &state
@@ -66,14 +47,14 @@ func LoadProxy(pluginPath string) (StarzelleProxy, error) {
 	if err != nil {
 		BazelLog.Errorf("Failed to load configure plugin %q: %v", pluginPath, err)
 		fmt.Printf("Failed to load configure plugin %q: %v", pluginPath, err)
-		return nil, err
+		return err
 	}
 
-	return &state, nil
+	return nil
 }
 
 func (s *starzelleState) AddKind(name starlark.String, attributes *starlark.Dict) {
-	s.kinds = append(s.kinds, readRuleKind(name, attributes))
+	s.host.AddKind(readRuleKind(name, attributes))
 }
 
 func (s *starzelleState) AddPlugin(pluginId starlark.String, properties *starlark.Dict, prepare, analyze, declare *starlark.Function) {
@@ -83,7 +64,7 @@ func (s *starzelleState) AddPlugin(pluginId starlark.String, properties *starlar
 		pluginProperties = starUtils.ReadMap(properties, readProperty)
 	}
 
-	s.plugins = append(s.plugins, starzellePluginProxy{
+	s.host.AddPlugin(starzellePluginProxy{
 		name:       pluginId.GoString(),
 		pluginPath: s.pluginPath,
 		properties: pluginProperties,
