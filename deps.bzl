@@ -1353,8 +1353,8 @@ def go_dependencies():
         name = "com_github_rs_zerolog",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/rs/zerolog",
-        sum = "h1:keLypqrlIjaFsbmJOBdB/qvyF8KEtCWHwobLp5l/mQ0=",
-        version = "v1.32.0",
+        sum = "h1:1cU2KZkvPxNyfgEmhHAz/1A9Bz+llsdYzklWFzgp0r8=",
+        version = "v1.33.0",
     )
     go_repository(
         name = "com_github_russross_blackfriday_v2",
@@ -1430,8 +1430,8 @@ def go_dependencies():
         name = "com_github_smacker_go_tree_sitter",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/smacker/go-tree-sitter",
-        sum = "h1:Cb8njhEbNgGk5lQMM/r1FWvrKT+ysH8H0WV9NAIKAu8=",
-        version = "v0.0.0-20240423010953-8ba036550382",
+        sum = "h1:nOtrYzQNgRipVsrOkYpVU/ZMDS3/+78It68cPBPKy8A=",
+        version = "v0.0.0-20240514083259-c5d1f3f5f99e",
     )
     go_repository(
         name = "com_github_sourcegraph_go_diff",
@@ -2578,8 +2578,8 @@ def go_dependencies():
         name = "net_starlark_go",
         build_file_proto_mode = "disable_global",
         importpath = "go.starlark.net",
-        sum = "h1:LmbG8Pq7KDGkglKVn8VpZOZj6vb9b8nKEGcg9l03epM=",
-        version = "v0.0.0-20240123142251-f86470692795",
+        sum = "h1:3qhteRISupnJvaWshOmeqEUs2y9oc/+/ePPvDh3Eygg=",
+        version = "v0.0.0-20240520160348-046347dcd104",
     )
     go_repository(
         name = "org_bazil_fuse",

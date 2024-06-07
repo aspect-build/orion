@@ -34,16 +34,16 @@ require (
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/reviewdog/errorformat v0.0.0-20231214114315-6dd01ea41b1f
 	github.com/rogpeppe/go-internal v1.11.0
-	github.com/rs/zerolog v1.32.0
+	github.com/rs/zerolog v1.33.0
 	github.com/slack-go/slack v0.12.2
-	github.com/smacker/go-tree-sitter v0.0.0-20240423010953-8ba036550382
+	github.com/smacker/go-tree-sitter v0.0.0-20240514083259-c5d1f3f5f99e
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.16.0
 	github.com/tejzpr/ordered-concurrently/v3 v3.0.1
 	github.com/twmb/murmur3 v1.1.8
 	github.com/yargevad/filepathx v1.0.0
-	go.starlark.net v0.0.0-20240123142251-f86470692795
+	go.starlark.net v0.0.0-20240520160348-046347dcd104
 	golang.org/x/exp v0.0.0-20240112132812-db7319d0e0e3
 	golang.org/x/sync v0.6.0
 	google.golang.org/genproto v0.0.0-20240116215550-a9fa1716bcac
