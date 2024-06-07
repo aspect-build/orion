@@ -127,8 +127,21 @@ func (a *declareTargetActionsImpl) Truth() starlark.Bool { return starlark.True 
 func (a *declareTargetActionsImpl) Hash() (uint32, error) {
 	return 0, fmt.Errorf("unhashable: %s", a.Type())
 }
+func (ai *declareTargetActionsImpl) Attr(name string) (starlark.Value, error) {
+	switch name {
+	case "add":
+		return declareTargetAdd.BindReceiver(ai), nil
+	case "remove":
+		return declareTargetRemove.BindReceiver(ai), nil
+	}
 
-func (ai *declareTargetActionsImpl) AddCallable(thread *starlark.Thread, fn *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
+	return nil, fmt.Errorf("no such attribute: %s", name)
+}
+func (*declareTargetActionsImpl) AttrNames() []string {
+	return []string{"add", "remove"}
+}
+
+var declareTargetAdd = starlark.NewBuiltin("add", func(thread *starlark.Thread, fn *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	var starName starlark.String
 	var starKind starlark.String
 	var starAttrs starlark.Mapping
@@ -165,6 +178,7 @@ func (ai *declareTargetActionsImpl) AddCallable(thread *starlark.Thread, fn *sta
 		symbols = starUtils.ReadList(starSymbols, readTargetSymbols)
 	}
 
+	ai := fn.Receiver().(*declareTargetActionsImpl)
 	ai.Add(TargetDeclaration{
 		Name:    starName.GoString(),
 		Kind:    starKind.GoString(),
@@ -174,33 +188,17 @@ func (ai *declareTargetActionsImpl) AddCallable(thread *starlark.Thread, fn *sta
 	})
 
 	return starlark.None, nil
-}
-
-func (ai *declareTargetActionsImpl) RemoveCallable(thread *starlark.Thread, fn *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
+})
+var declareTargetRemove = starlark.NewBuiltin("remove", func(thread *starlark.Thread, fn *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	var t starlark.String
 	if err := starlark.UnpackPositionalArgs(fn.Name(), args, kwargs, 1, &t); err != nil {
 		return nil, err
 	}
 
+	ai := fn.Receiver().(*declareTargetActionsImpl)
 	ai.Remove(t.GoString())
 	return starlark.None, nil
-}
-
-func (ai *declareTargetActionsImpl) Attr(name string) (starlark.Value, error) {
-	switch name {
-	case "add":
-		// TODO: don't create every time
-		return starlark.NewBuiltin("add", ai.AddCallable), nil
-	case "remove":
-		// TODO: don't create every time
-		return starlark.NewBuiltin("remove", ai.RemoveCallable), nil
-	}
-
-	return nil, fmt.Errorf("no such attribute: %s", name)
-}
-func (*declareTargetActionsImpl) AttrNames() []string {
-	return []string{"add", "remove"}
-}
+})
 
 // ---------------- TargetSource
 
@@ -265,7 +263,7 @@ func (qd QueryDefinition) Hash() (uint32, error) {
 
 // ---------------- NamedQueries
 
-var _ starlark.Value = (NamedQueries)(nil)
+var _ starlark.Value = (*NamedQueries)(nil)
 
 func (nq NamedQueries) String() string {
 	keys := make([]string, 0, len(nq))
@@ -422,6 +420,52 @@ func (te TargetSymbol) Attr(name string) (starlark.Value, error) {
 func (te TargetSymbol) AttrNames() []string {
 	return []string{"id", "provider", "label"}
 }
+
+// ---------------- AnalyzeContext
+
+var _ starlark.Value = (*AnalyzeContext)(nil)
+var _ starlark.HasAttrs = (*AnalyzeContext)(nil)
+
+func (a *AnalyzeContext) Attr(name string) (starlark.Value, error) {
+	switch name {
+	case "source":
+		return a.Source, nil
+	case "add_symbol":
+		return analyzeContextAddSymbol.BindReceiver(a), nil
+	default:
+		return nil, starlark.NoSuchAttrError(name)
+	}
+}
+
+func (a *AnalyzeContext) AttrNames() []string {
+	return []string{"source"}
+}
+func (a *AnalyzeContext) Freeze() {}
+func (a *AnalyzeContext) Hash() (uint32, error) {
+	return 0, fmt.Errorf("unhashable: %s", a.Type())
+}
+func (a *AnalyzeContext) String() string {
+	return fmt.Sprintf("AnalyzeContext{source: %v}", a.Source)
+}
+func (a *AnalyzeContext) Truth() starlark.Bool { return starlark.True }
+func (a *AnalyzeContext) Type() string         { return "AnalyzeContext" }
+
+var analyzeContextAddSymbol = starlark.NewBuiltin("add_symbol", func(thread *starlark.Thread, fn *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
+	var id, provider_type, label string
+	err := starlark.UnpackArgs(
+		"add_symbol", args, kwargs,
+		"id", &id,
+		"provider_type", &provider_type,
+		"label", &label,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	ctx := fn.Receiver().(*AnalyzeContext)
+	ctx.database.AddSymbol(id, provider_type, label, ctx.Source.Path)
+	return starlark.None, nil
+})
 
 // ---------------- utils
 
