@@ -124,7 +124,11 @@ func newPrepareResult(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tup
 
 	queries := make(plugin.NamedQueries)
 	if queriesValue != nil {
-		for _, k := range queriesValue.Keys() {
+		iter := queriesValue.Iterate()
+		defer iter.Done()
+
+		var k starlark.Value
+		for iter.Next(&k) {
 			v, _, _ := queriesValue.Get(k)
 			q := v.(plugin.QueryDefinition)
 			queries[k.(starlark.String).GoString()] = q
