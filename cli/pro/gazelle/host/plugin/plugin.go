@@ -8,6 +8,11 @@ import (
 	"github.com/bazelbuild/bazel-gazelle/rule"
 )
 
+type PluginHost interface {
+	AddKind(k RuleKind)
+	AddPlugin(plugin Plugin)
+}
+
 // TODO: change the interface into a factory method (at least in starzelle)
 type Plugin interface {
 	// Static plugin metadata
