@@ -71,7 +71,7 @@ def DeclareTargets(ctx):
         )
     return {}
 
-starzelle.AddLanguagePlugin(
+starzelle.AddPlugin(
     id = LANG_NAME,
     properties = {},
     prepare = Prepare,

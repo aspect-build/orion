@@ -196,7 +196,7 @@ def is_native(imp):
 
     return False
 
-starzelle.AddLanguagePlugin(
+starzelle.AddPlugin(
     id = LANG_NAME,
     properties = {},
     prepare = Prepare,
