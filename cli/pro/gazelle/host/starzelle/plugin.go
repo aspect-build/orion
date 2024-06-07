@@ -109,7 +109,13 @@ func (p starzellePluginProxy) Prepare(ctx plugin.PrepareContext) plugin.PrepareR
 	}
 
 	BazelLog.Debugf("Invoked plugin %s:prepare(): %v\n", p.name, v)
-	return v.(plugin.PrepareResult)
+
+	pr, isPR := v.(plugin.PrepareResult)
+	if !isPR {
+		BazelLog.Fatalf("Prepare %v is not a PrepareResult", v)
+	}
+
+	return pr
 }
 
 // Analyze implements plugin.Plugin.
@@ -161,5 +167,16 @@ func readRuleKind(n starlark.String, v starlark.Value) plugin.RuleKind {
 }
 
 func readProperty(k string, v starlark.Value) plugin.Property {
-	return v.(plugin.Property)
+	p, isProp := v.(plugin.Property)
+
+	if !isProp {
+		BazelLog.Fatalf("Property %v is not a Property", k)
+	}
+
+	if p.Name != "" && p.Name != k {
+		BazelLog.Errorf("Property name %q does not match key %q", p.Name, k)
+	}
+
+	p.Name = k
+	return p
 }

@@ -8,6 +8,7 @@ package starzelle
 
 import (
 	starUtils "github.com/aspect-build/silo/cli/core/gazelle/common/starlark/utils"
+	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
 	"github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
 	"go.starlark.net/starlark"
 )
@@ -130,8 +131,13 @@ func newPrepareResult(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tup
 		var k starlark.Value
 		for iter.Next(&k) {
 			v, _, _ := queriesValue.Get(k)
-			q := v.(plugin.QueryDefinition)
-			queries[k.(starlark.String).GoString()] = q
+
+			qd, isQd := v.(plugin.QueryDefinition)
+			if !isQd {
+				BazelLog.Fatalf("'queries' %v is not a QueryDefinition", qd)
+			}
+
+			queries[k.(starlark.String).GoString()] = qd
 		}
 	}
 
@@ -147,7 +153,13 @@ func newPrepareResult(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tup
 }
 
 func readSourceFilter(v starlark.Value) plugin.SourceFilter {
-	return v.(plugin.SourceFilter)
+	f, isF := v.(plugin.SourceFilter)
+
+	if !isF {
+		BazelLog.Fatalf("'sources' %v is not a SourceFilter", f)
+	}
+
+	return f
 }
 
 func newImport(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
