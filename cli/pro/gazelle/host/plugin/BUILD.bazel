@@ -20,6 +20,6 @@ go_library(
         "@bazel_gazelle//rule:go_default_library",
         "@com_github_emirpasic_gods//utils",
         "@net_starlark_go//starlark",
-        "@net_starlark_go//starlarkstruct",
+        "@org_golang_x_exp//maps",
     ],
 )

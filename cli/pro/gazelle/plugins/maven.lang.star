@@ -4,11 +4,11 @@
 JAVA_MAVEN_INSTALL_FILE = "java_maven_install_file"
 DEFAULT_JAVA_MAVEN_INSTALL_FILE = "maven_install.json"
 
-def prepare(_ctx):
+def prepare(ctx):
     return starzelle.PrepareResult(
         # All source files to be processed
         sources = [
-            starzelle.SourceExtensions(DEFAULT_JAVA_MAVEN_INSTALL_FILE),
+            starzelle.SourceExtensions(ctx.properties[JAVA_MAVEN_INSTALL_FILE]),
         ],
         queries = {
             "imports": starzelle.Query(

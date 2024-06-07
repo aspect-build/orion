@@ -11,8 +11,48 @@ import (
 
 	starUtils "github.com/aspect-build/silo/cli/core/gazelle/common/starlark/utils"
 	"go.starlark.net/starlark"
-	"go.starlark.net/starlarkstruct"
+	"golang.org/x/exp/maps"
 )
+
+// ---------------- PropertyValues
+var _ starlark.Value = (*PropertyValues)(nil)
+var _ starlark.HasAttrs = (*PropertyValues)(nil)
+var _ starlark.Mapping = (*PropertyValues)(nil)
+
+func (p PropertyValues) String() string {
+	return fmt.Sprintf("PropertyValues{values: %v}", p.values)
+}
+func (p PropertyValues) Type() string         { return "PropertyValues" }
+func (p PropertyValues) Freeze()              {}
+func (p PropertyValues) Truth() starlark.Bool { return starlark.True }
+func (p PropertyValues) Hash() (uint32, error) {
+	return 0, fmt.Errorf("unhashable: %s", p.Type())
+}
+
+func (p PropertyValues) Attr(name string) (starlark.Value, error) {
+	if v, ok := p.values[name]; ok {
+		return starUtils.Write(v), nil
+	}
+
+	return nil, nil
+
+}
+func (p PropertyValues) AttrNames() []string {
+	return maps.Keys(p.values)
+}
+func (p PropertyValues) Get(k starlark.Value) (v starlark.Value, found bool, err error) {
+	if k.Type() != "string" {
+		return nil, false, fmt.Errorf("invalid key type, expected string")
+	}
+	key := k.(starlark.String).GoString()
+	r, found := p.values[key]
+
+	if !found {
+		return nil, false, fmt.Errorf("no property named: %s", key)
+	}
+
+	return starUtils.Write(r), true, nil
+}
 
 // ---------------- PrepareContext
 
@@ -36,12 +76,7 @@ func (ctx PrepareContext) Attr(name string) (starlark.Value, error) {
 	case "rel":
 		return starlark.String(ctx.Rel), nil
 	case "properties":
-		// TODO: don't copy every time
-		props := make([]starlark.Tuple, 0)
-		for k, v := range ctx.Properties {
-			props = append(props, starlark.Tuple{starlark.String(k), starUtils.Write(v)})
-		}
-		return starlarkstruct.FromKeywords(starlark.String("properties"), props), nil
+		return ctx.Properties, nil
 	}
 
 	return nil, fmt.Errorf("no such attribute: %s", name)
