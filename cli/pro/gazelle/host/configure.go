@@ -94,7 +94,7 @@ func configToPrepareContext(p plugin.Plugin, cfg *BUILDConfig) plugin.PrepareCon
 	ctx := plugin.PrepareContext{
 		RepoName:   cfg.repoName,
 		Rel:        cfg.rel,
-		Properties: make(map[string]interface{}),
+		Properties: plugin.NewPropertyValues(),
 	}
 
 	for k, p := range p.Properties() {
@@ -109,7 +109,7 @@ func configToPrepareContext(p plugin.Plugin, cfg *BUILDConfig) plugin.PrepareCon
 			}
 		}
 
-		ctx.Properties[k] = pValue
+		ctx.Properties.Add(k, pValue)
 	}
 
 	return ctx

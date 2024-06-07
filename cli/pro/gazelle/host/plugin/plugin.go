@@ -42,11 +42,25 @@ type Property struct {
 	Default      interface{}
 }
 
+type PropertyValues struct {
+	values map[string]interface{}
+}
+
+func NewPropertyValues() PropertyValues {
+	return PropertyValues{
+		values: make(map[string]interface{}),
+	}
+}
+
+func (pv PropertyValues) Add(name string, value interface{}) {
+	pv.values[name] = value
+}
+
 // The context for an extension to prepare for generating targets.
 type PrepareContext struct {
 	RepoName   string
 	Rel        string
-	Properties map[string]interface{}
+	Properties PropertyValues
 }
 
 // The result of an extension preparing for generating targets.
