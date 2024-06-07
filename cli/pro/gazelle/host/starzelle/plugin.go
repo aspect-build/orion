@@ -76,7 +76,7 @@ func (s *starzelleState) AddKind(name starlark.String, attributes *starlark.Dict
 	s.kinds = append(s.kinds, readRuleKind(name, attributes))
 }
 
-func (s *starzelleState) AddLanguagePlugin(pluginId starlark.String, properties *starlark.Dict, prepare, analyze, declare *starlark.Function) {
+func (s *starzelleState) AddPlugin(pluginId starlark.String, properties *starlark.Dict, prepare, analyze, declare *starlark.Function) {
 	var pluginProperties map[string]plugin.Property
 
 	if properties != nil {

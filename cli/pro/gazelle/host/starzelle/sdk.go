@@ -12,13 +12,13 @@ import (
 	"go.starlark.net/starlark"
 )
 
-func AddLanguagePlugin(t *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
+func AddPlugin(t *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	var pluginId starlark.String
 	var properties *starlark.Dict
 	var prepare, analyze, declare *starlark.Function
 
 	err := starlark.UnpackArgs(
-		"AddLanguagePlugin",
+		"AddPlugin",
 		args,
 		kwargs,
 		"id", &pluginId,
@@ -31,7 +31,7 @@ func AddLanguagePlugin(t *starlark.Thread, b *starlark.Builtin, args starlark.Tu
 		return nil, err
 	}
 
-	t.Local(proxyStateKey).(*starzelleState).AddLanguagePlugin(
+	t.Local(proxyStateKey).(*starzelleState).AddPlugin(
 		pluginId,
 		properties,
 		prepare,
@@ -208,16 +208,16 @@ func NewProperty(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, k
 var starzelleModule = starUtils.CreateModule(
 	"starzelle",
 	map[string]starUtils.ModuleFunction{
-		"AddLanguagePlugin": AddLanguagePlugin,
-		"AddKind":           addKind,
-		"Query":             NewQueryDefinition,
-		"PrepareResult":     NewPrepareResult,
-		"Import":            NewImport,
-		"Symbol":            NewSymbol,
-		"Property":          NewProperty,
-		"SourceExtensions":  NewSourceExtensions,
-		"SourceGlobs":       NewSourceGlobs,
-		"SourceFiles":       NewSourceFiles,
+		"AddPlugin":        AddPlugin,
+		"AddKind":          addKind,
+		"Query":            NewQueryDefinition,
+		"PrepareResult":    NewPrepareResult,
+		"Import":           NewImport,
+		"Symbol":           NewSymbol,
+		"Property":         NewProperty,
+		"SourceExtensions": NewSourceExtensions,
+		"SourceGlobs":      NewSourceGlobs,
+		"SourceFiles":      NewSourceFiles,
 	},
 	map[string]starlark.Value{},
 )
