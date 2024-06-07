@@ -12,13 +12,13 @@ import (
 	"go.starlark.net/starlark"
 )
 
-func AddPlugin(t *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
+func addPlugin(t *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	var pluginId starlark.String
 	var properties *starlark.Dict
 	var prepare, analyze, declare *starlark.Function
 
 	err := starlark.UnpackArgs(
-		"AddPlugin",
+		"add_plugin",
 		args,
 		kwargs,
 		"id", &pluginId,
@@ -47,7 +47,7 @@ func addKind(t *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwarg
 	var attributes *starlark.Dict
 
 	err := starlark.UnpackArgs(
-		"AddKind",
+		"add_kind",
 		args,
 		kwargs,
 		"name", &kind,
@@ -61,7 +61,7 @@ func addKind(t *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwarg
 	return starlark.None, nil
 }
 
-func NewQueryDefinition(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
+func newQueryDefinition(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	var queryType, query starlark.String
 	var filterValue starlark.Value
 	var grammarValue starlark.String
@@ -92,25 +92,25 @@ func NewQueryDefinition(_ *starlark.Thread, b *starlark.Builtin, args starlark.T
 	}, nil
 }
 
-func NewSourceExtensions(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
+func newSourceExtensions(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	return plugin.SourceExtensionsFilter{
 		Extensions: starUtils.ReadStringTuple(args),
 	}, nil
 }
 
-func NewSourceGlobs(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
+func newSourceGlobs(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	return plugin.SourceGlobFilter{
 		Globs: starUtils.ReadStringTuple(args),
 	}, nil
 }
 
-func NewSourceFiles(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
+func newSourceFiles(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	return plugin.SourceFileFilter{
 		Files: starUtils.ReadStringTuple(args),
 	}, nil
 }
 
-func NewPrepareResult(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
+func newPrepareResult(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	var queriesValue *starlark.Dict
 	var sourcesValue *starlark.List
 
@@ -146,7 +146,7 @@ func readSourceFilter(v starlark.Value) plugin.SourceFilter {
 	return v.(plugin.SourceFilter)
 }
 
-func NewImport(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
+func newImport(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	var id, provider, from starlark.String
 
 	starlark.UnpackArgs(
@@ -167,7 +167,7 @@ func NewImport(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwa
 	}, nil
 }
 
-func NewSymbol(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
+func newSymbol(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	var id, provider, label starlark.String
 
 	starlark.UnpackArgs(
@@ -188,7 +188,7 @@ func NewSymbol(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwa
 	}, nil
 }
 
-func NewProperty(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
+func newProperty(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	var propType, propDefault starlark.String
 
 	starlark.UnpackArgs(
@@ -208,16 +208,16 @@ func NewProperty(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, k
 var starzelleModule = starUtils.CreateModule(
 	"starzelle",
 	map[string]starUtils.ModuleFunction{
-		"AddPlugin":        AddPlugin,
-		"AddKind":          addKind,
-		"Query":            NewQueryDefinition,
-		"PrepareResult":    NewPrepareResult,
-		"Import":           NewImport,
-		"Symbol":           NewSymbol,
-		"Property":         NewProperty,
-		"SourceExtensions": NewSourceExtensions,
-		"SourceGlobs":      NewSourceGlobs,
-		"SourceFiles":      NewSourceFiles,
+		"add_plugin":       addPlugin,
+		"add_kind":         addKind,
+		"Query":            newQueryDefinition,
+		"PrepareResult":    newPrepareResult,
+		"Import":           newImport,
+		"Symbol":           newSymbol,
+		"Property":         newProperty,
+		"SourceExtensions": newSourceExtensions,
+		"SourceGlobs":      newSourceGlobs,
+		"SourceFiles":      newSourceFiles,
 	},
 	map[string]starlark.Value{},
 )

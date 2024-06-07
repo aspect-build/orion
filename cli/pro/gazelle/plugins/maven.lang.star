@@ -51,7 +51,7 @@ def analyze_source(ctx):
                 label = "@maven//:{}".format(coord),
             )
 
-starzelle.AddPlugin(
+starzelle.add_plugin(
     id = "maven",
     properties = {
         JAVA_MAVEN_INSTALL_FILE: starzelle.Property(

@@ -12,7 +12,7 @@ def Properties():
         },
     }
 
-def Prepare(_):
+def prepare(_):
     return {
         "extensions": [".ext", ".ext2"],
         "queries": {
@@ -41,7 +41,7 @@ def Prepare(_):
 #
 # query_results:
 #   [query_key]  bool|string|None
-def DeclareTargets(ctx):
+def declare_targets(ctx):
     """
     This function declares targets based on the context.
 
@@ -96,7 +96,7 @@ def is_native(imp):
 
     return False
 
-starzelle.AddKind("my_rule", {
+starzelle.add_kind("my_rule", {
     "From": "@my_ruleset//:defs.bzl",
     "NonEmptyAttrs": {
         "srcs": True,

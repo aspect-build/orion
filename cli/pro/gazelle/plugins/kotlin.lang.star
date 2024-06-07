@@ -9,7 +9,7 @@ PROVIDER_NAME = "kt"
 
 LANG_NAME = "kotlin"
 
-starzelle.AddKind(KT_JVM_LIBRARY, {
+starzelle.add_kind(KT_JVM_LIBRARY, {
     "From": "@" + RULES_KOTLIN_REPO_NAME + "//kotlin:jvm.bzl",
     "NonEmptyAttrs": {
         "srcs": True,
@@ -22,7 +22,7 @@ starzelle.AddKind(KT_JVM_LIBRARY, {
     },
 })
 
-starzelle.AddKind(KT_JVM_BINARY, {
+starzelle.add_kind(KT_JVM_BINARY, {
     "From": "@" + RULES_KOTLIN_REPO_NAME + "//kotlin:jvm.bzl",
     "NonEmptyAttrs": {
         "srcs": True,
@@ -30,7 +30,7 @@ starzelle.AddKind(KT_JVM_BINARY, {
     },
 })
 
-def Prepare(_):
+def prepare(_):
     return starzelle.PrepareResult(
         # All source files to be processed
         sources = [
@@ -83,7 +83,7 @@ def Prepare(_):
 #
 # query_results:
 #   [query_key]  bool|string|None
-def DeclareTargets(ctx):
+def declare_targets(ctx):
     """
     This function declares targets based on the context.
 
@@ -196,9 +196,9 @@ def is_native(imp):
 
     return False
 
-starzelle.AddPlugin(
+starzelle.add_plugin(
     id = LANG_NAME,
     properties = {},
-    prepare = Prepare,
-    declare = DeclareTargets,
+    prepare = prepare,
+    declare = declare_targets,
 )

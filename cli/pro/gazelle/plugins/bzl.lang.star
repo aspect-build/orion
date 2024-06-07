@@ -3,11 +3,11 @@ BZL_LIBRARY = "bzl_library"
 LANG_NAME = "starlark"
 BZL_EXT = ".bzl"
 
-starzelle.AddKind(BZL_LIBRARY, {
+starzelle.add_kind(BZL_LIBRARY, {
     "From": "@bazel_skylib//:bzl_library.bzl",
 })
 
-def Prepare(_):
+def prepare(_):
     return starzelle.PrepareResult(
         sources = [
             starzelle.SourceExtensions(".bzl"),
@@ -30,7 +30,7 @@ def Prepare(_):
         },
     )
 
-def DeclareTargets(ctx):
+def declare_targets(ctx):
     # TODO
     # Loop through the existing bzl_library targets in this package and
     # delete any that are no longer needed.
@@ -71,9 +71,9 @@ def DeclareTargets(ctx):
         )
     return {}
 
-starzelle.AddPlugin(
+starzelle.add_plugin(
     id = LANG_NAME,
     properties = {},
-    prepare = Prepare,
-    declare = DeclareTargets,
+    prepare = prepare,
+    declare = declare_targets,
 )
