@@ -144,6 +144,25 @@ func (sf SourceFileFilter) Match(p string) bool {
 	return false
 }
 
+type AnalyzeContext struct {
+	Source   *TargetSource
+	database *Database
+}
+
+func (a AnalyzeContext) AddSymbol(label string, symbol Symbol) {
+	a.database.Symbols = append(a.database.Symbols, TargetSymbol{
+		Symbol: symbol,
+		Label:  label,
+	})
+}
+
+func NewAnalyzeContext(source *TargetSource, database *Database) AnalyzeContext {
+	return AnalyzeContext{
+		Source:   source,
+		database: database,
+	}
+}
+
 // The context for an extension to generate targets.
 //
 // Queries results are mapped by file extension, each containing a map of
