@@ -9,7 +9,7 @@ import (
 
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
 	"github.com/bazelbuild/bazel-gazelle/config"
-	gitignore "github.com/go-git/go-git/plumbing/format/gitignore"
+	gitignore "github.com/go-git/go-git/v5/plumbing/format/gitignore"
 )
 
 // Wrap the ignore files along with the relative path they were loaded from

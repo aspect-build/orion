@@ -17,7 +17,6 @@ require (
 	github.com/buildkite/terminal v3.2.0+incompatible
 	github.com/emirpasic/gods v1.18.1
 	github.com/fatih/color v1.16.0
-	github.com/go-git/go-git v4.7.0+incompatible
 	github.com/go-test/deep v1.1.0
 	github.com/golang/mock v1.7.0-rc.1
 	github.com/golang/protobuf v1.5.3
@@ -56,6 +55,7 @@ require (
 require (
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.36.3
 	github.com/charmbracelet/huh v0.3.0
+	github.com/go-git/go-git/v5 v5.12.0
 	github.com/hay-kot/scaffold v0.0.99
 	github.com/sourcegraph/go-diff v0.7.0
 )
@@ -84,7 +84,6 @@ require (
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect
 	github.com/go-git/go-billy/v5 v5.5.0 // indirect
-	github.com/go-git/go-git/v5 v5.12.0 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-sprout/sprout v0.3.0 // indirect
 	github.com/gorilla/css v1.0.1 // indirect
@@ -110,7 +109,6 @@ require (
 	github.com/sahilm/fuzzy v0.1.1 // indirect
 	github.com/sergi/go-diff v1.3.2-0.20230802210424-5b0b94c5c0d3 // indirect
 	github.com/skeema/knownhosts v1.2.2 // indirect
-	github.com/src-d/gcfg v1.4.0 // indirect
 	github.com/urfave/cli/v2 v2.27.2 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	github.com/xrash/smetrics v0.0.0-20240312152122-5f08fbb34913 // indirect
@@ -123,8 +121,6 @@ require (
 	golang.org/x/term v0.18.0 // indirect
 	golang.org/x/tools v0.17.0 // indirect
 	golang.org/x/tools/go/vcs v0.1.0-deprecated // indirect
-	gopkg.in/src-d/go-billy.v4 v4.3.2 // indirect
-	gopkg.in/src-d/go-git.v4 v4.13.1 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 )
 
