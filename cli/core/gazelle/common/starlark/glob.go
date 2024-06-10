@@ -24,6 +24,7 @@ import (
 
 	common "github.com/aspect-build/silo/cli/core/gazelle/common"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
+	"github.com/bazelbuild/bazel-gazelle/config"
 	bzl "github.com/bazelbuild/buildtools/build"
 )
 
@@ -231,7 +232,7 @@ func (pt *BazelPackageTree) AddPath(parts []string) {
 			if !isFile {
 				dir := path.Join(parts[:i+1]...)
 				dir = path.Join(*pt.pkg, dir)
-				isBazelPkg = common.IsBazelPackage(dir)
+				isBazelPkg = common.HasBUILDFile(config.DefaultValidBuildFileNames, dir)
 			}
 			branch = &BazelPackageTree{
 				pkg:            pt.pkg,
