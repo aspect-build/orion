@@ -72,6 +72,18 @@ func (configurer *GazelleHost) Configure(c *config.Config, rel string, f *rule.F
 		}
 	}
 
+	// All generation may disabled.
+	if config.GenerationMode() == GenerationModeNone {
+		BazelLog.Tracef("Configure disabled: %q", rel)
+		return
+	}
+
+	// Generating new BUILDs may disabled.
+	if config.GenerationMode() == GenerationModeUpdate && f == nil {
+		BazelLog.Tracef("Configure BUILD creation disabled: %q", rel)
+		return
+	}
+
 	// Prepare the plugins for this configuration.
 	// TODO: parallelize
 	for k, p := range configurer.plugins {
