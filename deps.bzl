@@ -188,6 +188,15 @@ def go_dependencies():
         version = "v0.48.0",
     )
     go_repository(
+        name = "com_github_bazelbuild_rules_python_gazelle",
+        # Overwrite BUILD files in rules_python which reference Bazel symbols
+        build_file_generation = "on",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/bazelbuild/rules_python/gazelle",
+        sum = "h1:a473CcQ65A1Dl3RMD2ULOqm5ShBnz853g8OAWl2MuCA=",
+        version = "v0.0.0-20240610103109-49cdf7d3fe00",
+    )
+    go_repository(
         name = "com_github_bgentry_go_netrc",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bgentry/go-netrc",
@@ -480,6 +489,13 @@ def go_dependencies():
         importpath = "github.com/fsnotify/fsnotify",
         sum = "h1:8JEhPFa5W2WU7YfeZzPNqzMP6Lwt7L2715Ggo0nosvA=",
         version = "v1.7.0",
+    )
+    go_repository(
+        name = "com_github_ghodss_yaml",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/ghodss/yaml",
+        sum = "h1:wQHKEahhL6wmXdzwWG11gIVCkOv05bNOh+Rxn0yngAk=",
+        version = "v1.0.0",
     )
     go_repository(
         name = "com_github_gliderlabs_ssh",
@@ -1390,6 +1406,7 @@ def go_dependencies():
         name = "com_github_smacker_go_tree_sitter",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/smacker/go-tree-sitter",
+        patches = ["//patches:com_github_smacker_go_tree_sitter.patch"],  # keep
         sum = "h1:nOtrYzQNgRipVsrOkYpVU/ZMDS3/+78It68cPBPKy8A=",
         version = "v0.0.0-20240514083259-c5d1f3f5f99e",
     )
