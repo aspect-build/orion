@@ -38,7 +38,7 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 	}
 
 	// Generating new BUILDs may disabled.
-	if cfg.GenerationMode() == GenerationModeUpdate && !gazelle.IsBazelPackage(args.Dir) {
+	if cfg.GenerationMode() == GenerationModeUpdate && !gazelle.IsBazelPackage(args.Config, args.Dir) {
 		BazelLog.Tracef("GenerateRules BUILD creation disabled: %q", args.Rel)
 		return gazelleLanguage.GenerateResult{}
 	}
