@@ -54,6 +54,7 @@ require (
 
 require (
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.36.3
+	github.com/bazelbuild/rules_python/gazelle v0.0.0-20240610103109-49cdf7d3fe00
 	github.com/charmbracelet/huh v0.3.0
 	github.com/go-git/go-git/v5 v5.12.0
 	github.com/hay-kot/scaffold v0.0.99
