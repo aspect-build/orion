@@ -17,6 +17,7 @@ go_library(
         "//cli/core/gazelle/common/starlark/utils",
         "//cli/core/gazelle/common/treesitter",
         "@bazel_gazelle//rule:go_default_library",
+        "@com_github_bmatcuk_doublestar_v4//:doublestar",
         "@com_github_emirpasic_gods//utils",
         "@net_starlark_go//starlark",
         "@org_golang_x_exp//maps",
