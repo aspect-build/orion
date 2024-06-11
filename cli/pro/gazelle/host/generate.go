@@ -82,6 +82,7 @@ func (host *GazelleHost) convertPlugTargetsToGenerateResult(pluginTargets map[st
 		for _, target := range declareResults {
 			// If marked for removal simply add to the empty list and continue
 			if target.Remove {
+				BazelLog.Debugf("GenerateRules remove target: %s %s(%q)", args.Rel, target.Kind, target.Name)
 				result.Empty = append(result.Empty, gazelleRule.NewRule(target.Kind, target.Name))
 				continue
 			}
@@ -101,6 +102,8 @@ func (host *GazelleHost) convertPlugTargetsToGenerateResult(pluginTargets map[st
 			for attr, val := range target.Attrs {
 				targetRule.SetAttr(attr, val)
 			}
+
+			BazelLog.Tracef("GenerateRules add target: %s %s(%q)", args.Rel, target.Kind, target.Name)
 
 			result.Gen = append(result.Gen, targetRule)
 			result.Imports = append(result.Imports, target.Imports)

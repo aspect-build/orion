@@ -108,7 +108,7 @@ func (p starzellePluginProxy) Prepare(ctx plugin.PrepareContext) plugin.PrepareR
 		return EmptyPrepareResult
 	}
 
-	BazelLog.Debugf("Invoked plugin %s:prepare(): %v\n", p.name, v)
+	BazelLog.Debugf("Invoked plugin %s:prepare(%q): %v\n", p.name, ctx.Rel, v)
 
 	pr, isPR := v.(plugin.PrepareResult)
 	if !isPR {
@@ -143,7 +143,7 @@ func (p starzellePluginProxy) DeclareTargets(ctx plugin.DeclareTargetsContext) p
 		return EmptyDeclareTargetsResult
 	}
 
-	BazelLog.Debugf("Invoked plugin %s:DeclareTargets(): %v\n", p.name, v)
+	BazelLog.Debugf("Invoked plugin %s:DeclareTargets(%q): %v\n", p.name, ctx.Rel, v)
 	return readDeclareTargetsResult(v)
 }
 
