@@ -2,10 +2,10 @@ package plugin
 
 import (
 	"fmt"
-	"path/filepath"
 	"strings"
 
 	"github.com/bazelbuild/bazel-gazelle/rule"
+	"github.com/bmatcuk/doublestar/v4"
 )
 
 type PluginHost interface {
@@ -102,7 +102,7 @@ type SourceGlobFilter struct {
 
 func (f SourceGlobFilter) Match(p string) bool {
 	for _, glob := range f.Globs {
-		m, err := filepath.Match(glob, p)
+		m, err := doublestar.Match(glob, p)
 		if err != nil {
 			fmt.Printf("Error matching glob: %v", err)
 			return false
