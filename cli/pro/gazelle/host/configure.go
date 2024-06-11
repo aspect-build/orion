@@ -37,7 +37,7 @@ func (c *GazelleHost) KnownDirectives() []string {
 }
 
 func (configurer *GazelleHost) Configure(c *config.Config, rel string, f *rule.File) {
-	BazelLog.Tracef("Configure %s", rel)
+	BazelLog.Tracef("Configure: %s", rel)
 
 	// Collect the ignore files for this package
 	configurer.gitignore.CollectIgnoreFiles(c, rel)
