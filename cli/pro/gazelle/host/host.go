@@ -60,6 +60,11 @@ func NewHost() *GazelleHost {
 		database:        &plugin.Database{},
 	}
 
+	// Initialize with builtin kinds. Plugins can add/overwrite these.
+	for _, k := range builtinKinds {
+		l.kinds[k.Name] = k
+	}
+
 	l.loadStarzellePlugins()
 
 	return l
@@ -117,17 +122,15 @@ func (h *GazelleHost) AddKind(k plugin.RuleKind) {
 
 	BazelLog.Infof("Loaded kind %q", k.Name)
 	h.kinds[k.Name] = k
+
+	// Clear cached plugin.RuleKind => gazelle mapping.
+	h.gazelleKindInfo = nil
+	h.gazelleLoadInfo = nil
 }
 
 func (h *GazelleHost) Kinds() map[string]rule.KindInfo {
 	if h.gazelleKindInfo == nil {
-		h.gazelleKindInfo = make(map[string]rule.KindInfo, len(h.kinds)+len(builtinKinds))
-
-		// Builtin
-		for _, k := range builtinKinds {
-			h.gazelleKindInfo[k.Name] = k.KindInfo
-			h.sourceRuleKinds.Add(k.Name)
-		}
+		h.gazelleKindInfo = make(map[string]rule.KindInfo, len(h.kinds))
 
 		// Configured by plugins, potentially overriding builtin
 		for k, v := range h.kinds {
@@ -141,7 +144,7 @@ func (h *GazelleHost) Kinds() map[string]rule.KindInfo {
 
 func (h *GazelleHost) Loads() []rule.LoadInfo {
 	if h.gazelleLoadInfo == nil {
-		h.gazelleLoadInfo = make([]rule.LoadInfo, 0)
+		h.gazelleLoadInfo = make([]rule.LoadInfo, 0, len(h.kinds))
 
 		loads := make(map[string]*rule.LoadInfo)
 
