@@ -169,7 +169,7 @@ def go_dependencies():
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bazelbuild/bazelisk",
         patch_args = ["-p1"],  # keep
-        patches = ["//patches:com_github_bazelbuild_bazelisk_two_segment_forks.patch"],  # keep
+        patches = ["//third_party:github.com/bazelbuild/bazelisk/two_segment_forks.patch"],  # keep
         sum = "h1:TDt+a1PYrnBF9on3WRJUisXXFhCMrhcNo8OebyS5Q34=",
         version = "v1.17.0",
     )
@@ -712,7 +712,7 @@ def go_dependencies():
         build_file_proto_mode = "disable_global",
         importpath = "github.com/google/triage-party",
         patch_args = ["-p1"],  # keep
-        patches = ["//patches:com_github_google_triage_party.patch"],  # keep
+        patches = ["//third_party:github.com/google/triage_party/file_groups.patch"],  # keep
         sum = "h1:AAhTHQ6QEPG7vGgFoepA+NS4Fo+ryPM+YOL8dua4QZU=",
         version = "v1.6.0",
     )
@@ -1406,7 +1406,7 @@ def go_dependencies():
         name = "com_github_smacker_go_tree_sitter",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/smacker/go-tree-sitter",
-        patches = ["//patches:com_github_smacker_go_tree_sitter.patch"],  # keep
+        patches = ["//third_party:github.com/smacker/go-tree-sitter/cc_library.patch"],  # keep
         sum = "h1:nOtrYzQNgRipVsrOkYpVU/ZMDS3/+78It68cPBPKy8A=",
         version = "v0.0.0-20240514083259-c5d1f3f5f99e",
     )
