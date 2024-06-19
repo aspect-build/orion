@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"path/filepath"
 
+	common "github.com/aspect-build/silo/cli/core/gazelle/common"
 	plugin "github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
 	"github.com/bazelbuild/bazel-gazelle/label"
 	"github.com/bmatcuk/doublestar/v4"
@@ -23,7 +24,7 @@ type BUILDConfig struct {
 	directiveRawValues map[string][]string
 
 	// General global config
-	generationMode GenerationModeType
+	generationMode common.GenerationModeType
 
 	// Custom/overridden resolutions
 	resolves *linkedhashmap.Map
@@ -32,21 +33,6 @@ type BUILDConfig struct {
 	pluginPrepareResults map[string]pluginConfig
 }
 
-// GenerationModeType represents one of the generation modes.
-type GenerationModeType string
-
-// Generation modes
-const (
-	// None: do not update or create any BUILD files
-	GenerationModeNone GenerationModeType = "none"
-
-	// Update: update and maintain existing BUILD files
-	GenerationModeUpdate GenerationModeType = "update"
-
-	// Create: create new and updating existing BUILD files
-	GenerationModeCreate GenerationModeType = "create"
-)
-
 func NewRootConfig(repoName string) *BUILDConfig {
 	r := &BUILDConfig{
 		repoName:           repoName,
@@ -54,7 +40,7 @@ func NewRootConfig(repoName string) *BUILDConfig {
 		all:                make(map[string]*BUILDConfig),
 		directiveRawValues: make(map[string][]string),
 
-		generationMode: GenerationModeCreate,
+		generationMode: common.GenerationModeCreate,
 		resolves:       linkedhashmap.New(),
 
 		pluginPrepareResults: make(map[string]pluginConfig),
@@ -109,12 +95,12 @@ func (p *BUILDConfig) GetConfig(rel string) *BUILDConfig {
 
 // GenerationMode returns whether coarse-grained targets should be
 // generated or not.
-func (c *BUILDConfig) GenerationMode() GenerationModeType {
+func (c *BUILDConfig) GenerationMode() common.GenerationModeType {
 	return c.generationMode
 }
 
 // SetGenerationMode sets the generation mode.
-func (c *BUILDConfig) SetGenerationMode(mode GenerationModeType) {
+func (c *BUILDConfig) SetGenerationMode(mode common.GenerationModeType) {
 	c.generationMode = mode
 }
 

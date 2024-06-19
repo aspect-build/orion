@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 
+	common "github.com/aspect-build/silo/cli/core/gazelle/common"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
 	"github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
 	"github.com/bazelbuild/bazel-gazelle/config"
@@ -17,7 +18,7 @@ func (c *GazelleHost) KnownDirectives() []string {
 	if c.gazelleDirectives == nil {
 		c.gazelleDirectives = []string{
 			// Core builtin directives
-			Directive_GenerationMode,
+			common.Directive_GenerationMode,
 		}
 
 		// TODO: verify no collisions with other plugins/globals
@@ -56,30 +57,30 @@ func (configurer *GazelleHost) Configure(c *config.Config, rel string, f *rule.F
 
 			// Generic non-plugin specific directives
 			switch d.Key {
-			case Directive_GenerationMode:
-				mode := GenerationModeType(strings.TrimSpace(d.Value))
+			case common.Directive_GenerationMode:
+				mode := common.GenerationModeType(strings.TrimSpace(d.Value))
 				switch mode {
-				case GenerationModeCreate:
+				case common.GenerationModeCreate:
 					config.SetGenerationMode(mode)
-				case GenerationModeUpdate:
+				case common.GenerationModeUpdate:
 					config.SetGenerationMode(mode)
-				case GenerationModeNone:
+				case common.GenerationModeNone:
 					config.SetGenerationMode(mode)
 				default:
-					BazelLog.Fatalf("invalid value for directive %q: %s", Directive_GenerationMode, d.Value)
+					BazelLog.Fatalf("invalid value for directive %q: %s", common.Directive_GenerationMode, d.Value)
 				}
 			}
 		}
 	}
 
 	// All generation may disabled.
-	if config.GenerationMode() == GenerationModeNone {
+	if config.GenerationMode() == common.GenerationModeNone {
 		BazelLog.Tracef("Configure(%s) disabled: %q", GazelleLanguageName, rel)
 		return
 	}
 
 	// Generating new BUILDs may disabled.
-	if config.GenerationMode() == GenerationModeUpdate && f == nil {
+	if config.GenerationMode() == common.GenerationModeUpdate && f == nil {
 		BazelLog.Tracef("Configure(%s) BUILD creation disabled: %q", GazelleLanguageName, rel)
 		return
 	}

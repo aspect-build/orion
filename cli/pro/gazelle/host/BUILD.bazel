@@ -9,7 +9,6 @@ go_library(
         "builtin.go",
         "config.go",
         "configure.go",
-        "directives.go",
         "generate.go",
         "host.go",
         "resolver.go",
