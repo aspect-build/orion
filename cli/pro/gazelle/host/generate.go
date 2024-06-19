@@ -5,7 +5,7 @@ import (
 	"os"
 	"path"
 
-	gazelle "github.com/aspect-build/silo/cli/core/gazelle/common"
+	common "github.com/aspect-build/silo/cli/core/gazelle/common"
 	treeutils "github.com/aspect-build/silo/cli/core/gazelle/common/treesitter"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
 	plugin "github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
@@ -30,13 +30,13 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 	cfg := args.Config.Exts[GazelleLanguageName].(*BUILDConfig).GetConfig(args.Rel)
 
 	// All generation may disabled.
-	if cfg.GenerationMode() == GenerationModeNone {
+	if cfg.GenerationMode() == common.GenerationModeNone {
 		BazelLog.Tracef("GenerateRules(%s) disabled: %q", GazelleLanguageName, args.Rel)
 		return gazelleLanguage.GenerateResult{}
 	}
 
 	// Generating new BUILDs may disabled.
-	if cfg.GenerationMode() == GenerationModeUpdate && args.File == nil {
+	if cfg.GenerationMode() == common.GenerationModeUpdate && args.File == nil {
 		BazelLog.Tracef("GenerateRules(%s) BUILD creation disabled: %s", GazelleLanguageName, args.Rel)
 		return gazelleLanguage.GenerateResult{}
 	}
@@ -52,7 +52,7 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 
 	// Collect source files grouped by plugins consuming them.
 	// Recurse if subdirectories will not generate their own BUILD files
-	sourceFilesByPlugin := host.collectSourceFilesByPlugin(cfg, args, cfg.GenerationMode() == GenerationModeUpdate)
+	sourceFilesByPlugin := host.collectSourceFilesByPlugin(cfg, args, cfg.GenerationMode() == common.GenerationModeUpdate)
 
 	pluginTargets := make(map[string][]plugin.TargetDeclaration)
 
@@ -88,7 +88,7 @@ func (host *GazelleHost) convertPlugTargetsToGenerateResult(pluginTargets map[st
 			}
 
 			// Check for name-collisions with the rule being generated.
-			colError := gazelle.CheckCollisionErrors(target.Name, target.Kind, host.sourceRuleKinds, args)
+			colError := common.CheckCollisionErrors(target.Name, target.Kind, host.sourceRuleKinds, args)
 			if colError != nil {
 				fmt.Fprintf(os.Stderr, "Source rule generation error: %v\n", colError)
 				os.Exit(1)
@@ -189,7 +189,7 @@ func (host *GazelleHost) collectSourceFilesByPlugin(cfg *BUILDConfig, args gazel
 	}
 
 	// Collect source files managed by this BUILD for each plugin.
-	gazelle.GazelleWalkDir(args, host.gitignore.Matches, excludes, recurse, func(f string) error {
+	common.GazelleWalkDir(args, host.gitignore.Matches, excludes, recurse, func(f string) error {
 		for pluginId, p := range cfg.pluginPrepareResults {
 			for _, s := range p.Sources {
 				if s.Match(f) {
