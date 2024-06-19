@@ -37,7 +37,7 @@ func (c *GazelleHost) KnownDirectives() []string {
 }
 
 func (configurer *GazelleHost) Configure(c *config.Config, rel string, f *rule.File) {
-	BazelLog.Tracef("Configure: %s", rel)
+	BazelLog.Tracef("Configure(%s): %s", GazelleLanguageName, rel)
 
 	// Collect the ignore files for this package
 	configurer.gitignore.CollectIgnoreFiles(c, rel)
@@ -74,13 +74,13 @@ func (configurer *GazelleHost) Configure(c *config.Config, rel string, f *rule.F
 
 	// All generation may disabled.
 	if config.GenerationMode() == GenerationModeNone {
-		BazelLog.Tracef("Configure disabled: %q", rel)
+		BazelLog.Tracef("Configure(%s) disabled: %q", GazelleLanguageName, rel)
 		return
 	}
 
 	// Generating new BUILDs may disabled.
 	if config.GenerationMode() == GenerationModeUpdate && f == nil {
-		BazelLog.Tracef("Configure BUILD creation disabled: %q", rel)
+		BazelLog.Tracef("Configure(%s) BUILD creation disabled: %q", GazelleLanguageName, rel)
 		return
 	}
 

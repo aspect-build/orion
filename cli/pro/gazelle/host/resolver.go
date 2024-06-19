@@ -42,7 +42,7 @@ func symbolToImportSpec(symbol plugin.Symbol) resolve.ImportSpec {
 
 // Determine what rule (r) outputs which can be imported.
 func (re *GazelleHost) Imports(c *config.Config, r *rule.Rule, f *rule.File) []resolve.ImportSpec {
-	BazelLog.Debugf("Imports: '%s:%s'", f.Pkg, r.Name())
+	BazelLog.Debugf("Imports(%s): '%s:%s'", GazelleLanguageName, f.Pkg, r.Name())
 
 	targetDeclarationAttr := r.PrivateAttr(targetDeclarationKey)
 	if targetDeclarationAttr == nil {

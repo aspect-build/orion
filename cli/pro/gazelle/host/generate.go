@@ -27,21 +27,21 @@ const (
 //   - which rules to delete (GenerateResult.Empty)
 //   - which rules to create (or merge with existing) and their associated metadata (GenerateResult.Gen + GenerateResult.Imports)
 func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazelleLanguage.GenerateResult {
-	BazelLog.Tracef("GenerateRules: %q", args.Rel)
-
 	cfg := args.Config.Exts[GazelleLanguageName].(*BUILDConfig).GetConfig(args.Rel)
 
 	// All generation may disabled.
 	if cfg.GenerationMode() == GenerationModeNone {
-		BazelLog.Tracef("GenerateRules disabled: %q", args.Rel)
+		BazelLog.Tracef("GenerateRules(%s) disabled: %q", GazelleLanguageName, args.Rel)
 		return gazelleLanguage.GenerateResult{}
 	}
 
 	// Generating new BUILDs may disabled.
 	if cfg.GenerationMode() == GenerationModeUpdate && args.File == nil {
-		BazelLog.Tracef("GenerateRules BUILD creation disabled: %q", args.Rel)
+		BazelLog.Tracef("GenerateRules(%s) BUILD creation disabled: %s", GazelleLanguageName, args.Rel)
 		return gazelleLanguage.GenerateResult{}
 	}
+
+	BazelLog.Tracef("GenerateRules(%s): %s", GazelleLanguageName, args.Rel)
 
 	// TODO: normally would...
 	//   1. collect "source files"
@@ -103,7 +103,7 @@ func (host *GazelleHost) convertPlugTargetsToGenerateResult(pluginTargets map[st
 				targetRule.SetAttr(attr, val)
 			}
 
-			BazelLog.Tracef("GenerateRules add target: %s %s(%q)", args.Rel, target.Kind, target.Name)
+			BazelLog.Tracef("GenerateRules(%s) add target: %s %s(%q)", GazelleLanguageName, args.Rel, target.Kind, target.Name)
 
 			result.Gen = append(result.Gen, targetRule)
 			result.Imports = append(result.Imports, target.Imports)
