@@ -158,7 +158,10 @@ def go_dependencies():
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bazelbuild/bazel-gazelle",
         patch_args = ["-p1"],  # keep
-        patches = ["//cli/core:patches/bazelbuild_bazel-gazelle_aspect-cli.patch"],  # keep
+        patches = [
+            "//cli/core:patches/bazelbuild_bazel-gazelle_aspect-cli.patch",  # keep
+            "//cli/core:patches/bazelbuild_bazel-gazelle_aspect-walk-subdir.patch",  # keep
+        ],
         sum = "h1:vCNhz75HxeeLUkDMhDkNeDSJfjUROMswex+NyYLPY6A=",
         # Ensure this version always matches the version of @bazel_gazelle set in fetch.bzl.
         version = "v0.37.0",
