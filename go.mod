@@ -31,7 +31,7 @@ require (
 	github.com/onsi/gomega v1.31.1
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/pmezard/go-difflib v1.0.0
-	github.com/reviewdog/errorformat v0.0.0-20231214114315-6dd01ea41b1f
+	github.com/reviewdog/errorformat v0.0.0-20240608101709-1d3280ed6bd4
 	github.com/rogpeppe/go-internal v1.11.0
 	github.com/rs/zerolog v1.33.0
 	github.com/slack-go/slack v0.12.2
@@ -58,7 +58,9 @@ require (
 	github.com/charmbracelet/huh v0.3.0
 	github.com/go-git/go-git/v5 v5.12.0
 	github.com/hay-kot/scaffold v0.0.99
+	github.com/reviewdog/reviewdog v0.17.4
 	github.com/sourcegraph/go-diff v0.7.0
+	gotest.tools/v3 v3.5.1
 )
 
 require (
