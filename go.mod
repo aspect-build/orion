@@ -4,44 +4,44 @@ go 1.22.4
 
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
-	github.com/alphadose/haxmap v1.3.1
-	github.com/bazel-contrib/rules_jvm v0.24.0
+	github.com/alphadose/haxmap v1.4.0
+	github.com/bazel-contrib/rules_jvm v0.27.0
 	github.com/bazelbuild/bazel-gazelle v0.37.0 // NOTE: keep in sync with fetch.bzl
 	github.com/bazelbuild/bazelisk v1.17.0
-	github.com/bazelbuild/buildtools v0.0.0-20240313121412-66c605173954
+	github.com/bazelbuild/buildtools v0.0.0-20240606140350-80f1f6802857
 	github.com/bazelbuild/rules_go v0.48.0 // NOTE: keep in sync with fetch.bzl
-	github.com/bluekeyes/go-gitdiff v0.7.1
+	github.com/bluekeyes/go-gitdiff v0.7.3
 	github.com/bmatcuk/doublestar/v4 v4.6.1
 	github.com/buildkite/terminal v3.2.0+incompatible
 	github.com/emirpasic/gods v1.18.1
-	github.com/fatih/color v1.16.0
-	github.com/go-test/deep v1.1.0
+	github.com/fatih/color v1.17.0
+	github.com/go-test/deep v1.1.1
 	github.com/golang/mock v1.7.0-rc.1
 	github.com/golang/protobuf v1.5.4
 	github.com/google/triage-party v1.6.0
-	github.com/hashicorp/go-hclog v1.6.2
-	github.com/hashicorp/go-plugin v1.6.0
+	github.com/hashicorp/go-hclog v1.6.3
+	github.com/hashicorp/go-plugin v1.6.1
 	github.com/manifoldco/promptui v0.9.0
 	github.com/mattn/go-isatty v0.0.20
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/mitchellh/go-wordwrap v1.0.1
 	github.com/msolo/jsonr v0.0.0-20231023064044-62fbfc3a0313
-	github.com/onsi/gomega v1.31.1
+	github.com/onsi/gomega v1.33.1
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
-	github.com/pmezard/go-difflib v1.0.0
+	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
 	github.com/reviewdog/errorformat v0.0.0-20240608101709-1d3280ed6bd4
 	github.com/rogpeppe/go-internal v1.11.0
 	github.com/rs/zerolog v1.33.0
 	github.com/slack-go/slack v0.12.2
-	github.com/smacker/go-tree-sitter v0.0.0-20240514083259-c5d1f3f5f99e
-	github.com/spf13/cobra v1.8.0
+	github.com/smacker/go-tree-sitter v0.0.0-20240614082054-0ac8d7d185ec
+	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
-	github.com/spf13/viper v1.16.0
+	github.com/spf13/viper v1.19.0
 	github.com/tejzpr/ordered-concurrently/v3 v3.0.1
 	github.com/twmb/murmur3 v1.1.8
 	github.com/yargevad/filepathx v1.0.0
 	go.starlark.net v0.0.0-20240520160348-046347dcd104
-	golang.org/x/exp v0.0.0-20240112132812-db7319d0e0e3
+	golang.org/x/exp v0.0.0-20240613232115-7f521ea00fb8
 	golang.org/x/sync v0.7.0
 	google.golang.org/genproto v0.0.0-20240528184218-531527333157
 	google.golang.org/grpc v1.64.0
@@ -109,9 +109,12 @@ require (
 	github.com/pjbgf/sha1cd v0.3.0 // indirect
 	github.com/psanford/memfs v0.0.0-20230130182539-4dbf7e3e865e // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
+	github.com/sagikazarmark/locafero v0.4.0 // indirect
+	github.com/sagikazarmark/slog-shim v0.1.0 // indirect
 	github.com/sahilm/fuzzy v0.1.1 // indirect
 	github.com/sergi/go-diff v1.3.2-0.20230802210424-5b0b94c5c0d3 // indirect
 	github.com/skeema/knownhosts v1.2.2 // indirect
+	github.com/sourcegraph/conc v0.3.0 // indirect
 	github.com/urfave/cli/v2 v2.27.2 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	github.com/xrash/smetrics v0.0.0-20240312152122-5f08fbb34913 // indirect
@@ -121,8 +124,10 @@ require (
 	go.opentelemetry.io/otel v1.24.0 // indirect
 	go.opentelemetry.io/otel/metric v1.24.0 // indirect
 	go.opentelemetry.io/otel/trace v1.24.0 // indirect
+	go.uber.org/atomic v1.9.0 // indirect
+	go.uber.org/multierr v1.9.0 // indirect
 	golang.org/x/term v0.21.0 // indirect
-	golang.org/x/tools v0.21.1-0.20240508182429-e35e4ccd0d2d // indirect
+	golang.org/x/tools v0.22.0 // indirect
 	golang.org/x/tools/go/vcs v0.1.0-deprecated // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 )
@@ -133,7 +138,7 @@ require (
 	github.com/bgentry/go-netrc v0.0.0-20140422174119-9fd32a8b3d3d // indirect
 	github.com/chzyer/readline v1.5.1 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.4 // indirect
-	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/go-logr/logr v1.4.1 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
@@ -142,7 +147,6 @@ require (
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/go-github/v33 v33.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
-	github.com/google/pprof v0.0.0-20221118152302-e6195bd50e26 // indirect
 	github.com/google/s2a-go v0.1.7 // indirect
 	github.com/google/uuid v1.6.0
 	github.com/googleapis/enterprise-certificate-proxy v0.3.2 // indirect
@@ -165,17 +169,16 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/oklog/run v1.1.0 // indirect
 	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
-	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
+	github.com/pelletier/go-toml/v2 v2.2.2 // indirect
 	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
-	github.com/spf13/afero v1.9.5 // indirect
+	github.com/spf13/afero v1.11.0 // indirect
 	github.com/spf13/cast v1.6.0 // indirect
-	github.com/spf13/jwalterweatherman v1.1.0 // indirect
-	github.com/subosito/gotenv v1.4.2 // indirect
+	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/xanzy/go-gitlab v0.105.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	golang.org/x/crypto v0.24.0 // indirect
-	golang.org/x/mod v0.17.0 // indirect
+	golang.org/x/mod v0.18.0 // indirect
 	golang.org/x/net v0.26.0 // indirect
 	golang.org/x/oauth2 v0.21.0 // indirect
 	golang.org/x/sys v0.21.0 // indirect
