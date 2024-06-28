@@ -1353,8 +1353,8 @@ def go_dependencies():
         name = "com_github_pkg_browser",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/pkg/browser",
-        sum = "h1:KoWmjvw+nsYOo29YJK9vDA65RGE3NrOnUtO7a+RF9HU=",
-        version = "v0.0.0-20210911075715-681adbf594b8",
+        sum = "h1:+mdjkGKdHQG3305AYmdv1U2eRNDiU2ErMBj1gwrq8eQ=",
+        version = "v0.0.0-20240102092130-5ac0b6a4141c",
     )
     go_repository(
         name = "com_github_pkg_errors",
@@ -1458,8 +1458,8 @@ def go_dependencies():
         name = "com_github_rogpeppe_go_internal",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/rogpeppe/go-internal",
-        sum = "h1:cWPaGQEPrBb5/AsnsZesgZZ9yb1OQ+GOISoDNXVBh4M=",
-        version = "v1.11.0",
+        sum = "h1:exVL4IDcn6na9z1rAb56Vxr+CgyK3nn3O+epU5NdKM8=",
+        version = "v1.12.0",
     )
     go_repository(
         name = "com_github_rs_xid",
@@ -1556,16 +1556,16 @@ def go_dependencies():
         name = "com_github_slack_go_slack",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/slack-go/slack",
-        sum = "h1:x3OppyMyGIbbiyFhsBmpf9pwkUzMhthJMRNmNlA4LaQ=",
-        version = "v0.12.2",
+        sum = "h1:7my/pR2ubZJ9912p9FtvALYpbt0cQPAqkRy2jaSI1PQ=",
+        version = "v0.13.0",
     )
     go_repository(
         name = "com_github_smacker_go_tree_sitter",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/smacker/go-tree-sitter",
         patches = ["//third_party:github.com/smacker/go-tree-sitter/cc_library.patch"],  # keep
-        sum = "h1:MtVXE5PLx03zOAsEFUxXDZ6MEGU+jUdXKQ6Cz1Bz+JQ=",
-        version = "v0.0.0-20240614082054-0ac8d7d185ec",
+        sum = "h1:mtD4ESyObQZnRVxHFcaYp2d7jMBDa4WJRXSB1Vszj+A=",
+        version = "v0.0.0-20240625050157-a31a98a7c0f6",
     )
     go_repository(
         name = "com_github_sourcegraph_conc",

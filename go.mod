@@ -27,13 +27,13 @@ require (
 	github.com/mitchellh/go-wordwrap v1.0.1
 	github.com/msolo/jsonr v0.0.0-20231023064044-62fbfc3a0313
 	github.com/onsi/gomega v1.33.1
-	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
+	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
 	github.com/reviewdog/errorformat v0.0.0-20240608101709-1d3280ed6bd4
-	github.com/rogpeppe/go-internal v1.11.0
+	github.com/rogpeppe/go-internal v1.12.0
 	github.com/rs/zerolog v1.33.0
-	github.com/slack-go/slack v0.12.2
-	github.com/smacker/go-tree-sitter v0.0.0-20240614082054-0ac8d7d185ec
+	github.com/slack-go/slack v0.13.0
+	github.com/smacker/go-tree-sitter v0.0.0-20240625050157-a31a98a7c0f6
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.19.0
