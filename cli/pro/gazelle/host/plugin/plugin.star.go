@@ -7,7 +7,6 @@ package plugin
 
 import (
 	"fmt"
-	"strings"
 
 	starUtils "github.com/aspect-build/silo/cli/core/gazelle/common/starlark/utils"
 	"go.starlark.net/starlark"
@@ -247,62 +246,6 @@ func (p Property) Hash() (uint32, error) {
 	return 0, fmt.Errorf("unhashable: %s", p.Type())
 }
 
-// ---------------- QueryDefinition
-
-var _ starlark.Value = (*QueryDefinition)(nil)
-
-func (qd QueryDefinition) String() string {
-	return fmt.Sprintf("QueryDefinition{grammar: %q, filter: %v, query: %q}", qd.Grammar, qd.Filter, qd.Query)
-}
-func (qd QueryDefinition) Type() string         { return "QueryDefinition" }
-func (qd QueryDefinition) Freeze()              {}
-func (qd QueryDefinition) Truth() starlark.Bool { return starlark.True }
-func (qd QueryDefinition) Hash() (uint32, error) {
-	return 0, fmt.Errorf("unhashable: %s", qd.Type())
-}
-
-// ---------------- NamedQueries
-
-var _ starlark.Value = (*NamedQueries)(nil)
-
-func (nq NamedQueries) String() string {
-	keys := make([]string, 0, len(nq))
-	for k := range nq {
-		keys = append(keys, k)
-	}
-	return fmt.Sprintf("NamedQueries(%v)", strings.Join(keys, ","))
-}
-func (nq NamedQueries) Type() string         { return "NamedQueries" }
-func (nq NamedQueries) Freeze()              {}
-func (nq NamedQueries) Truth() starlark.Bool { return starlark.True }
-func (nq NamedQueries) Hash() (uint32, error) {
-	return 0, fmt.Errorf("unhashable: %s", nq.Type())
-}
-
-var _ starlark.Mapping = (*QueryResults)(nil)
-
-func (qr *QueryResults) String() string       { return qr.Type() }
-func (qr *QueryResults) Type() string         { return "QueryResults" }
-func (qr *QueryResults) Freeze()              {}
-func (qr *QueryResults) Truth() starlark.Bool { return starlark.True }
-func (qr *QueryResults) Hash() (uint32, error) {
-	return 0, fmt.Errorf("unhashable: %s", qr.Type())
-}
-
-func (qr *QueryResults) Get(k starlark.Value) (v starlark.Value, found bool, err error) {
-	if k.Type() != "string" {
-		return nil, false, fmt.Errorf("invalid key type, expected string")
-	}
-	key := k.(starlark.String).GoString()
-	r, found := (*qr)[key]
-
-	if !found {
-		return nil, false, fmt.Errorf("no query named: %s", key)
-	}
-
-	return &r, true, nil
-}
-
 // ---------------- PrepareResult
 
 var _ starlark.Value = (*PrepareResult)(nil)
@@ -359,68 +302,6 @@ func (r SourceFileFilter) Hash() (uint32, error) {
 	return 0, fmt.Errorf("unhashable: %s", r.Type())
 }
 
-// ---------------- TargetImport
-
-var _ starlark.Value = (*TargetImport)(nil)
-var _ starlark.HasAttrs = (*TargetImport)(nil)
-
-func (ti TargetImport) String() string {
-	return fmt.Sprintf("TargetImport{id: %q, provider: %q from: %q}", ti.Id, ti.Provider, ti.From)
-}
-func (ti TargetImport) Type() string         { return "TargetImport" }
-func (ti TargetImport) Freeze()              {}
-func (ti TargetImport) Truth() starlark.Bool { return starlark.True }
-func (ti TargetImport) Hash() (uint32, error) {
-	return 0, fmt.Errorf("unhashable: %s", ti.Type())
-}
-
-func (ti TargetImport) Attr(name string) (starlark.Value, error) {
-	switch name {
-	case "id":
-		return starlark.String(ti.Id), nil
-	case "provider":
-		return starlark.String(ti.Provider), nil
-	case "from":
-		return starlark.String(ti.From), nil
-	}
-
-	return nil, fmt.Errorf("no such attribute: %s", name)
-}
-func (ti TargetImport) AttrNames() []string {
-	return []string{"id", "provider", "from"}
-}
-
-// ---------------- TargetSymbol
-
-var _ starlark.Value = (*TargetSymbol)(nil)
-var _ starlark.HasAttrs = (*TargetSymbol)(nil)
-
-func (te TargetSymbol) String() string {
-	return fmt.Sprintf("TargetSymbol{id: %q, provider: %q, label: %q}", te.Id, te.Provider, te.Label)
-}
-func (te TargetSymbol) Type() string         { return "TargetSymbol" }
-func (te TargetSymbol) Freeze()              {}
-func (te TargetSymbol) Truth() starlark.Bool { return starlark.True }
-func (te TargetSymbol) Hash() (uint32, error) {
-	return 0, fmt.Errorf("unhashable: %s", te.Type())
-}
-
-func (te TargetSymbol) Attr(name string) (starlark.Value, error) {
-	switch name {
-	case "id":
-		return starlark.String(te.Id), nil
-	case "provider":
-		return starlark.String(te.Provider), nil
-	case "label":
-		return starlark.String(te.Label), nil
-	}
-
-	return nil, fmt.Errorf("no such attribute: %s", name)
-}
-func (te TargetSymbol) AttrNames() []string {
-	return []string{"id", "provider", "label"}
-}
-
 // ---------------- AnalyzeContext
 
 var _ starlark.Value = (*AnalyzeContext)(nil)
@@ -466,13 +347,3 @@ var analyzeContextAddSymbol = starlark.NewBuiltin("add_symbol", func(thread *sta
 	ctx.database.AddSymbol(id, provider_type, label, ctx.Source.Path)
 	return starlark.None, nil
 })
-
-// ---------------- utils
-
-func readTargetImport(v starlark.Value) TargetImport {
-	return v.(TargetImport)
-}
-
-func readTargetSymbols(v starlark.Value) TargetSymbol {
-	return v.(TargetSymbol)
-}

@@ -1,0 +1,79 @@
+package plugin
+
+import (
+	"fmt"
+
+	"go.starlark.net/starlark"
+)
+
+// ---------------- TargetImport
+
+var _ starlark.Value = (*TargetImport)(nil)
+var _ starlark.HasAttrs = (*TargetImport)(nil)
+
+func (ti TargetImport) String() string {
+	return fmt.Sprintf("TargetImport{id: %q, provider: %q from: %q}", ti.Id, ti.Provider, ti.From)
+}
+func (ti TargetImport) Type() string         { return "TargetImport" }
+func (ti TargetImport) Freeze()              {}
+func (ti TargetImport) Truth() starlark.Bool { return starlark.True }
+func (ti TargetImport) Hash() (uint32, error) {
+	return 0, fmt.Errorf("unhashable: %s", ti.Type())
+}
+
+func (ti TargetImport) Attr(name string) (starlark.Value, error) {
+	switch name {
+	case "id":
+		return starlark.String(ti.Id), nil
+	case "provider":
+		return starlark.String(ti.Provider), nil
+	case "from":
+		return starlark.String(ti.From), nil
+	}
+
+	return nil, fmt.Errorf("no such attribute: %s", name)
+}
+func (ti TargetImport) AttrNames() []string {
+	return []string{"id", "provider", "from"}
+}
+
+// ---------------- TargetSymbol
+
+var _ starlark.Value = (*TargetSymbol)(nil)
+var _ starlark.HasAttrs = (*TargetSymbol)(nil)
+
+func (te TargetSymbol) String() string {
+	return fmt.Sprintf("TargetSymbol{id: %q, provider: %q, label: %q}", te.Id, te.Provider, te.Label)
+}
+func (te TargetSymbol) Type() string         { return "TargetSymbol" }
+func (te TargetSymbol) Freeze()              {}
+func (te TargetSymbol) Truth() starlark.Bool { return starlark.True }
+func (te TargetSymbol) Hash() (uint32, error) {
+	return 0, fmt.Errorf("unhashable: %s", te.Type())
+}
+
+func (te TargetSymbol) Attr(name string) (starlark.Value, error) {
+	switch name {
+	case "id":
+		return starlark.String(te.Id), nil
+	case "provider":
+		return starlark.String(te.Provider), nil
+	case "label":
+		return starlark.String(te.Label), nil
+	}
+
+	return nil, fmt.Errorf("no such attribute: %s", name)
+}
+func (te TargetSymbol) AttrNames() []string {
+	return []string{"id", "provider", "label"}
+}
+
+// ---------------- utils
+
+func readTargetImport(v starlark.Value) TargetImport {
+	return v.(TargetImport)
+}
+
+func readTargetSymbols(v starlark.Value) TargetSymbol {
+	return v.(TargetSymbol)
+}

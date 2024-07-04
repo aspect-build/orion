@@ -2,6 +2,7 @@ package plugin
 
 import (
 	"fmt"
+	"strings"
 
 	"go.starlark.net/starlark"
 )
@@ -116,4 +117,60 @@ func (q *QueryMatches) Truth() starlark.Bool {
 
 func (q *QueryMatches) Type() string {
 	return "QueryMatches"
+}
+
+// ---------------- QueryDefinition
+
+var _ starlark.Value = (*QueryDefinition)(nil)
+
+func (qd QueryDefinition) String() string {
+	return fmt.Sprintf("QueryDefinition{grammar: %q, filter: %v, query: %q}", qd.Grammar, qd.Filter, qd.Query)
+}
+func (qd QueryDefinition) Type() string         { return "QueryDefinition" }
+func (qd QueryDefinition) Freeze()              {}
+func (qd QueryDefinition) Truth() starlark.Bool { return starlark.True }
+func (qd QueryDefinition) Hash() (uint32, error) {
+	return 0, fmt.Errorf("unhashable: %s", qd.Type())
+}
+
+// ---------------- NamedQueries
+
+var _ starlark.Value = (*NamedQueries)(nil)
+
+func (nq NamedQueries) String() string {
+	keys := make([]string, 0, len(nq))
+	for k := range nq {
+		keys = append(keys, k)
+	}
+	return fmt.Sprintf("NamedQueries(%v)", strings.Join(keys, ","))
+}
+func (nq NamedQueries) Type() string         { return "NamedQueries" }
+func (nq NamedQueries) Freeze()              {}
+func (nq NamedQueries) Truth() starlark.Bool { return starlark.True }
+func (nq NamedQueries) Hash() (uint32, error) {
+	return 0, fmt.Errorf("unhashable: %s", nq.Type())
+}
+
+var _ starlark.Mapping = (*QueryResults)(nil)
+
+func (qr *QueryResults) String() string       { return qr.Type() }
+func (qr *QueryResults) Type() string         { return "QueryResults" }
+func (qr *QueryResults) Freeze()              {}
+func (qr *QueryResults) Truth() starlark.Bool { return starlark.True }
+func (qr *QueryResults) Hash() (uint32, error) {
+	return 0, fmt.Errorf("unhashable: %s", qr.Type())
+}
+
+func (qr *QueryResults) Get(k starlark.Value) (v starlark.Value, found bool, err error) {
+	if k.Type() != "string" {
+		return nil, false, fmt.Errorf("invalid key type, expected string")
+	}
+	key := k.(starlark.String).GoString()
+	r, found := (*qr)[key]
+
+	if !found {
+		return nil, false, fmt.Errorf("no query named: %s", key)
+	}
+
+	return &r, true, nil
 }

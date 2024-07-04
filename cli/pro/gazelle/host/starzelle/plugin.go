@@ -85,8 +85,6 @@ type starzellePluginProxy struct {
 	prepare, analyze, declare *starlark.Function
 }
 
-var _ plugin.Plugin = (*starzellePluginProxy)(nil)
-
 func (p starzellePluginProxy) Name() string {
 	return p.name
 }
