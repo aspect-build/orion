@@ -5,6 +5,15 @@ BZL_EXT = ".bzl"
 
 starzelle.add_kind(BZL_LIBRARY, {
     "From": "@bazel_skylib//:bzl_library.bzl",
+    "NonEmptyAttrs": {
+        "srcs": True,
+    },
+    "MergeableAttrs": {
+        "srcs": True,
+    },
+    "ResolveAttrs": {
+        "deps": True,
+    },
 })
 
 def prepare(_):
@@ -39,7 +48,7 @@ def declare_targets(ctx):
         file_pkg = path.dirname(file.path)
 
         loads = [ld.captures["path"].strip("\"") for ld in file.query_results["loads"]]
-        loads = [ld.removeprefix("//").replace(":", "/") if ld.startswith("//") else path.join(file_pkg, ld.replaceprefix(":")) for ld in loads]
+        loads = [ld.removeprefix("//").replace(":", "/") if ld.startswith("//") else path.join(file_pkg, ld.removeprefix(":")) for ld in loads]
         loads = [ld.strip("/") for ld in loads]
 
         ctx.targets.add(
@@ -47,7 +56,7 @@ def declare_targets(ctx):
             name = label,
             attrs = {
                 "srcs": [file.path],
-                "visibility": ["//visibility:public"],
+                "visibility": [checkInternalVisibility(ctx.rel, "//visibility:public")],
             },
             # TODO
             # load("@bazel_tools//tools/build_defs/repo:http.bzl")
@@ -64,7 +73,7 @@ def declare_targets(ctx):
             ],
             symbols = [
                 starzelle.Symbol(
-                    id = file.path,
+                    id = path.join(ctx.rel, file.path),
                     label = label,
                 ),
             ],
@@ -77,3 +86,19 @@ starzelle.add_plugin(
     prepare = prepare,
     declare = declare_targets,
 )
+
+# See https://github.com/bazelbuild/bazel-skylib/blob/1.7.1/gazelle/bzl/gazelle.go#L340
+def checkInternalVisibility(rel, visibility):
+    i = rel.find("internal")
+    if i > 0:
+        return "//%s:__subpackages__" % rel[:i - 1]
+    elif i == 0:
+        return "//:__subpackages__"
+
+    i = rel.find("private")
+    if i > 0:
+        return "//%s:__subpackages__" % rel[:i - 1]
+    elif i == 0:
+        return "//:__subpackages__"
+
+    return visibility
