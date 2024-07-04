@@ -33,7 +33,6 @@ load("//cli/core/gazelle:gazelle.bzl", "gazelle_generation_test")
         "empty",
         "external",
         "multidir",
-        "private",
         "tests",
         "relative_import",
     ]
