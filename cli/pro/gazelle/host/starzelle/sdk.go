@@ -184,7 +184,7 @@ func newImport(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwa
 }
 
 func newSymbol(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
-	var id, provider, label starlark.String
+	var id, provider starlark.String
 
 	starlark.UnpackArgs(
 		"NewSymbol",
@@ -192,15 +192,11 @@ func newSymbol(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwa
 		kwargs,
 		"id", &id,
 		"provider", &provider,
-		"label", &label,
 	)
 
-	return plugin.TargetSymbol{
-		Symbol: plugin.Symbol{
-			Id:       id.GoString(),
-			Provider: provider.GoString(),
-		},
-		Label: label.GoString(),
+	return plugin.Symbol{
+		Id:       id.GoString(),
+		Provider: provider.GoString(),
 	}, nil
 }
 

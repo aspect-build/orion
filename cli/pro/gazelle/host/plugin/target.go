@@ -38,7 +38,7 @@ type TargetDeclaration struct {
 
 	// Names (possibly as paths) within this target that are imported/exported
 	Imports []TargetImport
-	Symbols []TargetSymbol
+	Symbols []Symbol
 }
 
 func symbolComparator(a, b interface{}) int {

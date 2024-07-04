@@ -68,13 +68,14 @@ def declare_targets(ctx):
                 starzelle.Import(
                     id = ld,
                     src = file.path,
+                    provider = LANG_NAME,
                 )
                 for ld in loads
             ],
             symbols = [
                 starzelle.Symbol(
                     id = path.join(ctx.rel, file.path),
-                    label = label,
+                    provider = LANG_NAME,
                 ),
             ],
         )
