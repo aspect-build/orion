@@ -52,8 +52,8 @@ func (re *GazelleHost) Imports(c *config.Config, r *rule.Rule, f *rule.File) []r
 	targetDeclaration := targetDeclarationAttr.(plugin.TargetDeclaration)
 
 	res := make([]resolve.ImportSpec, 0, len(targetDeclaration.Symbols))
-	for _, export := range targetDeclaration.Symbols {
-		res = append(res, symbolToImportSpec(export.Symbol))
+	for _, s := range targetDeclaration.Symbols {
+		res = append(res, symbolToImportSpec(s))
 	}
 
 	return res

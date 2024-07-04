@@ -172,9 +172,9 @@ var declareTargetAdd = starlark.NewBuiltin("add", func(thread *starlark.Thread, 
 		imports = starUtils.ReadList(starImports, readTargetImport)
 	}
 
-	var symbols []TargetSymbol
+	var symbols []Symbol
 	if starSymbols != nil {
-		symbols = starUtils.ReadList(starSymbols, readTargetSymbols)
+		symbols = starUtils.ReadList(starSymbols, readSymbol)
 	}
 
 	ai := fn.Receiver().(*declareTargetActionsImpl)
@@ -344,6 +344,10 @@ var analyzeContextAddSymbol = starlark.NewBuiltin("add_symbol", func(thread *sta
 	}
 
 	ctx := fn.Receiver().(*AnalyzeContext)
-	ctx.database.AddSymbol(id, provider_type, label, ctx.Source.Path)
+	ctx.AddSymbol(label, Symbol{
+		Id:       id,
+		Provider: provider_type,
+	})
+
 	return starlark.None, nil
 })

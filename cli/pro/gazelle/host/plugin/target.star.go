@@ -6,6 +6,35 @@ import (
 	"go.starlark.net/starlark"
 )
 
+// ---------------- Symbol
+
+var _ starlark.Value = (*Symbol)(nil)
+var _ starlark.HasAttrs = (*Symbol)(nil)
+
+func (s Symbol) String() string {
+	return fmt.Sprintf("Symbol{id: %q, provider: %q}", s.Id, s.Provider)
+}
+func (s Symbol) Type() string         { return "Symbol" }
+func (s Symbol) Freeze()              {}
+func (s Symbol) Truth() starlark.Bool { return starlark.True }
+func (s Symbol) Hash() (uint32, error) {
+	return 0, fmt.Errorf("unhashable: %s", s.Type())
+}
+
+func (s Symbol) Attr(name string) (starlark.Value, error) {
+	switch name {
+	case "id":
+		return starlark.String(s.Id), nil
+	case "provider":
+		return starlark.String(s.Provider), nil
+	}
+
+	return nil, fmt.Errorf("no such attribute: %s", name)
+}
+func (s Symbol) AttrNames() []string {
+	return []string{"id", "provider"}
+}
+
 // ---------------- TargetImport
 
 var _ starlark.Value = (*TargetImport)(nil)
@@ -74,6 +103,6 @@ func readTargetImport(v starlark.Value) TargetImport {
 	return v.(TargetImport)
 }
 
-func readTargetSymbols(v starlark.Value) TargetSymbol {
-	return v.(TargetSymbol)
+func readSymbol(v starlark.Value) Symbol {
+	return v.(Symbol)
 }

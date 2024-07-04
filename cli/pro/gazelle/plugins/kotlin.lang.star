@@ -130,7 +130,6 @@ def declare_targets(ctx):
                 "package": starzelle.Symbol(
                     id = pkg,
                     provider = PROVIDER_NAME,
-                    label = file.path,
                 ) if pkg else None,
             })
         else:
@@ -140,7 +139,6 @@ def declare_targets(ctx):
                 lib["packages"].append(starzelle.Symbol(
                     id = pkg,
                     provider = PROVIDER_NAME,
-                    label = file.path,
                 ))
 
     lib_name = path.base(ctx.rel) if ctx.rel else ctx.repo_name
