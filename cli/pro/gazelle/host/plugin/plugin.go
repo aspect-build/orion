@@ -144,12 +144,16 @@ func (sf SourceFileFilter) Match(p string) bool {
 	return false
 }
 
+type Label struct {
+	Repo, Pkg, Name string
+}
+
 type AnalyzeContext struct {
 	Source   *TargetSource
 	database *Database
 }
 
-func (a AnalyzeContext) AddSymbol(label string, symbol Symbol) {
+func (a AnalyzeContext) AddSymbol(label Label, symbol Symbol) {
 	a.database.Symbols = append(a.database.Symbols, TargetSymbol{
 		Symbol: symbol,
 		Label:  label,

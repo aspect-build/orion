@@ -48,7 +48,10 @@ def analyze_source(ctx):
             ctx.add_symbol(
                 id = pkg,
                 provider_type = "java_info",
-                label = "@maven//:{}".format(coord),
+                label = starzelle.Label(
+                    repo = "maven",
+                    name = coord,
+                ),
             )
 
 starzelle.add_plugin(

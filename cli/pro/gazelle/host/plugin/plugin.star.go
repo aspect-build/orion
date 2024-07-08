@@ -332,7 +332,8 @@ func (a *AnalyzeContext) Truth() starlark.Bool { return starlark.True }
 func (a *AnalyzeContext) Type() string         { return "AnalyzeContext" }
 
 var analyzeContextAddSymbol = starlark.NewBuiltin("add_symbol", func(thread *starlark.Thread, fn *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
-	var id, provider_type, label string
+	var id, provider_type string
+	var label Label
 	err := starlark.UnpackArgs(
 		"add_symbol", args, kwargs,
 		"id", &id,
@@ -351,3 +352,35 @@ var analyzeContextAddSymbol = starlark.NewBuiltin("add_symbol", func(thread *sta
 
 	return starlark.None, nil
 })
+
+// ---------------- Gazelle Label
+
+var _ starlark.Value = (*Label)(nil)
+var _ starlark.HasAttrs = (*Label)(nil)
+
+func (l Label) Attr(name string) (starlark.Value, error) {
+	switch name {
+	case "repo":
+		return starlark.String(l.Repo), nil
+	case "pkg":
+		return starlark.String(l.Pkg), nil
+	case "name":
+		return starlark.String(l.Name), nil
+	default:
+		return nil, starlark.NoSuchAttrError(name)
+	}
+}
+
+func (l Label) AttrNames() []string {
+	return []string{"repo", "pkg", "name"}
+}
+
+func (l Label) String() string {
+	return fmt.Sprintf("Label{repo: %q, pkg: %q, name: %q}", l.Repo, l.Pkg, l.Name)
+}
+func (l Label) Type() string         { return "Label" }
+func (l Label) Freeze()              {}
+func (l Label) Truth() starlark.Bool { return starlark.True }
+func (l Label) Hash() (uint32, error) {
+	return 0, fmt.Errorf("unhashable: %s", l.Type())
+}

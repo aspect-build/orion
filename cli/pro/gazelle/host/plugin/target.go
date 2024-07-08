@@ -20,7 +20,7 @@ type TargetSymbol struct {
 	Symbol
 
 	// The label producing the symbol
-	Label string
+	Label Label
 }
 
 /**

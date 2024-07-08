@@ -200,6 +200,25 @@ func newSymbol(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwa
 	}, nil
 }
 
+func newLabel(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
+	var repo, pkg, name starlark.String
+
+	starlark.UnpackArgs(
+		"NewLabel",
+		args,
+		kwargs,
+		"repo", &repo,
+		"pkg", &pkg,
+		"name", &name,
+	)
+
+	return plugin.Label{
+		Repo: repo.GoString(),
+		Pkg:  pkg.GoString(),
+		Name: name.GoString(),
+	}, nil
+}
+
 func newProperty(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	var propType, propDefault starlark.String
 
@@ -226,6 +245,7 @@ var starzelleModule = starUtils.CreateModule(
 		"PrepareResult":    newPrepareResult,
 		"Import":           newImport,
 		"Symbol":           newSymbol,
+		"Label":            newLabel,
 		"Property":         newProperty,
 		"SourceExtensions": newSourceExtensions,
 		"SourceGlobs":      newSourceGlobs,
