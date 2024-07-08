@@ -173,6 +173,25 @@ type Label struct {
 	Repo, Pkg, Name string
 }
 
+func (l Label) ToLabelString() string {
+	if l.Repo == "" {
+		return fmt.Sprintf("//%s:%s", l.Pkg, l.Name)
+	}
+	return fmt.Sprintf("@%s//%s:%s", l.Repo, l.Pkg, l.Name)
+}
+
+func (l Label) ToRelativeString(repo, pkg string) string {
+	if l.Repo == repo && l.Pkg == pkg {
+		return fmt.Sprintf(":%s", l.Name)
+	}
+
+	if l.Repo == repo || l.Repo == "" {
+		return fmt.Sprintf("//%s:%s", l.Pkg, l.Name)
+	}
+
+	return fmt.Sprintf("@%s//%s:%s", l.Repo, l.Pkg, l.Name)
+}
+
 type AnalyzeContext struct {
 	Source   *TargetSource
 	database *Database
