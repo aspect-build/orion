@@ -195,7 +195,12 @@ func (host *GazelleHost) resolveImport(
 		// TODO: only match correct "providers"
 
 		if importSpec.Imp == symbol.Symbol.Id {
-			l, _ := label.Parse(symbol.Label)
+			l := label.Label{
+				Repo:     symbol.Label.Repo,
+				Pkg:      symbol.Label.Pkg,
+				Name:     symbol.Label.Name,
+				Relative: false,
+			}
 			return Resolution_Label, &l, nil
 		}
 	}

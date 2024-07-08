@@ -88,7 +88,7 @@ func (te TargetSymbol) Attr(name string) (starlark.Value, error) {
 	case "provider":
 		return starlark.String(te.Provider), nil
 	case "label":
-		return starlark.String(te.Label), nil
+		return te.Label, nil
 	}
 
 	return nil, fmt.Errorf("no such attribute: %s", name)
