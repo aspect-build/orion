@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/bazelbuild/bazel-gazelle/rule"
 	"github.com/bmatcuk/doublestar/v4"
 )
 
@@ -35,9 +34,35 @@ const (
 )
 
 type RuleKind struct {
-	rule.KindInfo
+	KindInfo
 	Name string
 	From string
+}
+
+// Subset of the bazel-gazelle rule.KindInfo. See bazel-gazelle for details.
+type KindInfo struct {
+	// MatchAny is true if a rule of this kind may be matched with any rule
+	// of the same kind, regardless of attributes, if exactly one rule is
+	// present a build file.
+	MatchAny bool
+
+	// MatchAttrs is a list of attributes used in matching. For example,
+	// for go_library, this list contains "importpath". Attributes are matched
+	// in order.
+	MatchAttrs []string
+
+	// NonEmptyAttrs is a set of attributes that, if present, disqualify a rule
+	// from being deleted after merge.
+	NonEmptyAttrs []string
+
+	// MergeableAttrs is a set of attributes that should be merged before
+	// dependency resolution. For example "srcs" are often merged before resolution
+	// to compute the full set of sources for a target before resolving dependencies.
+	MergeableAttrs []string
+
+	// ResolveAttrs is a set of attributes that should be merged after
+	// dependency resolution. For example "deps" are often merged after resolution.
+	ResolveAttrs []string
 }
 
 // Properties an extension can be configured

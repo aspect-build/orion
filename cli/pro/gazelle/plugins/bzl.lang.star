@@ -5,15 +5,9 @@ BZL_EXT = ".bzl"
 
 starzelle.add_kind(BZL_LIBRARY, {
     "From": "@bazel_skylib//:bzl_library.bzl",
-    "NonEmptyAttrs": {
-        "srcs": True,
-    },
-    "MergeableAttrs": {
-        "srcs": True,
-    },
-    "ResolveAttrs": {
-        "deps": True,
-    },
+    "NonEmptyAttrs": ["srcs"],
+    "MergeableAttrs": ["srcs"],
+    "ResolveAttrs": ["deps"],
 })
 
 def prepare(_):

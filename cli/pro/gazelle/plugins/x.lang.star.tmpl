@@ -98,13 +98,7 @@ def is_native(imp):
 
 starzelle.add_kind("my_rule", {
     "From": "@my_ruleset//:defs.bzl",
-    "NonEmptyAttrs": {
-        "srcs": True,
-    },
-    "MergeableAttrs": {
-        "srcs": True,
-    },
-    "ResolveAttrs": {
-        "deps": True,
-    },
+    "NonEmptyAttrs": ["srcs"],
+    "MergeableAttrs": ["srcs"],
+    "ResolveAttrs": ["deps"],
 })

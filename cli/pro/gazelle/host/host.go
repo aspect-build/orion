@@ -134,12 +134,27 @@ func (h *GazelleHost) Kinds() map[string]rule.KindInfo {
 
 		// Configured by plugins, potentially overriding builtin
 		for k, v := range h.kinds {
-			h.gazelleKindInfo[k] = v.KindInfo
+			h.gazelleKindInfo[k] = rule.KindInfo{
+				MatchAny:        v.MatchAny,
+				MatchAttrs:      v.MatchAttrs,
+				NonEmptyAttrs:   toKeyTrueMap(v.NonEmptyAttrs),
+				MergeableAttrs:  toKeyTrueMap(v.MergeableAttrs),
+				ResolveAttrs:    toKeyTrueMap(v.ResolveAttrs),
+				SubstituteAttrs: make(map[string]bool),
+			}
 			h.sourceRuleKinds.Add(k)
 		}
 	}
 
 	return h.gazelleKindInfo
+}
+
+func toKeyTrueMap(keys []string) map[string]bool {
+	m := make(map[string]bool, len(keys))
+	for _, k := range keys {
+		m[k] = true
+	}
+	return m
 }
 
 func (h *GazelleHost) Loads() []rule.LoadInfo {
