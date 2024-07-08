@@ -95,22 +95,42 @@ func (host *GazelleHost) convertPlugTargetsToGenerateResult(pluginTargets map[st
 			}
 
 			// Generate the gazelle Rule to be added/merged into the BUILD file.
-			targetRule := gazelleRule.NewRule(target.Kind, target.Name)
-			targetRule.SetPrivateAttr(targetPluginKey, pluginId)
-			targetRule.SetPrivateAttr(targetDeclarationKey, target)
-
-			for attr, val := range target.Attrs {
-				targetRule.SetAttr(attr, val)
-			}
+			result.Gen = append(result.Gen, convertPluginTargetDeclaration(args, pluginId, target))
+			result.Imports = append(result.Imports, target.Imports)
 
 			BazelLog.Tracef("GenerateRules(%s) add target: %s %s(%q)", GazelleLanguageName, args.Rel, target.Kind, target.Name)
-
-			result.Gen = append(result.Gen, targetRule)
-			result.Imports = append(result.Imports, target.Imports)
 		}
 	}
 
 	return result
+}
+
+func convertPluginTargetDeclaration(args gazelleLanguage.GenerateArgs, pluginId string, target plugin.TargetDeclaration) *gazelleRule.Rule {
+	targetRule := gazelleRule.NewRule(target.Kind, target.Name)
+	targetRule.SetPrivateAttr(targetPluginKey, pluginId)
+	targetRule.SetPrivateAttr(targetDeclarationKey, target)
+
+	for attr, val := range target.Attrs {
+		targetRule.SetAttr(attr, convertPluginAttribute(args, val))
+	}
+
+	return targetRule
+}
+
+func convertPluginAttribute(args gazelleLanguage.GenerateArgs, val interface{}) interface{} {
+	if a, isArray := val.([]interface{}); isArray {
+		r := make([]interface{}, 0, len(a))
+		for _, v := range a {
+			r = append(r, convertPluginAttribute(args, v))
+		}
+		return r
+	}
+
+	if l, isLabel := val.(plugin.Label); isLabel {
+		return l.ToRelativeString("", args.Rel)
+	}
+
+	return val
 }
 
 func (host *GazelleHost) collectPluginTargetSources(pluginId string, prep pluginConfig, baseDir string, pluginSrcs []string) []plugin.TargetSource {
