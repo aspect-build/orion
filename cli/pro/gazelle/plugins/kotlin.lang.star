@@ -11,23 +11,14 @@ LANG_NAME = "kotlin"
 
 starzelle.add_kind(KT_JVM_LIBRARY, {
     "From": "@" + RULES_KOTLIN_REPO_NAME + "//kotlin:jvm.bzl",
-    "NonEmptyAttrs": {
-        "srcs": True,
-    },
-    "MergeableAttrs": {
-        "srcs": True,
-    },
-    "ResolveAttrs": {
-        "deps": True,
-    },
+    "NonEmptyAttrs": ["srcs"],
+    "MergeableAttrs": ["srcs"],
+    "ResolveAttrs": ["deps"],
 })
 
 starzelle.add_kind(KT_JVM_BINARY, {
     "From": "@" + RULES_KOTLIN_REPO_NAME + "//kotlin:jvm.bzl",
-    "NonEmptyAttrs": {
-        "srcs": True,
-        "main_class": True,
-    },
+    "NonEmptyAttrs": ["srcs", "main_class"],
 })
 
 def prepare(_):

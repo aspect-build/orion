@@ -11,7 +11,6 @@ import (
 	starUtils "github.com/aspect-build/silo/cli/core/gazelle/common/starlark/utils"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
 	"github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
-	"github.com/bazelbuild/bazel-gazelle/rule"
 	"go.starlark.net/starlark"
 )
 
@@ -153,13 +152,12 @@ func readRuleKind(n starlark.String, v starlark.Value) plugin.RuleKind {
 	return plugin.RuleKind{
 		Name: n.GoString(),
 		From: starUtils.ReadMapStringEntry(v, "From"),
-		KindInfo: rule.KindInfo{
-			MatchAny:        starUtils.ReadOptionalMapEntry(v, "MatchAny", starUtils.ReadBool, false),
-			MatchAttrs:      starUtils.ReadOptionalMapEntry(v, "MatchAttrs", starUtils.ReadStringList, starUtils.EmptyStrings),
-			NonEmptyAttrs:   starUtils.ReadOptionalMapEntry(v, "NonEmptyAttrs", starUtils.ReadBoolMap, starUtils.EmptyStringBoolMap),
-			SubstituteAttrs: starUtils.ReadOptionalMapEntry(v, "SubstituteAttrs", starUtils.ReadBoolMap, starUtils.EmptyStringBoolMap),
-			MergeableAttrs:  starUtils.ReadOptionalMapEntry(v, "MergeableAttrs", starUtils.ReadBoolMap, starUtils.EmptyStringBoolMap),
-			ResolveAttrs:    starUtils.ReadOptionalMapEntry(v, "ResolveAttrs", starUtils.ReadBoolMap, starUtils.EmptyStringBoolMap),
+		KindInfo: plugin.KindInfo{
+			MatchAny:       starUtils.ReadOptionalMapEntry(v, "MatchAny", starUtils.ReadBool, false),
+			MatchAttrs:     starUtils.ReadOptionalMapEntry(v, "MatchAttrs", starUtils.ReadStringList, starUtils.EmptyStrings),
+			NonEmptyAttrs:  starUtils.ReadOptionalMapEntry(v, "NonEmptyAttrs", starUtils.ReadStringList, starUtils.EmptyStrings),
+			MergeableAttrs: starUtils.ReadOptionalMapEntry(v, "MergeableAttrs", starUtils.ReadStringList, starUtils.EmptyStrings),
+			ResolveAttrs:   starUtils.ReadOptionalMapEntry(v, "ResolveAttrs", starUtils.ReadStringList, starUtils.EmptyStrings),
 		},
 	}
 }

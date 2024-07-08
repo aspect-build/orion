@@ -13,7 +13,6 @@ go_library(
         "//cli/core/gazelle/common/starlark/utils",
         "//cli/core/pkg/logger",
         "//cli/pro/gazelle/host/plugin",
-        "@bazel_gazelle//rule:go_default_library",
         "@net_starlark_go//starlark",
     ],
 )
