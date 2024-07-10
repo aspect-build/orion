@@ -19,7 +19,7 @@ func addPlugin(t *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwa
 	var prepare, analyze, declare *starlark.Function
 
 	err := starlark.UnpackArgs(
-		"add_plugin",
+		"register_configure_extension",
 		args,
 		kwargs,
 		"id", &pluginId,
@@ -48,7 +48,7 @@ func addKind(t *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwarg
 	var attributes *starlark.Dict
 
 	err := starlark.UnpackArgs(
-		"add_kind",
+		"register_rule_kind",
 		args,
 		kwargs,
 		"name", &kind,
@@ -236,20 +236,20 @@ func newProperty(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, k
 	}, nil
 }
 
-var starzelleModule = starUtils.CreateModule(
-	"starzelle",
+var aspectModule = starUtils.CreateModule(
+	"aspect",
 	map[string]starUtils.ModuleFunction{
-		"add_plugin":       addPlugin,
-		"add_kind":         addKind,
-		"Query":            newQueryDefinition,
-		"PrepareResult":    newPrepareResult,
-		"Import":           newImport,
-		"Symbol":           newSymbol,
-		"Label":            newLabel,
-		"Property":         newProperty,
-		"SourceExtensions": newSourceExtensions,
-		"SourceGlobs":      newSourceGlobs,
-		"SourceFiles":      newSourceFiles,
+		"register_configure_extension": addPlugin,
+		"register_rule_kind":           addKind,
+		"Query":                        newQueryDefinition,
+		"PrepareResult":                newPrepareResult,
+		"Import":                       newImport,
+		"Symbol":                       newSymbol,
+		"Label":                        newLabel,
+		"Property":                     newProperty,
+		"SourceExtensions":             newSourceExtensions,
+		"SourceGlobs":                  newSourceGlobs,
+		"SourceFiles":                  newSourceFiles,
 	},
 	map[string]starlark.Value{},
 )

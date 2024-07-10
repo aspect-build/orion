@@ -9,26 +9,26 @@ PROVIDER_NAME = "kt"
 
 LANG_NAME = "kotlin"
 
-starzelle.add_kind(KT_JVM_LIBRARY, {
+aspect.register_rule_kind(KT_JVM_LIBRARY, {
     "From": "@" + RULES_KOTLIN_REPO_NAME + "//kotlin:jvm.bzl",
     "NonEmptyAttrs": ["srcs"],
     "MergeableAttrs": ["srcs"],
     "ResolveAttrs": ["deps"],
 })
 
-starzelle.add_kind(KT_JVM_BINARY, {
+aspect.register_rule_kind(KT_JVM_BINARY, {
     "From": "@" + RULES_KOTLIN_REPO_NAME + "//kotlin:jvm.bzl",
     "NonEmptyAttrs": ["srcs", "main_class"],
 })
 
 def prepare(_):
-    return starzelle.PrepareResult(
+    return aspect.PrepareResult(
         # All source files to be processed
         sources = [
-            starzelle.SourceExtensions(".kt", ".kts"),
+            aspect.SourceExtensions(".kt", ".kts"),
         ],
         queries = {
-            "imports": starzelle.Query(
+            "imports": aspect.Query(
                 grammar = "kotlin",
                 filter = "*.kt*",
                 query = """
@@ -39,7 +39,7 @@ def prepare(_):
                     )
                 """,
             ),
-            "package_name": starzelle.Query(
+            "package_name": aspect.Query(
                 grammar = "kotlin",
                 filter = "*.kt*",
                 query = """
@@ -48,7 +48,7 @@ def prepare(_):
                     )
                 """,
             ),
-            "has_main": starzelle.Query(
+            "has_main": aspect.Query(
                 grammar = "kotlin",
                 filter = "*.kt*",
                 query = """
@@ -106,7 +106,7 @@ def declare_targets(ctx):
         # Trim the class name from the import for non-.* imports.
         # Convert to TargetImport, exclude native imports
         imports = [
-            starzelle.Import(
+            aspect.Import(
                 id = i,
                 provider = PROVIDER_NAME,
                 src = file.path,
@@ -118,7 +118,7 @@ def declare_targets(ctx):
             bins.append({
                 "src": file.path,
                 "imports": imports,
-                "package": starzelle.Symbol(
+                "package": aspect.Symbol(
                     id = pkg,
                     provider = PROVIDER_NAME,
                 ) if pkg else None,
@@ -127,7 +127,7 @@ def declare_targets(ctx):
             lib["srcs"].append(file.path)
             lib["imports"].extend(imports)
             if pkg:
-                lib["packages"].append(starzelle.Symbol(
+                lib["packages"].append(aspect.Symbol(
                     id = pkg,
                     provider = PROVIDER_NAME,
                 ))
@@ -185,7 +185,7 @@ def is_native(imp):
 
     return False
 
-starzelle.add_plugin(
+aspect.register_configure_extension(
     id = LANG_NAME,
     properties = {},
     prepare = prepare,
