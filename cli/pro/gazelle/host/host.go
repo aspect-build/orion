@@ -166,14 +166,16 @@ func (h *GazelleHost) Loads() []rule.LoadInfo {
 		for name, r := range h.kinds {
 			from := r.From
 
-			if loads[from] == nil {
-				loads[from] = &rule.LoadInfo{
-					Name:    from,
-					Symbols: make([]string, 0, 1),
-					After:   make([]string, 0),
+			if from != "" {
+				if loads[from] == nil {
+					loads[from] = &rule.LoadInfo{
+						Name:    from,
+						Symbols: make([]string, 0, 1),
+						After:   make([]string, 0),
+					}
 				}
+				loads[from].Symbols = append(loads[from].Symbols, name)
 			}
-			loads[from].Symbols = append(loads[from].Symbols, name)
 		}
 
 		for _, load := range loads {
