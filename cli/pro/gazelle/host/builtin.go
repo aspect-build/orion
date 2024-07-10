@@ -5,6 +5,14 @@ import (
 )
 
 var builtinKinds = []plugin.RuleKind{
+	// Native
+	plugin.RuleKind{
+		Name: "sh_library",
+		KindInfo: plugin.KindInfo{
+			NonEmptyAttrs: []string{"srcs"},
+		},
+	},
+
 	// @aspect_bazel_lib
 	plugin.RuleKind{
 		Name: "copy_to_bin",
