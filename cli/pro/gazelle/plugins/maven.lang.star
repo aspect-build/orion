@@ -5,13 +5,13 @@ JAVA_MAVEN_INSTALL_FILE = "java_maven_install_file"
 DEFAULT_JAVA_MAVEN_INSTALL_FILE = "maven_install.json"
 
 def prepare(ctx):
-    return starzelle.PrepareResult(
+    return aspect.PrepareResult(
         # All source files to be processed
         sources = [
-            starzelle.SourceExtensions(ctx.properties[JAVA_MAVEN_INSTALL_FILE]),
+            aspect.SourceExtensions(ctx.properties[JAVA_MAVEN_INSTALL_FILE]),
         ],
         queries = {
-            "imports": starzelle.Query(
+            "imports": aspect.Query(
                 grammar = "json",
                 filter = DEFAULT_JAVA_MAVEN_INSTALL_FILE,
                 query = """
@@ -48,16 +48,16 @@ def analyze_source(ctx):
             ctx.add_symbol(
                 id = pkg,
                 provider_type = "java_info",
-                label = starzelle.Label(
+                label = aspect.Label(
                     repo = "maven",
                     name = coord,
                 ),
             )
 
-starzelle.add_plugin(
+aspect.register_configure_extension(
     id = "maven",
     properties = {
-        JAVA_MAVEN_INSTALL_FILE: starzelle.Property(
+        JAVA_MAVEN_INSTALL_FILE: aspect.Property(
             type = "String",
             default = DEFAULT_JAVA_MAVEN_INSTALL_FILE,
         ),

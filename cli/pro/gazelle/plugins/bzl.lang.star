@@ -3,7 +3,7 @@ BZL_LIBRARY = "bzl_library"
 LANG_NAME = "starlark"
 BZL_EXT = ".bzl"
 
-starzelle.add_kind(BZL_LIBRARY, {
+aspect.register_rule_kind(BZL_LIBRARY, {
     "From": "@bazel_skylib//:bzl_library.bzl",
     "NonEmptyAttrs": ["srcs"],
     "MergeableAttrs": ["srcs"],
@@ -11,12 +11,12 @@ starzelle.add_kind(BZL_LIBRARY, {
 })
 
 def prepare(_):
-    return starzelle.PrepareResult(
+    return aspect.PrepareResult(
         sources = [
-            starzelle.SourceExtensions(".bzl"),
+            aspect.SourceExtensions(".bzl"),
         ],
         queries = {
-            "loads": starzelle.Query(
+            "loads": aspect.Query(
                 query = """(module
                     (expression_statement
                         (call 
@@ -59,7 +59,7 @@ def declare_targets(ctx):
             # // The @bazel_tools repo is tricky because it is a part of the "shipped
             # // with bazel" core library for interacting with the outside world.
             imports = [
-                starzelle.Import(
+                aspect.Import(
                     id = ld,
                     src = file.path,
                     provider = LANG_NAME,
@@ -67,7 +67,7 @@ def declare_targets(ctx):
                 for ld in loads
             ],
             symbols = [
-                starzelle.Symbol(
+                aspect.Symbol(
                     id = path.join(ctx.rel, file.path),
                     provider = LANG_NAME,
                 ),
@@ -75,7 +75,7 @@ def declare_targets(ctx):
         )
     return {}
 
-starzelle.add_plugin(
+aspect.register_configure_extension(
     id = LANG_NAME,
     properties = {},
     prepare = prepare,

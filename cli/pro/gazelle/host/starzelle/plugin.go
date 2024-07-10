@@ -39,7 +39,7 @@ func LoadProxy(host plugin.PluginHost, pluginPath string) error {
 	evalState[proxyStateKey] = &state
 
 	libs := starlark.StringDict{
-		"starzelle": starzelleModule,
+		"aspect": aspectModule,
 	}
 
 	_, err := starEval.Eval(pluginPath, libs, evalState)
