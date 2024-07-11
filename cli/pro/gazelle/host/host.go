@@ -20,7 +20,7 @@ import (
 	"github.com/emirpasic/gods/sets/treeset"
 )
 
-const GazelleLanguageName = "AspectConfigure"
+const GazelleLanguageName = "aspect-configure"
 
 // A gazelle
 type GazelleHost struct {
