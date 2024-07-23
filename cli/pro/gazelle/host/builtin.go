@@ -9,7 +9,8 @@ var builtinKinds = []plugin.RuleKind{
 	plugin.RuleKind{
 		Name: "sh_library",
 		KindInfo: plugin.KindInfo{
-			NonEmptyAttrs: []string{"srcs"},
+			NonEmptyAttrs:  []string{"srcs"},
+			MergeableAttrs: []string{"srcs"},
 		},
 	},
 
@@ -18,7 +19,8 @@ var builtinKinds = []plugin.RuleKind{
 		Name: "copy_to_bin",
 		From: "@aspect_bazel_lib//lib:copy_to_bin.bzl",
 		KindInfo: plugin.KindInfo{
-			NonEmptyAttrs: []string{"srcs"},
+			NonEmptyAttrs:  []string{"srcs"},
+			MergeableAttrs: []string{"srcs"},
 		},
 	},
 }
