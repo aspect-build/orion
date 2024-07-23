@@ -6,9 +6,11 @@ package gazelle
  */
 
 import (
+	"fmt"
 	"os"
 	"path"
 	"path/filepath"
+	"strings"
 
 	"github.com/aspect-build/silo/cli/core/gazelle/common/git"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
@@ -65,43 +67,65 @@ func NewHost() *GazelleHost {
 		l.kinds[k.Name] = k
 	}
 
-	l.loadStarzellePlugins()
+	l.loadEnvStarzellePlugins()
 
 	return l
 }
 
-func (h *GazelleHost) loadStarzellePlugins() {
-	// Add builtin languages
+func (h *GazelleHost) loadEnvStarzellePlugins() {
+	// Add plugins configured via env
+	builtinPluginParentDir := "."
 	builtinPluginDir := os.Getenv("STARZELLE_PLUGINS")
+
 	if builtinPluginDir == "" {
-		builtinPluginDir = path.Join(os.Getenv("RUNFILES_DIR"), "aspect_silo/cli/pro/gazelle/plugins")
+		// Noop if env is not set and not running tests
+		if os.Getenv("BAZEL_TEST") != "1" {
+			BazelLog.Tracef("No STARZELLE_PLUGINS environment variable set")
+			return
+		}
+
+		// Load from runfiles + TEST_STARZELLE_PLUGINS if running tests
+		builtinPluginParentDir = path.Join(os.Getenv("RUNFILES_DIR"), os.Getenv("TEST_WORKSPACE"))
+		builtinPluginDir = os.Getenv("TEST_STARZELLE_PLUGINS")
 	}
 
-	builtinPlugins, err := filepath.Glob(path.Join(builtinPluginDir, "*.lang.star"))
+	builtinPlugins, err := filepath.Glob(path.Join(builtinPluginParentDir, builtinPluginDir, "*.lang.star"))
 	if err != nil {
-		BazelLog.Fatalf("Failed to load builtin plugins: %v", err)
+		BazelLog.Fatalf("Failed to find builtin plugins: %v", err)
+	}
+
+	// Split the plugin paths to dir + rel for better logging and load API
+	for i, p := range builtinPlugins {
+		builtinPlugins[i] = p[len(builtinPluginParentDir)+1:]
 	}
 
 	if len(builtinPlugins) == 0 {
-		BazelLog.Tracef("No configure plugins found in %q", builtinPluginDir)
+		BazelLog.Warnf("No configure plugins found in %q", builtinPluginDir)
 	} else {
 		BazelLog.Infof("Loading configure plugins from %q: %v", builtinPluginDir, builtinPlugins)
 	}
 
 	for _, p := range builtinPlugins {
-		h.LoadPlugin(p)
+		h.LoadPlugin(builtinPluginParentDir, p)
 	}
 }
-func (h *GazelleHost) LoadPlugin(defPath string) {
+func (h *GazelleHost) LoadPlugin(pluginDir, pluginPath string) {
 	// Can not add new plugins after configuration/data-collection has started
 	if h.gazelleKindInfo != nil || h.gazelleLoadInfo != nil {
-		BazelLog.Fatalf("Cannot add plugin %q after configuration has started", defPath)
+		BazelLog.Fatalf("Cannot add plugin %q after configuration has started", pluginPath)
 		return
 	}
 
-	err := starzelle.LoadProxy(h, defPath)
+	err := starzelle.LoadProxy(h, pluginDir, pluginPath)
 	if err != nil {
-		BazelLog.Errorf("Failed to load plugin definition %q: %v", defPath, err)
+		BazelLog.Errorf("Failed to load plugin definition %q: %v", pluginPath, err)
+
+		// Try to remove the `parentDir` from the error message to align paths
+		// with the user's workspace relative paths, and to remove sandbox paths
+		// when run in tests.
+		errStr := strings.ReplaceAll(err.Error(), pluginDir+"/", "")
+
+		fmt.Printf("Failed to load configure plugin %q: %v", pluginPath, errStr)
 		return
 	}
 }
@@ -111,7 +135,7 @@ func (h *GazelleHost) AddPlugin(plugin plugin.Plugin) {
 		BazelLog.Errorf("Duplicate plugin %q", plugin.Name())
 	}
 
-	BazelLog.Infof("Loaded plugin definition %q", plugin.Name())
+	BazelLog.Infof("Plugin added: %q", plugin.Name())
 	h.plugins[plugin.Name()] = plugin
 }
 
@@ -120,7 +144,7 @@ func (h *GazelleHost) AddKind(k plugin.RuleKind) {
 		BazelLog.Errorf("Duplicate rule kind %q", k.Name)
 	}
 
-	BazelLog.Infof("Loaded kind %q", k.Name)
+	BazelLog.Infof("Kind added: %q", k.Name)
 	h.kinds[k.Name] = k
 
 	// Clear cached plugin.RuleKind => gazelle mapping.
