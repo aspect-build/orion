@@ -6,6 +6,7 @@ package starzelle
 
 import (
 	"fmt"
+	"path"
 
 	starEval "github.com/aspect-build/silo/cli/core/gazelle/common/starlark"
 	starUtils "github.com/aspect-build/silo/cli/core/gazelle/common/starlark/utils"
@@ -28,7 +29,7 @@ type starzelleState struct {
 	host       plugin.PluginHost
 }
 
-func LoadProxy(host plugin.PluginHost, pluginPath string) error {
+func LoadProxy(host plugin.PluginHost, pluginDir, pluginPath string) error {
 	BazelLog.Infof("Load configure plugin %q", pluginPath)
 
 	state := starzelleState{
@@ -42,10 +43,8 @@ func LoadProxy(host plugin.PluginHost, pluginPath string) error {
 		"aspect": aspectModule,
 	}
 
-	_, err := starEval.Eval(pluginPath, libs, evalState)
+	_, err := starEval.Eval(path.Join(pluginDir, pluginPath), libs, evalState)
 	if err != nil {
-		BazelLog.Errorf("Failed to load configure plugin %q: %v", pluginPath, err)
-		fmt.Printf("Failed to load configure plugin %q: %v", pluginPath, err)
 		return err
 	}
 
