@@ -104,11 +104,19 @@ func (p starzellePluginProxy) Prepare(ctx plugin.PrepareContext) plugin.PrepareR
 		return EmptyPrepareResult
 	}
 
+	// Allow no-return
+	if v == starlark.None {
+		return EmptyPrepareResult
+	}
+
 	BazelLog.Debugf("Invoked plugin %s:prepare(%q): %v\n", p.name, ctx.Rel, v)
 
 	pr, isPR := v.(plugin.PrepareResult)
 	if !isPR {
-		BazelLog.Fatalf("Prepare %v is not a PrepareResult", v)
+		errStr := fmt.Sprintf("Prepare %v is not a PrepareResult", v)
+		BazelLog.Errorf(errStr)
+		fmt.Printf(errStr)
+		return EmptyPrepareResult
 	}
 
 	return pr
@@ -121,7 +129,10 @@ func (p starzellePluginProxy) Analyze(ctx plugin.AnalyzeContext) error {
 	}
 	_, err := starEval.Call(p.analyze, starlark.Tuple{&ctx}, starUtils.EmptyKwArgs)
 	if err != nil {
-		return err
+		errStr := starUtils.ErrorStr(fmt.Sprintf("Failed to invoke %s:Analyze()", p.name), err)
+		BazelLog.Errorf(errStr)
+		fmt.Printf(errStr)
+		return nil
 	}
 	return nil
 }
@@ -136,6 +147,11 @@ func (p starzellePluginProxy) DeclareTargets(ctx plugin.DeclareTargetsContext) p
 		errStr := starUtils.ErrorStr(fmt.Sprintf("Failed to invoke %s:DeclareTargets()", p.name), err)
 		BazelLog.Errorf(errStr)
 		fmt.Printf(errStr)
+		return EmptyDeclareTargetsResult
+	}
+
+	// Allow no-return
+	if v == starlark.None {
 		return EmptyDeclareTargetsResult
 	}
 
