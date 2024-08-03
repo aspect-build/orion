@@ -139,9 +139,9 @@ def declare_targets(ctx):
             kind = KT_JVM_LIBRARY,
             attrs = {
                 "srcs": lib["srcs"],
+                "deps": lib["imports"] if len(lib["imports"]) > 0 else None,
             },
             symbols = lib["packages"],
-            imports = lib["imports"],
         )
     else:
         ctx.targets.remove(lib_name)
@@ -155,9 +155,9 @@ def declare_targets(ctx):
             attrs = {
                 "srcs": [bin["src"]],
                 "main_class": (bin["package"].id + "." + no_ext) if bin["package"] else no_ext,
+                "deps": bin["imports"] if len(bin["imports"]) > 0 else None,
             },
             symbols = [bin["package"]] if bin["package"] else [],
-            imports = bin["imports"],
         )
 
 NATIVE_LIBS = [

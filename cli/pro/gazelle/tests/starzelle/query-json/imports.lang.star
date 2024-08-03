@@ -25,20 +25,20 @@ def declare(ctx):
             kind = "x_lib",
             attrs = {
                 "srcs": [file.path],
+                "deps": [
+                    aspect.Import(
+                        id = i,
+                        provider = "x",
+                        src = file.path,
+                    )
+                    for i in file.query_results["imports"]
+                    if i
+                ],
             },
             symbols = [aspect.Symbol(
                 id = "/".join([ctx.rel, file.path.removesuffix(".json")]) if ctx.rel else file.path.removesuffix(".json"),
                 provider = "x",
             )],
-            imports = [
-                aspect.Import(
-                    id = i,
-                    provider = "x",
-                    src = file.path,
-                )
-                for i in file.query_results["imports"]
-                if i
-            ],
         )
 
 aspect.register_configure_extension(

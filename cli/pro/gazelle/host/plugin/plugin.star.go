@@ -144,7 +144,6 @@ var declareTargetAdd = starlark.NewBuiltin("add", func(thread *starlark.Thread, 
 	var starName starlark.String
 	var starKind starlark.String
 	var starAttrs starlark.Mapping
-	var starImports starlark.Value
 	var starSymbols starlark.Value
 	err := starlark.UnpackArgs(
 		fn.Name(),
@@ -153,7 +152,6 @@ var declareTargetAdd = starlark.NewBuiltin("add", func(thread *starlark.Thread, 
 		"name", &starName,
 		"kind", &starKind,
 		"attrs??", &starAttrs,
-		"imports??", &starImports,
 		"symbols??", &starSymbols,
 	)
 	if err != nil {
@@ -164,12 +162,7 @@ var declareTargetAdd = starlark.NewBuiltin("add", func(thread *starlark.Thread, 
 
 	var attrs map[string]interface{}
 	if starAttrs != nil {
-		attrs = starUtils.ReadMap2(starAttrs, starUtils.Read)
-	}
-
-	var imports []TargetImport
-	if starImports != nil {
-		imports = starUtils.ReadList(starImports, readTargetImport)
+		attrs = starUtils.ReadMap2(starAttrs, readTargetAttributeValue)
 	}
 
 	var symbols []Symbol
@@ -182,7 +175,6 @@ var declareTargetAdd = starlark.NewBuiltin("add", func(thread *starlark.Thread, 
 		Name:    starName.GoString(),
 		Kind:    starKind.GoString(),
 		Attrs:   attrs,
-		Imports: imports,
 		Symbols: symbols,
 	})
 

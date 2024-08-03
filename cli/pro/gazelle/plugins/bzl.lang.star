@@ -51,6 +51,14 @@ def declare_targets(ctx):
             attrs = {
                 "srcs": [file.path],
                 "visibility": [checkInternalVisibility(ctx.rel, "//visibility:public")],
+                "deps": [
+                    aspect.Import(
+                        id = ld,
+                        src = file.path,
+                        provider = LANG_NAME,
+                    )
+                    for ld in loads
+                ] if len(loads) > 0 else None,
             },
             # TODO
             # load("@bazel_tools//tools/build_defs/repo:http.bzl")
@@ -58,14 +66,6 @@ def declare_targets(ctx):
             # if impLabel.Repo == "bazel_tools" {
             # // The @bazel_tools repo is tricky because it is a part of the "shipped
             # // with bazel" core library for interacting with the outside world.
-            imports = [
-                aspect.Import(
-                    id = ld,
-                    src = file.path,
-                    provider = LANG_NAME,
-                )
-                for ld in loads
-            ],
             symbols = [
                 aspect.Symbol(
                     id = path.join(ctx.rel, file.path),
