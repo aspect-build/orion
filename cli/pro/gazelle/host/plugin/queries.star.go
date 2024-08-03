@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	starUtils "github.com/aspect-build/silo/cli/core/gazelle/common/starlark/utils"
 	"go.starlark.net/starlark"
 )
 
@@ -39,6 +40,8 @@ var _ starlark.HasAttrs = (*QueryMatch)(nil)
 
 func (q *QueryMatch) Attr(name string) (starlark.Value, error) {
 	switch name {
+	case "result":
+		return starUtils.Write(q.result), nil
 	case "captures":
 		return &q.captures, nil
 	default:
@@ -50,7 +53,7 @@ func (q *QueryMatch) AttrNames() []string {
 }
 
 func (q *QueryMatch) String() string {
-	return fmt.Sprintf("QueryMatch(captures: %v)", q.captures)
+	return fmt.Sprintf("QueryMatch(%v, captures: %v)", q.result, q.captures)
 }
 func (q *QueryMatch) Type() string {
 	return "QueryMatch"
@@ -75,7 +78,7 @@ func (q *queryMatchIterator) Done() {
 }
 
 func (q *queryMatchIterator) Next(p *starlark.Value) bool {
-	if q.cursor+1 > len(*q.m) {
+	if q.m == nil || q.cursor+1 > len(*q.m) {
 		return false
 	}
 	match := (*q.m)[q.cursor]
@@ -86,36 +89,37 @@ func (q *queryMatchIterator) Next(p *starlark.Value) bool {
 
 // ---------------- QueryMatches
 
+var _ starlark.Value = (*QueryMatches)(nil)
 var _ starlark.Iterable = (*QueryMatches)(nil)
 var _ starlark.Indexable = (*QueryMatches)(nil)
 
-func (q *QueryMatches) Index(i int) starlark.Value {
+func (q QueryMatches) Index(i int) starlark.Value {
 	return &(*q.m)[i]
 }
 
-func (q *QueryMatches) Len() int {
+func (q QueryMatches) Len() int {
 	return len(*q.m)
 }
 
-func (q *QueryMatches) Freeze() {}
+func (q QueryMatches) Freeze() {}
 
-func (q *QueryMatches) Hash() (uint32, error) {
+func (q QueryMatches) Hash() (uint32, error) {
 	return 0, fmt.Errorf("unhashable: %s", q.Type())
 }
 
-func (q *QueryMatches) Iterate() starlark.Iterator {
+func (q QueryMatches) Iterate() starlark.Iterator {
 	return &queryMatchIterator{m: q.m, cursor: 0}
 }
 
-func (q *QueryMatches) String() string {
-	return q.Type()
+func (q QueryMatches) String() string {
+	return fmt.Sprintf("QueryMatches(%v)", *q.m)
 }
 
-func (q *QueryMatches) Truth() starlark.Bool {
+func (q QueryMatches) Truth() starlark.Bool {
 	return starlark.True
 }
 
-func (q *QueryMatches) Type() string {
+func (q QueryMatches) Type() string {
 	return "QueryMatches"
 }
 
@@ -124,7 +128,7 @@ func (q *QueryMatches) Type() string {
 var _ starlark.Value = (*QueryDefinition)(nil)
 
 func (qd QueryDefinition) String() string {
-	return fmt.Sprintf("QueryDefinition{grammar: %q, filter: %v, query: %q}", qd.Grammar, qd.Filter, qd.Query)
+	return fmt.Sprintf("QueryDefinition{filter: %v}", qd.Filter)
 }
 func (qd QueryDefinition) Type() string         { return "QueryDefinition" }
 func (qd QueryDefinition) Freeze()              {}
@@ -153,24 +157,31 @@ func (nq NamedQueries) Hash() (uint32, error) {
 
 var _ starlark.Mapping = (*QueryResults)(nil)
 
-func (qr *QueryResults) String() string       { return qr.Type() }
-func (qr *QueryResults) Type() string         { return "QueryResults" }
-func (qr *QueryResults) Freeze()              {}
-func (qr *QueryResults) Truth() starlark.Bool { return starlark.True }
-func (qr *QueryResults) Hash() (uint32, error) {
+func (qr QueryResults) String() string {
+	keys := make([]string, 0, len(qr))
+	for k, _ := range qr {
+		keys = append(keys, k)
+	}
+	return fmt.Sprintf("QueryResults(%v)", strings.Join(keys, ","))
+}
+func (qr QueryResults) Type() string         { return "QueryResults" }
+func (qr QueryResults) Freeze()              {}
+func (qr QueryResults) Truth() starlark.Bool { return starlark.True }
+func (qr QueryResults) Hash() (uint32, error) {
 	return 0, fmt.Errorf("unhashable: %s", qr.Type())
 }
 
-func (qr *QueryResults) Get(k starlark.Value) (v starlark.Value, found bool, err error) {
+func (qr QueryResults) Get(k starlark.Value) (v starlark.Value, found bool, err error) {
 	if k.Type() != "string" {
 		return nil, false, fmt.Errorf("invalid key type, expected string")
 	}
 	key := k.(starlark.String).GoString()
-	r, found := (*qr)[key]
+	r, found := qr[key]
 
 	if !found {
-		return nil, false, fmt.Errorf("no query named: %s", key)
+		return nil, false, fmt.Errorf("no query named %q, queries: %v", key, qr)
 	}
 
-	return &r, true, nil
+	// Pure primitive query results
+	return starUtils.Write(r), true, nil
 }

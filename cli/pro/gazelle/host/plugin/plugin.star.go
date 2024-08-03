@@ -223,7 +223,7 @@ func (ctx TargetSource) Attr(name string) (starlark.Value, error) {
 	case "path":
 		return starlark.String(ctx.Path), nil
 	case "query_results":
-		return &ctx.QueryResults, nil
+		return ctx.QueryResults, nil
 	}
 
 	return nil, fmt.Errorf("no such attribute: %s", name)

@@ -28,7 +28,7 @@ def prepare(_):
             aspect.SourceExtensions(".kt", ".kts"),
         ],
         queries = {
-            "imports": aspect.Query(
+            "imports": aspect.AstQuery(
                 grammar = "kotlin",
                 filter = "*.kt*",
                 query = """
@@ -39,7 +39,7 @@ def prepare(_):
                     )
                 """,
             ),
-            "package_name": aspect.Query(
+            "package_name": aspect.AstQuery(
                 grammar = "kotlin",
                 filter = "*.kt*",
                 query = """
@@ -48,7 +48,7 @@ def prepare(_):
                     )
                 """,
             ),
-            "has_main": aspect.Query(
+            "has_main": aspect.AstQuery(
                 grammar = "kotlin",
                 filter = "*.kt*",
                 query = """

@@ -9,8 +9,10 @@ go_library(
     importpath = "github.com/aspect-build/silo/cli/pro/gazelle/host/starzelle",
     visibility = ["//visibility:public"],
     deps = [
+        "//cli/core/gazelle/common",
         "//cli/core/gazelle/common/starlark",
         "//cli/core/gazelle/common/starlark/utils",
+        "//cli/core/gazelle/common/treesitter",
         "//cli/core/pkg/logger",
         "//cli/pro/gazelle/host/plugin",
         "@net_starlark_go//starlark",

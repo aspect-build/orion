@@ -6,7 +6,6 @@ import (
 	"path"
 
 	common "github.com/aspect-build/silo/cli/core/gazelle/common"
-	treeutils "github.com/aspect-build/silo/cli/core/gazelle/common/treesitter"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
 	plugin "github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
 	gazelleLanguage "github.com/bazelbuild/bazel-gazelle/language"
@@ -140,7 +139,9 @@ func (host *GazelleHost) collectPluginTargetSources(pluginId string, prep plugin
 	for _, f := range pluginSrcs {
 		queryResults, err := runPluginQueries(prep, baseDir, f)
 		if err != nil {
-			BazelLog.Errorf("Error querying source file %q: %v", f, err)
+			msg := fmt.Sprintf("Error querying source file %q: %v", f, err)
+			fmt.Printf("%s\n", msg)
+			BazelLog.Errorf(msg)
 		}
 
 		src := plugin.TargetSource{
@@ -151,18 +152,6 @@ func (host *GazelleHost) collectPluginTargetSources(pluginId string, prep plugin
 	}
 
 	return targetSources
-}
-
-func toQueryLanguage(fileName string, queries plugin.NamedQueries) treeutils.LanguageGrammar {
-	// TODO: fail if queries on the same file use different languages?
-
-	for _, q := range queries {
-		if q.Grammar != "" {
-			return treeutils.LanguageGrammar(q.Grammar)
-		}
-	}
-
-	return treeutils.PathToLanguage(fileName)
 }
 
 func runPluginQueries(prep pluginConfig, baseDir, f string) (plugin.QueryResults, error) {
@@ -176,34 +165,24 @@ func runPluginQueries(prep pluginConfig, baseDir, f string) (plugin.QueryResults
 		return nil, err
 	}
 
-	ast, err := treeutils.ParseSourceCode(toQueryLanguage(f, queries), f, sourceCode)
-	if err != nil {
-		return nil, err
-	}
-
-	// Parse errors. Only log them due to many false positives.
-	// TODO: what false positives? See js plugin where this is from
-	if BazelLog.IsLevelEnabled(BazelLog.TraceLevel) {
-		treeErrors := ast.QueryErrors()
-		if treeErrors != nil {
-			BazelLog.Tracef("TreeSitter query errors: %v", treeErrors)
-		}
-	}
-
-	queryResults := make(plugin.QueryResults)
-
-	// TODO: parallelize - run queries concurrently
+	// Split queries by type to invoke in batches
+	queriesByType := make(map[*plugin.QueryProcessor]plugin.NamedQueries)
 	for key, query := range queries {
-		resultCh := ast.Query(query.Query)
-
-		// TODO: delay collection from channel until first read?
-		// Then it must be cached for later reads...
-		match := make([]plugin.QueryMatch, 0, 1)
-		for r := range resultCh {
-			match = append(match, plugin.NewQueryMatch(r.Captures()))
+		if queriesByType[&query.Processor] == nil {
+			queriesByType[&query.Processor] = make(plugin.NamedQueries)
 		}
+		queriesByType[&query.Processor][key] = query
+	}
 
-		queryResults[key] = plugin.NewQueryMatches(&match)
+	queryResults := make(plugin.QueryResults, len(queries))
+
+	// TODO: parallelize - run each group concurrently
+	for processor, queries := range queriesByType {
+		if err := (*processor)(f, sourceCode, queries, &queryResults); err != nil {
+			msg := fmt.Sprintf("Error running queries for %q: %v", f, err)
+			fmt.Printf("%s\n", msg)
+			BazelLog.Errorf(msg)
+		}
 	}
 
 	return queryResults, nil

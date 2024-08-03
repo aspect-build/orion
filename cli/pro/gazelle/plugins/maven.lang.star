@@ -11,37 +11,15 @@ def prepare(ctx):
             aspect.SourceExtensions(ctx.properties[JAVA_MAVEN_INSTALL_FILE]),
         ],
         queries = {
-            "imports": aspect.Query(
-                grammar = "json",
+            "imports": aspect.JsonQuery(
                 filter = DEFAULT_JAVA_MAVEN_INSTALL_FILE,
-                query = """
-                 (document
-                        (object (pair
-                            key: (string (string_content) @r1)
-                                 (#eq? @r1 "dependency_tree")
-
-                            value: (object (pair
-                                key: (string (string_content) @r2)
-                                     (#eq? @r2 "dependencies")
-
-                                value: (array
-                                    (_) @dep
-                                )
-                            ))
-                        ))
-                    )
-                """,
+                query = """.dependency_tree.dependencies[] | select(.packages) | {packages,coord}""",
             ),
         },
     )
 
 def analyze_source(ctx):
-    for q in ctx.source.query_results["imports"]:
-        dep = json.decode(q.captures["dep"])
-
-        if "packages" not in dep:
-            continue
-
+    for dep in ctx.source.query_results["imports"]:
         coord = dep["coord"].rsplit(":", 1)[0].replace(".", "_").replace(":", "_")
 
         for pkg in dep["packages"]:

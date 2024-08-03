@@ -7,7 +7,12 @@ package starzelle
  */
 
 import (
+	"fmt"
+	"reflect"
+
+	common "github.com/aspect-build/silo/cli/core/gazelle/common"
 	starUtils "github.com/aspect-build/silo/cli/core/gazelle/common/starlark/utils"
+	"github.com/aspect-build/silo/cli/core/gazelle/common/treesitter"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
 	"github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
 	"go.starlark.net/starlark"
@@ -62,34 +67,98 @@ func addKind(t *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwarg
 	return starlark.None, nil
 }
 
-func newQueryDefinition(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
-	var queryType, query starlark.String
+func readQueryFilter(v starlark.Value) []string {
+	if v == nil {
+		return nil
+	}
+
+	if filterString, ok := v.(starlark.String); ok {
+		return []string{filterString.GoString()}
+	}
+
+	return starUtils.ReadStringList(v)
+}
+
+func newAstQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
+	var query starlark.String
 	var filterValue starlark.Value
 	var grammarValue starlark.String
 
 	starlark.UnpackArgs(
-		"NewQueryDefinition",
+		"NewAstQuery",
 		args,
 		kwargs,
-		"type", &queryType,
 		"query", &query,
 		"grammar", &grammarValue,
 		"filter??", &filterValue,
 	)
 
-	var filters []string
-	if filterValue != nil {
-		if filterString, ok := filterValue.(starlark.String); ok {
-			filters = []string{filterString.GoString()}
-		} else {
-			filters = starUtils.ReadStringList(filterValue)
-		}
+	return plugin.QueryDefinition{
+		Filter:    readQueryFilter(filterValue),
+		Processor: plugin.ASTQueryProcessor,
+		Params: plugin.AstQueryParams{
+			Grammar: treesitter.LanguageGrammar(grammarValue.GoString()),
+			Query:   query.GoString(),
+		},
+	}, nil
+}
+
+func newRegexQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
+	var expression starlark.String
+	var filterValue starlark.Value
+
+	starlark.UnpackArgs(
+		"NewRegexQuery",
+		args,
+		kwargs,
+		"expression", &expression,
+		"filter??", &filterValue,
+	)
+
+	re, err := common.ParseRegex(expression.GoString())
+	if err != nil {
+		return starlark.None, err
 	}
 
 	return plugin.QueryDefinition{
-		Grammar: plugin.Grammar(grammarValue.GoString()),
-		Filter:  filters,
-		Query:   query.GoString(),
+		Filter:    readQueryFilter(filterValue),
+		Processor: plugin.RegexQueryProcessor,
+		Params:    re,
+	}, nil
+}
+
+func newRawQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
+	var filterValue starlark.Value
+
+	starlark.UnpackArgs(
+		"NewRawQuery",
+		args,
+		kwargs,
+		"filter??", &filterValue,
+	)
+
+	return plugin.QueryDefinition{
+		Filter:    readQueryFilter(filterValue),
+		Processor: plugin.RawQueryProcessor,
+	}, nil
+}
+
+func newJsonQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
+	var queryValue starlark.String
+	var filterValue starlark.Value
+
+	starlark.UnpackArgs(
+		"NewJsonQuery",
+		args,
+		kwargs,
+		"query?", &queryValue,
+		"filter??", &filterValue,
+	)
+
+	return plugin.QueryDefinition{
+		Filter:    readQueryFilter(filterValue),
+		Processor: plugin.JsonQueryProcessor,
+		Params:    queryValue.GoString(),
 	}, nil
 }
 
@@ -134,7 +203,7 @@ func newPrepareResult(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tup
 
 			qd, isQd := v.(plugin.QueryDefinition)
 			if !isQd {
-				BazelLog.Fatalf("'queries' %v is not a QueryDefinition", qd)
+				BazelLog.Fatalf("'queries' %v (%s) is not a QueryDefinition", v, reflect.TypeOf(v))
 			}
 
 			queries[k.(starlark.String).GoString()] = qd
@@ -175,6 +244,12 @@ func newImport(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwa
 		"src", &from,
 		"optional", &optional,
 	)
+
+	if id.GoString() == "" || provider.GoString() == "" {
+		msg := "Import id and provider cannot be empty\n"
+		fmt.Printf(msg)
+		BazelLog.Fatalf(msg)
+	}
 
 	return plugin.TargetImport{
 		Symbol: plugin.Symbol{
@@ -244,7 +319,10 @@ var aspectModule = starUtils.CreateModule(
 	map[string]starUtils.ModuleFunction{
 		"register_configure_extension": addPlugin,
 		"register_rule_kind":           addKind,
-		"Query":                        newQueryDefinition,
+		"AstQuery":                     newAstQuery,
+		"RegexQuery":                   newRegexQuery,
+		"RawQuery":                     newRawQuery,
+		"JsonQuery":                    newJsonQuery,
 		"PrepareResult":                newPrepareResult,
 		"Import":                       newImport,
 		"Symbol":                       newSymbol,
