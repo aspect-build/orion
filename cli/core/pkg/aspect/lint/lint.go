@@ -31,6 +31,7 @@ import (
 	"github.com/aspect-build/silo/cli/core/pkg/bazel/workspace"
 	"github.com/aspect-build/silo/cli/core/pkg/ioutils"
 	"github.com/aspect-build/silo/cli/core/pkg/plugin/system/bep"
+	"github.com/aspect-build/silo/workflows/haze/haze-go"
 	"github.com/bluekeyes/go-gitdiff/gitdiff"
 	"github.com/charmbracelet/huh"
 	"github.com/fatih/color"
@@ -312,7 +313,7 @@ lint:
 	exitCode := 0
 	for _, r := range results {
 		if r.ExitCode > 0 {
-			exitCode = 1
+			exitCode = int(haze.BazelExitCode_LINTING_FAILURE)
 		}
 
 		printHeader := true
