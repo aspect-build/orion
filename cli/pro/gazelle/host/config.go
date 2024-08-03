@@ -148,21 +148,9 @@ func (c *pluginConfig) GetQueriesForFile(f string) plugin.NamedQueries {
 	fileQueries := make(plugin.NamedQueries)
 
 	for n, query := range c.PrepareResult.Queries {
-		if len(query.Filter) == 0 {
+		if query.Match(f) {
 			fileQueries[n] = query
 			continue
-		}
-
-		for _, filter := range query.Filter {
-			is_match, err := filepath.Match(filter, f)
-
-			if err != nil {
-				fmt.Println("Error matching filter: ", err)
-			}
-			if is_match {
-				fileQueries[n] = query
-				break
-			}
 		}
 	}
 

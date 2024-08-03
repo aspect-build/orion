@@ -16,7 +16,7 @@ def prepare(_):
             aspect.SourceExtensions(".bzl"),
         ],
         queries = {
-            "loads": aspect.Query(
+            "loads": aspect.AstQuery(
                 query = """(module
                     (expression_statement
                         (call 

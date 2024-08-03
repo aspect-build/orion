@@ -16,8 +16,10 @@ go_library(
     deps = [
         "//cli/core/gazelle/common/starlark/utils",
         "//cli/core/gazelle/common/treesitter",
+        "//cli/core/pkg/logger",
         "@com_github_bmatcuk_doublestar_v4//:doublestar",
         "@com_github_emirpasic_gods//utils",
+        "@com_github_itchyny_gojq//:gojq",
         "@net_starlark_go//starlark",
         "@org_golang_x_exp//maps",
     ],

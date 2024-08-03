@@ -18,7 +18,6 @@ go_library(
     deps = [
         "//cli/core/gazelle/common",
         "//cli/core/gazelle/common/git",
-        "//cli/core/gazelle/common/treesitter",
         "//cli/core/pkg/logger",
         "//cli/pro/gazelle/host/plugin",
         "//cli/pro/gazelle/host/starzelle",

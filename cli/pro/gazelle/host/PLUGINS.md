@@ -57,16 +57,51 @@ The factory method for a `Prepare` result.
 
 Args:
 * `sources`: a list of files to process
-* `queries`: a `name:aspect.Query` map of queries to run on matching files
+* `queries`: a `name:aspect.*Query` map of queries to run on matching files
 
-**aspect.Query(grammar, filter, query)**:
+**aspect.AstQuery(grammar, filter, query)**:
 
-The factory method for a `Query`:
+The factory method for an `AstQuery`.
 
 Args:
-* `grammar`: the source code grammar to parse as
-* `filter`: a glob pattern to match file names (not paths) against, often a simple `*.ext` pattern
-* `query`: the query to run on the source code such as a tree-sitter query, jq, yq etc.
+* `filter`: a glob pattern to match file names to query
+* `grammar`: the tree-sitter grammar to parse source code as
+* `query`: a tree-sitter query to run on the source code AST
+
+Tree-sitter capture nodes are returned in the `QueryResult.captures`.
+
+See [tree-sitter](https://tree-sitter.github.io/tree-sitter/) for more information on ASTs, queries etc.
+
+**aspect.RegexQuery(filter, re)**:
+
+The factory method for a `RegexQuery`.
+
+Args:
+* `filter`: a glob pattern to match file names to query
+* `re`: a regular expression to run on the file
+
+Regex capture groups are returned in the `QueryResult.captures`, named by the group name,
+as well as the matched text in the `QueryResult.result`.
+
+See the [golang regex](https://pkg.go.dev/regexp) documentation for more information.
+
+**aspect.RawQuery(filter)**:
+
+The factory method for a `RawQuery`, returning file content as-is with no parsing or filtering.
+
+Args:
+* `filter`: a glob pattern to match file names to return
+
+**aspect.JsonQuery(filter, query)**:
+
+The factory method for a `JsonQuery`.
+
+Args:
+* `filter`: a glob pattern to match file names to query
+* `query`: a JQ filter expression to run on the JSON document
+
+See the [jq manual](https://jqlang.github.io/jq/manual/#basic-filters) for query expressions.
+See [golang jq](https://github.com/itchyny/gojq) for information on the golang implementation used by starzelle.
 
 ### Analyze(ctx AnalyzeContext) error
 
