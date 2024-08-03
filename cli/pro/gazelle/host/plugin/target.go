@@ -39,8 +39,7 @@ type TargetDeclaration struct {
 	// TODO: do this somewhere else, it should not be in a flag within a "declaration".
 	Remove bool
 
-	// Names (possibly as paths) within this target that are imported/exported
-	Imports []TargetImport
+	// Names (possibly as paths) exported from this target
 	Symbols []Symbol
 }
 

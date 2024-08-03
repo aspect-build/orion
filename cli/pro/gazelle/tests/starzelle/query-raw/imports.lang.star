@@ -24,20 +24,20 @@ def declare(ctx):
             kind = "r_lib",
             attrs = {
                 "srcs": [file.path],
+                "deps": [
+                    aspect.Import(
+                        id = i,
+                        provider = "r",
+                        src = file.path,
+                    )
+                    for i in file.query_results["imports"].split("\n")
+                    if i != ""
+                ],
             },
             symbols = [aspect.Symbol(
                 id = "/".join([ctx.rel, file.path.removesuffix(".r")]) if ctx.rel else file.path.removesuffix(".r"),
                 provider = "r",
             )],
-            imports = [
-                aspect.Import(
-                    id = i,
-                    provider = "r",
-                    src = file.path,
-                )
-                for i in file.query_results["imports"].split("\n")
-                if i != ""
-            ],
         )
 
 aspect.register_configure_extension(

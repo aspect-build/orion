@@ -17,18 +17,18 @@ def declare(ctx):
         kind = "x_lib",
         attrs = {
             "foo": "bar",
+            "deps": [
+                aspect.Import(
+                    id = "b",
+                    provider = "x",
+                ),
+                aspect.Import(
+                    id = "does-not-exist",
+                    provider = "x",
+                    optional = True,
+                ),
+            ],
         },
-        imports = [
-            aspect.Import(
-                id = "b",
-                provider = "x",
-            ),
-            aspect.Import(
-                id = "does-not-exist",
-                provider = "x",
-                optional = True,
-            ),
-        ],
     )
     ctx.targets.add(
         name = "b",

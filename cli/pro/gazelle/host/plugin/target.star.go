@@ -3,6 +3,8 @@ package plugin
 import (
 	"fmt"
 
+	starUtils "github.com/aspect-build/silo/cli/core/gazelle/common/starlark/utils"
+
 	"go.starlark.net/starlark"
 )
 
@@ -107,4 +109,13 @@ func readTargetImport(v starlark.Value) TargetImport {
 
 func readSymbol(v starlark.Value) Symbol {
 	return v.(Symbol)
+}
+
+func readTargetAttributeValue(v starlark.Value) interface{} {
+	switch v := v.(type) {
+	case TargetImport:
+		return readTargetImport(v)
+	}
+
+	return starUtils.ReadRecurse(v, readTargetAttributeValue)
 }

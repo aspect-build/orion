@@ -18,6 +18,7 @@ const (
 )
 
 const (
+	targetAttrImports    = "__target_imports_by_attr"
 	targetDeclarationKey = "__target_declaration"
 	targetPluginKey      = "__target_plugin"
 )
@@ -94,8 +95,10 @@ func (host *GazelleHost) convertPlugTargetsToGenerateResult(pluginTargets map[st
 			}
 
 			// Generate the gazelle Rule to be added/merged into the BUILD file.
-			result.Gen = append(result.Gen, convertPluginTargetDeclaration(args, pluginId, target))
-			result.Imports = append(result.Imports, target.Imports)
+			rule := convertPluginTargetDeclaration(args, pluginId, target)
+
+			result.Gen = append(result.Gen, rule)
+			result.Imports = append(result.Imports, rule.PrivateAttr(targetAttrImports))
 
 			BazelLog.Tracef("GenerateRules(%s) add target: %s %s(%q)", GazelleLanguageName, args.Rel, target.Kind, target.Name)
 		}
@@ -109,27 +112,53 @@ func convertPluginTargetDeclaration(args gazelleLanguage.GenerateArgs, pluginId 
 	targetRule.SetPrivateAttr(targetPluginKey, pluginId)
 	targetRule.SetPrivateAttr(targetDeclarationKey, target)
 
+	ruleImports := make(map[string][]plugin.TargetImport, 0)
+	targetRule.SetPrivateAttr(targetAttrImports, ruleImports)
+
 	for attr, val := range target.Attrs {
-		targetRule.SetAttr(attr, convertPluginAttribute(args, val))
+		attrValue, attrImports := convertPluginAttribute(args, val)
+
+		if attrValue != nil {
+			targetRule.SetAttr(attr, attrValue)
+		}
+
+		if attrImports != nil {
+			// TODO: verify 'attr' is resolveable if len(attrImports) > 0
+			ruleImports[attr] = attrImports
+		}
 	}
 
 	return targetRule
 }
 
-func convertPluginAttribute(args gazelleLanguage.GenerateArgs, val interface{}) interface{} {
+func convertPluginAttribute(args gazelleLanguage.GenerateArgs, val interface{}) (interface{}, []plugin.TargetImport) {
 	if a, isArray := val.([]interface{}); isArray {
 		r := make([]interface{}, 0, len(a))
+		i := make([]plugin.TargetImport, 0)
 		for _, v := range a {
-			r = append(r, convertPluginAttribute(args, v))
+			newR, newI := convertPluginAttribute(args, v)
+			if newR != nil {
+				r = append(r, newR)
+			}
+			if newI != nil {
+				i = append(i, newI...)
+			}
 		}
-		return r
+		if len(r) == 0 {
+			return nil, i
+		}
+		return r, i
+	}
+
+	if targetImport, isImport := val.(plugin.TargetImport); isImport {
+		return nil, []plugin.TargetImport{targetImport}
 	}
 
 	if l, isLabel := val.(plugin.Label); isLabel {
-		return l.ToRelativeString("", args.Rel)
+		return l.ToRelativeString("", args.Rel), nil
 	}
 
-	return val
+	return val, nil
 }
 
 func (host *GazelleHost) collectPluginTargetSources(pluginId string, prep pluginConfig, baseDir string, pluginSrcs []string) []plugin.TargetSource {
