@@ -58,6 +58,8 @@ func (ti TargetImport) Attr(name string) (starlark.Value, error) {
 		return starlark.String(ti.Provider), nil
 	case "from":
 		return starlark.String(ti.From), nil
+	case "optional":
+		return starlark.Bool(ti.Optional), nil
 	}
 
 	return nil, fmt.Errorf("no such attribute: %s", name)

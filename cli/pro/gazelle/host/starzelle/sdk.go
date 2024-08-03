@@ -164,6 +164,7 @@ func readSourceFilter(v starlark.Value) plugin.SourceFilter {
 
 func newImport(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	var id, provider, from starlark.String
+	var optional starlark.Bool
 
 	starlark.UnpackArgs(
 		"NewImport",
@@ -172,6 +173,7 @@ func newImport(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwa
 		"id", &id,
 		"provider", &provider,
 		"src", &from,
+		"optional", &optional,
 	)
 
 	return plugin.TargetImport{
@@ -179,7 +181,8 @@ func newImport(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwa
 			Id:       id.GoString(),
 			Provider: provider.GoString(),
 		},
-		From: from.GoString(),
+		Optional: bool(optional.Truth()),
+		From:     from.GoString(),
 	}, nil
 }
 
