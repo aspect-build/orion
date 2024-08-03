@@ -111,15 +111,17 @@ func (re *GazelleHost) resolveImports(
 		if resolutionType == Resolution_NotFound {
 			BazelLog.Debugf("import '%s' for target '%s' not found", imp.Id, from.String())
 
-			notFound := fmt.Errorf(
-				"Import %[1]q from %[2]q is an unknown dependency. Possible solutions:\n"+
-					"\t1. Instruct Gazelle to resolve to a known dependency using a directive:\n"+
-					"\t\t# gazelle:resolve [src-lang] %[3]s import-string label\n",
-				imp.Id, imp.From, pluginId,
-			)
+			if !imp.Optional {
+				notFound := fmt.Errorf(
+					"Import %[1]q from %[2]q is an unknown dependency. Possible solutions:\n"+
+						"\t1. Instruct Gazelle to resolve to a known dependency using a directive:\n"+
+						"\t\t# gazelle:resolve [src-lang] %[3]s import-string label\n",
+					imp.Id, imp.From, pluginId,
+				)
 
-			fmt.Printf("Resolution error %v\n", notFound)
-			continue
+				fmt.Printf("Resolution error %v\n", notFound)
+				continue
+			}
 		}
 
 		if resolutionType == Resolution_Native || resolutionType == Resolution_None {

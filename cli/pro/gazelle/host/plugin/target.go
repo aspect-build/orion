@@ -12,6 +12,9 @@ type Symbol struct {
 type TargetImport struct {
 	Symbol
 
+	// Optional imports will not be treated as resolution errors when not found.
+	Optional bool
+
 	// Where the import is from such as file path, for debugging
 	From string
 }
