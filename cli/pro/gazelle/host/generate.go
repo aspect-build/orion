@@ -153,20 +153,30 @@ func (host *GazelleHost) collectPluginTargetSources(pluginId string, prep plugin
 	return targetSources
 }
 
+func toQueryLanguage(fileName string, queries plugin.NamedQueries) treeutils.LanguageGrammar {
+	// TODO: fail if queries on the same file use different languages?
+
+	for _, q := range queries {
+		if q.Grammar != "" {
+			return treeutils.LanguageGrammar(q.Grammar)
+		}
+	}
+
+	return treeutils.PathToLanguage(fileName)
+}
+
 func runPluginQueries(prep pluginConfig, baseDir, f string) (plugin.QueryResults, error) {
 	queries := prep.GetQueriesForFile(f)
 	if len(queries) == 0 {
 		return nil, nil
 	}
 
-	lang := treeutils.PathToLanguage(f)
-
 	sourceCode, err := os.ReadFile(path.Join(baseDir, f))
 	if err != nil {
 		return nil, err
 	}
 
-	ast, err := treeutils.ParseSourceCode(lang, f, sourceCode)
+	ast, err := treeutils.ParseSourceCode(toQueryLanguage(f, queries), f, sourceCode)
 	if err != nil {
 		return nil, err
 	}
