@@ -31,6 +31,7 @@ const (
 	ConfigureFixed    = 110
 	ConfigureDiff     = 111
 	ConfigureNoConfig = 112
+	LintFailure       = 113
 
 	// Aspect Workflows specific exit codes: 200+
 )
