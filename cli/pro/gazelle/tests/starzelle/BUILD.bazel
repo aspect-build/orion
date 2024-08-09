@@ -1,6 +1,6 @@
 load("//cli/core/gazelle:gazelle.bzl", "gazelle_generation_test")
 
-# General starzelle tests. Each test has its own *.star plugins.
+# General starzelle unit tests. Each test has its own *.star plugins and only the host language.
 
 [
     gazelle_generation_test(

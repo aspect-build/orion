@@ -212,6 +212,19 @@ func (host *GazelleHost) resolveImport(
 	return Resolution_NotFound, nil, nil
 }
 
+var _ resolve.CrossResolver = (*GazelleHost)(nil)
+
+// Support imports from other gazelle extensions resolving to symbols provided by starzelle plugins.
+func (ts *GazelleHost) CrossResolve(c *config.Config, ix *resolve.RuleIndex, imp resolve.ImportSpec, lang string) []resolve.FindResult {
+	// Skip resolves from within this gazelle language, only support resolving from other languages
+	if lang == GazelleLanguageName {
+		return nil
+	}
+
+	// Search for results within this gazelle plugin
+	return ix.FindRulesByImportWithConfig(c, imp, GazelleLanguageName)
+}
+
 // targetListFromResults returns a string with the human-readable list of
 // targets contained in the given results.
 // TODO: move to gazelle/common
