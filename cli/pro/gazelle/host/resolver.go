@@ -42,7 +42,7 @@ func symbolToImportSpec(symbol plugin.Symbol) resolve.ImportSpec {
 
 // Determine what rule (r) outputs which can be imported.
 func (re *GazelleHost) Imports(c *config.Config, r *rule.Rule, f *rule.File) []resolve.ImportSpec {
-	BazelLog.Debugf("Imports(%s): '%s:%s'", GazelleLanguageName, f.Pkg, r.Name())
+	BazelLog.Debugf("Imports(%s): //%s:%s", GazelleLanguageName, f.Pkg, r.Name())
 
 	targetDeclarationAttr := r.PrivateAttr(targetDeclarationKey)
 	if targetDeclarationAttr == nil {
@@ -61,15 +61,13 @@ func (re *GazelleHost) Imports(c *config.Config, r *rule.Rule, f *rule.File) []r
 
 // Extra targets embedded within rules.
 func (re *GazelleHost) Embeds(r *rule.Rule, f label.Label) []label.Label {
-	BazelLog.Debugf("Embeds: '%s:%s'", f.Pkg, r.Name())
-
 	return []label.Label{}
 }
 
 // Resolve the dependencies of a rule and apply them to the necessary rule attributes.
 func (re *GazelleHost) Resolve(c *config.Config, ix *resolve.RuleIndex, rc *repo.RemoteCache, r *rule.Rule, importData interface{}, from label.Label) {
 	start := time.Now()
-	BazelLog.Infof("Resolve %q dependencies", from.String())
+	BazelLog.Infof("Resolve(%s): //%s:%s", GazelleLanguageName, from.Pkg, r.Name())
 
 	pluginId := r.PrivateAttr(targetPluginKey).(string)
 
@@ -92,7 +90,7 @@ func (re *GazelleHost) Resolve(c *config.Config, ix *resolve.RuleIndex, rc *repo
 		}
 	}
 
-	BazelLog.Infof("Resolve %q DONE in %s", from.String(), time.Since(start).String())
+	BazelLog.Infof("Resolve(%s): //%s:%s DONE in %s", GazelleLanguageName, from.Pkg, r.Name(), time.Since(start).String())
 }
 
 func (re *GazelleHost) resolveImports(
