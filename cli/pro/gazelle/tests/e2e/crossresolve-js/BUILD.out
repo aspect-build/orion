@@ -1,0 +1,13 @@
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@deps-test//my:rules.bzl", "x_lib")
+
+ts_project(
+    name = "crossresolve-js",
+    srcs = ["main.ts"],
+    deps = [
+        ":a",
+        "//sub:a",
+    ],
+)
+
+x_lib(name = "a")

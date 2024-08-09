@@ -1,0 +1,13 @@
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@deps-test//my:rules.bzl", "x_lib")
+
+ts_project(
+    name = "sub",
+    srcs = ["sub-lib.ts"],
+    deps = [
+        ":a",
+        "//:a",
+    ],
+)
+
+x_lib(name = "a")

@@ -1,6 +1,17 @@
+load("@bazel_gazelle//:def.bzl", "gazelle_binary")
 load("//cli/core/gazelle:gazelle.bzl", "gazelle_generation_test")
 
-# General starzelle unit tests. Each test has its own *.star plugins and only the host language.
+# Starzelle e2e tests with all standard gazelle extensions enabled.
+# Each test has its own additional *.star plugins.
+
+gazelle_binary(
+    name = "gazelle_binary-host_js",
+    languages = [
+        "//cli/core/gazelle/js",
+        "//cli/pro/gazelle/host",
+    ],
+    visibility = ["//visibility:private"],
+)
 
 [
     gazelle_generation_test(
@@ -13,7 +24,7 @@ load("//cli/core/gazelle:gazelle.bzl", "gazelle_generation_test")
                 t,
             ),
         },
-        gazelle_binary = "//cli/pro/gazelle/host:gazelle_host_binary",
+        gazelle_binary = ":gazelle_binary-host_js",
     )
     for t in [t.replace("/WORKSPACE", "") for t in glob(["*/WORKSPACE"])]
 ]
