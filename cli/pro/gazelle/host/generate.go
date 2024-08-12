@@ -235,6 +235,7 @@ func (host *GazelleHost) collectSourceFilesByPlugin(cfg *BUILDConfig, args gazel
 						sourceFilesByPlugin[pluginId] = make([]string, 0, 1)
 					}
 					sourceFilesByPlugin[pluginId] = append(sourceFilesByPlugin[pluginId], f)
+					break
 				}
 			}
 		}
