@@ -57,51 +57,7 @@ The factory method for a `Prepare` result.
 
 Args:
 * `sources`: a list of files to process
-* `queries`: a `name:aspect.*Query` map of queries to run on matching files
-
-**aspect.AstQuery(grammar, filter, query)**:
-
-The factory method for an `AstQuery`.
-
-Args:
-* `filter`: a glob pattern to match file names to query
-* `grammar`: the tree-sitter grammar to parse source code as
-* `query`: a tree-sitter query to run on the source code AST
-
-Tree-sitter capture nodes are returned in the `QueryResult.captures`.
-
-See [tree-sitter](https://tree-sitter.github.io/tree-sitter/) for more information on ASTs, queries etc.
-
-**aspect.RegexQuery(filter, re)**:
-
-The factory method for a `RegexQuery`.
-
-Args:
-* `filter`: a glob pattern to match file names to query
-* `re`: a regular expression to run on the file
-
-Regex capture groups are returned in the `QueryResult.captures`, named by the group name,
-as well as the matched text in the `QueryResult.result`.
-
-See the [golang regex](https://pkg.go.dev/regexp) documentation for more information.
-
-**aspect.RawQuery(filter)**:
-
-The factory method for a `RawQuery`, returning file content as-is with no parsing or filtering.
-
-Args:
-* `filter`: a glob pattern to match file names to return
-
-**aspect.JsonQuery(filter, query)**:
-
-The factory method for a `JsonQuery`.
-
-Args:
-* `filter`: a glob pattern to match file names to query
-* `query`: a JQ filter expression to run on the JSON document
-
-See the [jq manual](https://jqlang.github.io/jq/manual/#basic-filters) for query expressions.
-See [golang jq](https://github.com/itchyny/gojq) for information on the golang implementation used by starzelle.
+* `queries`: a `name:aspect.*Query` map of queries to run on matching files, see [Query Types](#query-types)
 
 ### Analyze(ctx AnalyzeContext) error
 
@@ -116,7 +72,9 @@ Methods:
 Args:
 * `id`: the symbol identifier
 * `provider_type`: the type of the provider such as "java_info" for java packages etc
-* `label`: the Bazel label producing the sybol
+* `label`: the Bazel label producing the symbol
+
+## Types
 
 **aspect.TargetSource**:
 
@@ -124,15 +82,9 @@ Metadata about a source file being analyzed.
 
 Properties:
 * `.path`: the path to the source file relative to the BUILD
-* `.query_results`: a `name:QueryResult` map
+* `.query_results`: a `name:result` map for each query run on this source file
 
-**aspect.QueryResult**:
-
-The result of a query on a source file.
-
-Properties:
-* `.captures`: a `name:value` map of captures from the query
-
+See [Query Types](#query-types) for more information on query result types.
 
 **aspect.Label(repo, pkg, name)**
 
@@ -157,3 +109,77 @@ Properties:
 * `.properties`: a name:value map of extension property values configured in BUILD files via `# aspect:{name} {value}`
 * `.sources`: a list of `aspect.TargetSource`s to process based on the `prepare` stage results
 * `.targets`: existing targets in the BUILD file
+
+## Query Types
+
+Source files can be queried using various methods to extract information for analysis. Some query types return data
+directly from the source code, such JSON and other structured data, while others return `QueryMatch` objects describing
+the matched content.
+
+**aspect.AstQuery(grammar, filter, query)**:
+
+The factory method for an `AstQuery`.
+
+Args:
+* `filter`: a glob pattern to match file names to query
+* `grammar`: the tree-sitter grammar to parse source code as (optional, default based on file extension)
+* `query`: a tree-sitter query to run on the source code AST
+
+A [tree-sitter](https://tree-sitter.github.io/tree-sitter/) query to run on the parsed AST of the file.
+
+See [tree-sitter pattern matching with queries](https://tree-sitter.github.io/tree-sitter/using-parsers#pattern-matching-with-queries)
+including details such as [query syntax](https://tree-sitter.github.io/tree-sitter/using-parsers#query-syntax),
+[predicates](https://tree-sitter.github.io/tree-sitter/using-parsers#predicates) for filtering,
+[capturing nodes](https://tree-sitter.github.io/tree-sitter/using-parsers#capturing-nodes) for extracting `QueryMatch.captures`.
+
+The query result is a list of `QueryMatch` objects for each matching AST node. Tree-sitter capture nodes
+are returned in the `QueryMatch.captures`, the `QueryMatch.result` is undefined.
+
+**aspect.RegexQuery(filter, re)**:
+
+The factory method for a `RegexQuery`.
+
+Args:
+* `filter`: a glob pattern to match file names to query
+* `re`: a regular expression to run on the file
+
+The query result is a list of `QueryMatch` objects for each match in the file.
+
+Regex capture groups are returned in the `QueryMatch.captures`, keyed by the capture group name.
+The full match is returned in the `QueryMatch.result`.
+
+See the [golang regex](https://pkg.go.dev/regexp) documentation for more information.
+
+**aspect.RawQuery(filter)**:
+
+The factory method for a `RawQuery`.
+
+Args:
+* `filter`: a glob pattern to match file names to return
+
+The query result is the file content as-is with no parsing or filtering.
+
+**aspect.JsonQuery(filter, query)**:
+
+The factory method for a `JsonQuery`.
+
+Args:
+* `filter`: a glob pattern to match file names to query
+* `query`: a JQ filter expression to run on the JSON document
+
+The query result is a list of each matching JSON node in the document.
+
+For queries designed to return a single result the result will be an array of one object, or empty array if no result is found.
+
+JSON data types are represented as golang primitives and basic arrays and maps, see [json.Unmarshal](https://pkg.go.dev/encoding/json#Unmarshal).
+
+See the [jq manual](https://jqlang.github.io/jq/manual/#basic-filters) for query expressions.
+See [golang jq](https://github.com/itchyny/gojq) for information on the golang jq implementation used by starzelle.
+
+**aspect.QueryMatch**:
+
+The result of a query on a source file.
+
+Properties:
+* `.result`: the matched content from the source file such as raw text
+* `.captures`: a `name:value` map of captures from the query
