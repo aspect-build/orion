@@ -108,7 +108,20 @@ Properties:
 * `.rel`: the directory being prepared relative to the repository root
 * `.properties`: a name:value map of extension property values configured in BUILD files via `# aspect:{name} {value}`
 * `.sources`: a list of `aspect.TargetSource`s to process based on the `prepare` stage results
-* `.targets`: existing targets in the BUILD file
+* `.targets`: actions to modify targets in the BUILD file, see `aspect.DeclareTargetActions`
+
+**DeclareTargetActions**:
+
+Actions to add/remove targets for a BUILD file.
+
+Methods:
+* `.add(name, kind[, attrs][, symbols])`: add a rule of the specified kind to the BUILD file with a set of attributes and exported symbols
+ Params:
+  * `name`: the name of the rule
+  * `kind`: the rule kind, a native/builtin rule or one registered with `aspect.register_rule_kind`
+  * `attrs`: a name:value map of attributes for the rule, values of type `aspect.Import` will be resolved to Bazel labels
+  * `symbols`: a list of symbols exported by the rule
+* `.remove(name)`: remove a rule from the BUILD file
 
 ## Query Types
 
