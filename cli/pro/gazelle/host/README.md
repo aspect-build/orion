@@ -4,30 +4,13 @@ A BUILD generator where plugins implemented in Starlark can be used to generate 
 
 See [Starlark spec](https://github.com/bazelbuild/starlark/blob/master/spec.md), [core Starlark data types](https://bazel.build/rules/lib/core), [Starlark github-linguist](https://github.com/github-linguist/linguist/blob/v7.29.0/lib/linguist/languages.yml#L6831-L6852) for general Starlark docs and information.
 
-See [PLUGINS.md](PLUGINS.md) for the plugin Starzelle API.
-
-## Loading plugins
-
-### .aspect/cli/config.yaml
-
-```yaml
-configure:
-    plugins:
-        WORKSPACE-relative-plugin.star
-```
+See [Public Docsite](https://docs.aspect.build/cli/starlark/) for the plugin Starzelle API and documentation.
 
 ### Plugins via env
 
 Additional plugins will be loaded from `${STARZELLE_PLUGINS}/*.lang.star` glob.
 
 **FOR TESTING ONLY**: by default `STARZELLE_PLUGINS=${RUNFILES_DIR}/aspect_silo/cli/pro/gazelle/plugins/*.lang.star` for unit tests.
-
-## Enabling plugins
-
-Individual plugins can be enabled/disabled via BUILD directives:
-```
-# aspect:{plugin_id} enabled|disabled
-```
 
 ## TODO:
 
