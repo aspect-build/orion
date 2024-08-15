@@ -76,7 +76,9 @@ func (re *GazelleHost) Resolve(c *config.Config, ix *resolve.RuleIndex, rc *repo
 		return
 	}
 
-	attrImports := r.PrivateAttr(targetAttrImports).(map[string][]plugin.TargetImport)
+	// The import data is the imports per attribute
+	attrImports := importData.(map[string][]plugin.TargetImport)
+	attrValues := r.PrivateAttr(targetAttrValues).(map[string]interface{})
 
 	for attr, imports := range attrImports {
 		importLabels, err := re.resolveImports(c, ix, pluginId, imports, from)
@@ -86,7 +88,20 @@ func (re *GazelleHost) Resolve(c *config.Config, ix *resolve.RuleIndex, rc *repo
 		}
 
 		if !importLabels.Empty() {
-			r.SetAttr(attr, importLabels.Labels())
+			// The resolved labels
+			attrLabels := importLabels.Labels()
+
+			// The attribute may have had some explicit values set by the plugin in addition to the imports.
+			if attrValue, hasAttrValue := attrValues[attr]; hasAttrValue {
+				for _, val := range attrValue.([]interface{}) {
+					attrLabels = append(attrLabels, val.(string))
+				}
+			}
+
+			// NOTE: the attribute might have additional values added via # keep which gazelle will maintain
+			// despite doing SetAttr.
+
+			r.SetAttr(attr, attrLabels)
 		}
 	}
 
