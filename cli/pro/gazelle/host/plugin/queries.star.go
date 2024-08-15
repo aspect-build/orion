@@ -67,7 +67,7 @@ func (q *QueryMatch) Hash() (uint32, error) {
 // ---------------- queryMatchIterator
 
 type queryMatchIterator struct {
-	m      *[]QueryMatch
+	m      []QueryMatch
 	cursor int
 }
 
@@ -78,10 +78,10 @@ func (q *queryMatchIterator) Done() {
 }
 
 func (q *queryMatchIterator) Next(p *starlark.Value) bool {
-	if q.m == nil || q.cursor+1 > len(*q.m) {
+	if q.cursor+1 > len(q.m) {
 		return false
 	}
-	match := (*q.m)[q.cursor]
+	match := q.m[q.cursor]
 	*p = &match
 	q.cursor++
 	return true
@@ -94,11 +94,11 @@ var _ starlark.Iterable = (*QueryMatches)(nil)
 var _ starlark.Indexable = (*QueryMatches)(nil)
 
 func (q QueryMatches) Index(i int) starlark.Value {
-	return &(*q.m)[i]
+	return &q.m[i]
 }
 
 func (q QueryMatches) Len() int {
-	return len(*q.m)
+	return len(q.m)
 }
 
 func (q QueryMatches) Freeze() {}
@@ -112,7 +112,7 @@ func (q QueryMatches) Iterate() starlark.Iterator {
 }
 
 func (q QueryMatches) String() string {
-	return fmt.Sprintf("QueryMatches(%v)", *q.m)
+	return fmt.Sprintf("QueryMatches(%v)", q.m)
 }
 
 func (q QueryMatches) Truth() starlark.Bool {
