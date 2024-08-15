@@ -11,9 +11,15 @@ def prepare(_):
             aspect.SourceExtensions(".json"),
         ],
         queries = {
+            # A query treated as an array of results
             "imports": aspect.JsonQuery(
                 filter = "*.json",
                 query = ".imports[]?",
+            ),
+            # A query treated as a singleton which may have 0 results
+            "is_test": aspect.JsonQuery(
+                filter = "*.json",
+                query = """.testonly?""",
             ),
         },
     )
@@ -25,6 +31,7 @@ def declare(ctx):
             kind = "x_lib",
             attrs = {
                 "srcs": [file.path],
+                "testonly": file.query_results["is_test"][0] if len(file.query_results["is_test"]) else None,
                 "deps": [
                     aspect.Import(
                         id = i,

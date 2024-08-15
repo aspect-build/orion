@@ -1,1 +1,1 @@
-{ "imports": ["lib/l"] }
+{ "imports": ["lib/l"], "testonly": false }

@@ -2,6 +2,7 @@ load("@deps-test//my:rules.bzl", "x_lib")
 
 x_lib(
     name = "a_lib",
+    testonly = True,
     srcs = ["a.x"],
     deps = [
         ":b_lib",
@@ -11,6 +12,7 @@ x_lib(
 
 x_lib(
     name = "b_lib",
+    testonly = False,
     srcs = ["b.x"],
     deps = ["//lib:l_lib"],
 )

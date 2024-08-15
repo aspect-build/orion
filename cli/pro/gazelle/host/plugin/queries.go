@@ -51,7 +51,7 @@ type QueryResults map[string]interface{}
 
 // Multiple matches
 type QueryMatches struct {
-	m *[]QueryMatch
+	m []QueryMatch
 }
 
 // The captures of a single query match
@@ -67,7 +67,7 @@ func NewQueryMatch(captures QueryCapture, result interface{}) QueryMatch {
 	return QueryMatch{captures: captures, result: result}
 }
 
-func NewQueryMatches(matches *[]QueryMatch) QueryMatches {
+func NewQueryMatches(matches []QueryMatch) QueryMatches {
 	return QueryMatches{m: matches}
 }
 
@@ -114,7 +114,7 @@ func runPluginTreeQueries(fileName string, sourceCode []byte, queries NamedQueri
 			match = append(match, NewQueryMatch(r.Captures(), nil))
 		}
 
-		(*queryResults)[key] = NewQueryMatches(&match)
+		(*queryResults)[key] = NewQueryMatches(match)
 	}
 
 	return nil
@@ -167,7 +167,7 @@ func runRegexQuery(sourceCode string, re *regexp.Regexp) QueryMatches {
 		matches = append(matches, NewQueryMatch(captures, nil))
 	}
 
-	return NewQueryMatches(&matches)
+	return NewQueryMatches(matches)
 }
 
 func runJsonQueries(fileName string, sourceCode []byte, queries NamedQueries, queryResults *QueryResults) error {
