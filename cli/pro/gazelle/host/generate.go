@@ -18,7 +18,8 @@ const (
 )
 
 const (
-	targetAttrImports    = "__target_imports_by_attr"
+	targetAttrImports    = "__target_attr_imports"
+	targetAttrValues     = "__target_attr_values"
 	targetDeclarationKey = "__target_declaration"
 	targetPluginKey      = "__target_plugin"
 )
@@ -109,22 +110,29 @@ func (host *GazelleHost) convertPlugTargetsToGenerateResult(pluginTargets map[st
 
 func convertPluginTargetDeclaration(args gazelleLanguage.GenerateArgs, pluginId string, target plugin.TargetDeclaration) *gazelleRule.Rule {
 	targetRule := gazelleRule.NewRule(target.Kind, target.Name)
-	targetRule.SetPrivateAttr(targetPluginKey, pluginId)
-	targetRule.SetPrivateAttr(targetDeclarationKey, target)
 
 	ruleImports := make(map[string][]plugin.TargetImport, 0)
+	ruleAttrs := make(map[string]interface{}, 0)
+
+	targetRule.SetPrivateAttr(targetPluginKey, pluginId)
+	targetRule.SetPrivateAttr(targetDeclarationKey, target)
 	targetRule.SetPrivateAttr(targetAttrImports, ruleImports)
+	targetRule.SetPrivateAttr(targetAttrValues, ruleAttrs)
 
 	for attr, val := range target.Attrs {
 		attrValue, attrImports := convertPluginAttribute(args, val)
 
-		if attrValue != nil {
-			targetRule.SetAttr(attr, attrValue)
-		}
-
-		if attrImports != nil {
+		// Record imports assigned to this attribute
+		if attrImports != nil && len(attrImports) > 0 {
 			// TODO: verify 'attr' is resolveable if len(attrImports) > 0
 			ruleImports[attr] = attrImports
+		}
+
+		// Record and set values assigned to this attribute (of any type).
+		// This may be merged with imports during the resolution stage.
+		if attrValue != nil {
+			ruleAttrs[attr] = attrValue
+			targetRule.SetAttr(attr, attrValue)
 		}
 	}
 
