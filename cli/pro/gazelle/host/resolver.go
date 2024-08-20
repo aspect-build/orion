@@ -187,8 +187,7 @@ func (host *GazelleHost) resolveImport(
 		// TODO: resolution conflicts must be solved by plugins
 		if len(filteredMatches) > 1 {
 			return Resolution_Error, nil, fmt.Errorf(
-				"Import %q from %q resolved to multiple targets (%s)"+
-					" - this must be fixed using the \"gazelle:resolve\" directive",
+				"Import %q from %q resolved to multiple targets (%s) - this must be fixed using the \"gazelle:resolve\" directive",
 				impt.Id, impt.From, targetListFromResults(matches))
 		}
 
