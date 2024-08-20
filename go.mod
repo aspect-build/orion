@@ -9,7 +9,7 @@ require (
 	github.com/bazelbuild/bazel-gazelle v0.38.0 // NOTE: keep in sync with fetch.bzl
 	github.com/bazelbuild/bazelisk v1.17.0
 	github.com/bazelbuild/buildtools v0.0.0-20240606140350-80f1f6802857
-	github.com/bazelbuild/rules_go v0.48.0 // NOTE: keep in sync with fetch.bzl
+	github.com/bazelbuild/rules_go v0.49.0 // NOTE: keep in sync with fetch.bzl
 	github.com/bluekeyes/go-gitdiff v0.7.3
 	github.com/bmatcuk/doublestar/v4 v4.6.1
 	github.com/buildkite/terminal v3.2.0+incompatible
