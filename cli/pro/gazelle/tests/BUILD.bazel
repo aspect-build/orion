@@ -2,11 +2,7 @@ load("//cli/core/gazelle:gazelle.bzl", "gazelle_generation_test")
 
 BUILTIN_PLUGINS_DIR = "cli/pro/gazelle/plugins"
 
-# Disable the gazelle extensionsextensions
-# gazelle:js disabled
-# gazelle:bzl disabled
-# gazelle:kotlin disabled
-# gazelle:aspect-configure disabled
+# Disable the gazelle extensions
 # gazelle:exclude .
 
 # kotlin plugin tests
