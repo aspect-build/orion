@@ -11,8 +11,7 @@ import (
 
 	gazelle "github.com/aspect-build/silo/cli/core/gazelle/common"
 	starlark "github.com/aspect-build/silo/cli/core/gazelle/common/starlark"
-	"github.com/aspect-build/silo/cli/core/gazelle/js/parser"
-	treesitter_parser "github.com/aspect-build/silo/cli/core/gazelle/js/parser/treesitter"
+	parser "github.com/aspect-build/silo/cli/core/gazelle/js/parser"
 	pnpm "github.com/aspect-build/silo/cli/core/gazelle/js/pnpm"
 	proto "github.com/aspect-build/silo/cli/core/gazelle/js/proto"
 	"github.com/aspect-build/silo/cli/core/gazelle/js/typescript"
@@ -672,8 +671,7 @@ func parseSourceFile(rootDir, filePath string) (parser.ParseResult, []error) {
 		return parser.ParseResult{}, []error{err}
 	}
 
-	p := treesitter_parser.NewParser()
-	return p.ParseSource(filePath, string(content))
+	return parser.ParseSource(filePath, string(content))
 }
 
 var ignoreNone = func(string) bool { return false }
