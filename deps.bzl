@@ -169,13 +169,13 @@ def go_dependencies():
             "//cli/core:patches/bazelbuild_bazel-gazelle_aspect-cli.patch",  # keep
             "//cli/core:patches/bazelbuild_bazel-gazelle_aspect-walk-subdir.patch",  # keep
         ],
-        sum = "h1:7SABASdzy94tbvklgX8ThG+1y7ZNl2eFYRVevjOXpgw=",
+        sum = "h1:ketDvfY9GU1rcz9eOrhsADf9xWFdYotZFBq65lyX/CU=",
         # Ensure this version always matches the version of @bazel_gazelle set in fetch.bzl.
-        version = "v0.38.0",
+        version = "v0.38.1-0.20240828161622-2d6805c8b74e",
     )
     go_repository(
         name = "com_github_bazelbuild_bazelisk",
-        build_file_generation = "on",
+        build_file_generation = "clean",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bazelbuild/bazelisk",
         patch_args = ["-p1"],  # keep
@@ -194,8 +194,8 @@ def go_dependencies():
         name = "com_github_bazelbuild_rules_go",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bazelbuild/rules_go",
-        sum = "h1:5vCbuvy8Q11g41lseGJDc5vxhDjJtfxr6nM/IC4VmqM=",
-        version = "v0.49.0",
+        sum = "h1:jmV6tlB0rTk4+dVFCzZFhga1ooEndMkkFvtGrrp5Vmw=",
+        version = "v0.49.1-0.20240813120622-9d1456e778a3",
     )
     go_repository(
         name = "com_github_bazelbuild_rules_python_gazelle",
