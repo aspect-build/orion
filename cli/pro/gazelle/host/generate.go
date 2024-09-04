@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"sync"
 
 	common "github.com/aspect-build/silo/cli/core/gazelle/common"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
 	plugin "github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
 	gazelleLanguage "github.com/bazelbuild/bazel-gazelle/language"
 	gazelleRule "github.com/bazelbuild/bazel-gazelle/rule"
+	"golang.org/x/sync/errgroup"
 )
 
 const (
@@ -56,21 +58,36 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 	sourceFilesByPlugin := host.collectSourceFilesByPlugin(cfg, args, cfg.GenerationMode() == common.GenerationModeUpdate)
 
 	pluginTargets := make(map[string][]plugin.TargetDeclaration)
+	pluginTargetsLock := sync.Mutex{}
 
 	// Parse and query source files
 	// TODO: only parse source files once, not once per plugin (most likely they only belong to one plugin though)
-	// TODO: parallelize
+	eg := errgroup.Group{}
+	eg.SetLimit(10)
 	for pluginId, files := range sourceFilesByPlugin {
 		prep := cfg.pluginPrepareResults[pluginId]
 
-		// Collect source files and plugin metadata for those sources
-		targetSources := host.collectPluginTargetSources(pluginId, prep, args.Dir, files)
+		eg.Go(func() error {
+			// Collect source files and plugin metadata for those sources.
+			targetSources := host.collectPluginTargetSources(pluginId, prep, args.Dir, files)
 
-		// Analyze the source file metadata
-		host.analyzePluginTargetSources(pluginId, prep, targetSources)
+			// Analyze the source file metadata for this plugin.
+			host.analyzePluginTargetSources(pluginId, prep, targetSources)
 
-		// Use the collected sources and analysis to generate rules
-		pluginTargets[pluginId] = host.generateTargets(pluginId, prep, targetSources)
+			// Use the collected sources and analysis to generate rules
+			targets := host.generateTargets(pluginId, prep, targetSources)
+
+			// Lock for the assignment into the cross-thread pluginTargets
+			pluginTargetsLock.Lock()
+			defer pluginTargetsLock.Unlock()
+			pluginTargets[pluginId] = targets
+
+			return nil
+		})
+	}
+
+	if err := eg.Wait(); err != nil {
+		BazelLog.Errorf("Unknown GenerateRules(%s) error: %v", GazelleLanguageName, err)
 	}
 
 	return host.convertPlugTargetsToGenerateResult(pluginTargets, args)
@@ -170,22 +187,35 @@ func convertPluginAttribute(args gazelleLanguage.GenerateArgs, val interface{}) 
 }
 
 func (host *GazelleHost) collectPluginTargetSources(pluginId string, prep pluginConfig, baseDir string, pluginSrcs []string) []plugin.TargetSource {
-	targetSources := make([]plugin.TargetSource, 0, len(pluginSrcs))
+	targetSources := make([]plugin.TargetSource, len(pluginSrcs))
 
-	// TODO: parallelize
-	for _, f := range pluginSrcs {
-		queryResults, err := runPluginQueries(prep, baseDir, f)
-		if err != nil {
-			msg := fmt.Sprintf("Error querying source file %q: %v", f, err)
-			fmt.Printf("%s\n", msg)
-			BazelLog.Errorf(msg)
-		}
+	eg := errgroup.Group{}
+	eg.SetLimit(100)
 
-		src := plugin.TargetSource{
-			Path:         f,
-			QueryResults: queryResults,
-		}
-		targetSources = append(targetSources, src)
+	for i, f := range pluginSrcs {
+		eg.Go(func() error {
+			queryResults, err := runPluginQueries(prep, baseDir, f)
+			if err != nil {
+				msg := fmt.Sprintf("Error querying source file %q: %v", f, err)
+				fmt.Printf("%s\n", msg)
+				BazelLog.Errorf(msg)
+			}
+
+			src := plugin.TargetSource{
+				Path:         f,
+				QueryResults: queryResults,
+			}
+
+			// Assignment into a pre-allocated slice is safe across goroutines
+			// and maintains order of the source files.
+			targetSources[i] = src
+
+			return nil
+		})
+	}
+
+	if err := eg.Wait(); err != nil {
+		BazelLog.Errorf("Collect plugin sources error: %v", err)
 	}
 
 	return targetSources
@@ -211,15 +241,32 @@ func runPluginQueries(prep pluginConfig, baseDir, f string) (plugin.QueryResults
 		queriesByType[&query.Processor][key] = query
 	}
 
-	queryResults := make(plugin.QueryResults, len(queries))
+	queryResultsChan := make(chan *plugin.QueryProcessorResult)
+	wg := sync.WaitGroup{}
 
-	// TODO: parallelize - run each group concurrently
 	for processor, queries := range queriesByType {
-		if err := (*processor)(f, sourceCode, queries, &queryResults); err != nil {
-			msg := fmt.Sprintf("Error running queries for %q: %v", f, err)
-			fmt.Printf("%s\n", msg)
-			BazelLog.Errorf(msg)
-		}
+		wg.Add(1)
+
+		go func() {
+			defer wg.Done()
+
+			if err := (*processor)(f, sourceCode, queries, queryResultsChan); err != nil {
+				msg := fmt.Sprintf("Error running queries for %q: %v", f, err)
+				fmt.Printf("%s\n", msg)
+				BazelLog.Errorf(msg)
+			}
+		}()
+	}
+
+	go func() {
+		wg.Wait()
+		close(queryResultsChan)
+	}()
+
+	// Read the result channel and collect the results
+	queryResults := make(plugin.QueryResults)
+	for result := range queryResultsChan {
+		queryResults[result.Key] = result.Result
 	}
 
 	return queryResults, nil
@@ -256,16 +303,24 @@ func (host *GazelleHost) collectSourceFilesByPlugin(cfg *BUILDConfig, args gazel
 
 // Let plugins analyze sources and declare their outputs
 func (host *GazelleHost) analyzePluginTargetSources(pluginId string, prep pluginConfig, sources []plugin.TargetSource) {
-	// TODO: parallelize - analyze concurrently
+	eg := errgroup.Group{}
+	eg.SetLimit(100)
+
 	for _, src := range sources {
+		eg.Go(func() error {
+			actx := plugin.NewAnalyzeContext(&src, host.database)
 
-		actx := plugin.NewAnalyzeContext(&src, host.database)
+			err := host.plugins[pluginId].Analyze(actx)
+			if err != nil {
+				// TODO:
+				fmt.Println(fmt.Errorf("analyze failed for %s: %w", pluginId, err))
+			}
+			return nil
+		})
+	}
 
-		err := host.plugins[pluginId].Analyze(actx)
-		if err != nil {
-			// TODO:
-			fmt.Println(fmt.Errorf("analyze failed for %s: %w", pluginId, err))
-		}
+	if err := eg.Wait(); err != nil {
+		BazelLog.Errorf("Analyze plugin error: %v", err)
 	}
 }
 
