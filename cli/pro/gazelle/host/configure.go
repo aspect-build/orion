@@ -4,12 +4,14 @@ import (
 	"flag"
 	"strconv"
 	"strings"
+	"sync"
 
 	common "github.com/aspect-build/silo/cli/core/gazelle/common"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
 	"github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
 	"github.com/bazelbuild/bazel-gazelle/config"
 	"github.com/bazelbuild/bazel-gazelle/rule"
+	"golang.org/x/sync/errgroup"
 )
 
 var _ config.Configurer = (*GazelleHost)(nil)
@@ -85,21 +87,37 @@ func (configurer *GazelleHost) Configure(c *config.Config, rel string, f *rule.F
 		return
 	}
 
+	eg := errgroup.Group{}
+	eg.SetLimit(10)
+
+	var prepResultMutex sync.Mutex
+
 	// Prepare the plugins for this configuration.
-	// TODO: parallelize
 	for k, p := range configurer.plugins {
 		if !config.IsPluginEnabled(k) {
 			continue
 		}
 
-		prepContext := configToPrepareContext(p, config)
-		prepResult := p.Prepare(prepContext)
+		eg.Go(func() error {
+			prepContext := configToPrepareContext(p, config)
+			prepResult := p.Prepare(prepContext)
 
-		// Index the plugins and their PrepareResult
-		config.pluginPrepareResults[k] = pluginConfig{
-			PrepareContext: prepContext,
-			PrepareResult:  prepResult,
-		}
+			// Lock while modifying config.pluginPrepareResults
+			prepResultMutex.Lock()
+			defer prepResultMutex.Unlock()
+
+			// Index the plugins and their PrepareResult
+			config.pluginPrepareResults[k] = pluginConfig{
+				PrepareContext: prepContext,
+				PrepareResult:  prepResult,
+			}
+
+			return nil
+		})
+	}
+
+	if err := eg.Wait(); err != nil {
+		BazelLog.Errorf("Configure(%s) plugin error: %v", GazelleLanguageName, err)
 	}
 }
 

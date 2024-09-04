@@ -9,6 +9,7 @@ import (
 	treeutils "github.com/aspect-build/silo/cli/core/gazelle/common/treesitter"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
 	"github.com/itchyny/gojq"
+	"golang.org/x/sync/errgroup"
 
 	"github.com/aspect-build/silo/cli/core/gazelle/common/treesitter"
 )
@@ -19,7 +20,13 @@ type NamedQueries map[string]QueryDefinition
 // A function to execute a set of queries on the content of a source file.
 // A processor may execute queries in parallel or using shared/cached resources for
 // the given file and content.
-type QueryProcessor = func(fileName string, fileContent []byte, queries NamedQueries, queryResults *QueryResults) error
+type QueryProcessor = func(fileName string, fileContent []byte, queries NamedQueries, queryResults chan *QueryProcessorResult) error
+
+// Intermediate object to hold a query key+result in a single struct.
+type QueryProcessorResult struct {
+	Result interface{}
+	Key    string
+}
 
 // A query to run on source files
 type QueryDefinition struct {
@@ -88,7 +95,7 @@ type RegexQueryParams = *regexp.Regexp
 
 type JsonQueryParams = string
 
-func runPluginTreeQueries(fileName string, sourceCode []byte, queries NamedQueries, queryResults *QueryResults) error {
+func runPluginTreeQueries(fileName string, sourceCode []byte, queries NamedQueries, queryResults chan *QueryProcessorResult) error {
 	ast, err := treeutils.ParseSourceCode(toQueryLanguage(fileName, queries), fileName, sourceCode)
 	if err != nil {
 		return err
@@ -103,21 +110,30 @@ func runPluginTreeQueries(fileName string, sourceCode []byte, queries NamedQueri
 		}
 	}
 
-	// TODO: parallelize - run queries concurrently
+	eg := errgroup.Group{}
+	eg.SetLimit(10)
+
 	for key, query := range queries {
-		resultCh := ast.Query(query.Params.(AstQueryParams).Query)
+		eg.Go(func() error {
+			resultCh := ast.Query(query.Params.(AstQueryParams).Query)
 
-		// TODO: delay collection from channel until first read?
-		// Then it must be cached for later reads...
-		match := make([]QueryMatch, 0, 1)
-		for r := range resultCh {
-			match = append(match, NewQueryMatch(r.Captures(), nil))
-		}
+			// TODO: delay collection from channel until first read?
+			// Then it must be cached for later reads...
+			match := make([]QueryMatch, 0, 1)
+			for r := range resultCh {
+				match = append(match, NewQueryMatch(r.Captures(), nil))
+			}
 
-		(*queryResults)[key] = NewQueryMatches(match)
+			queryResults <- &QueryProcessorResult{
+				Key:    key,
+				Result: NewQueryMatches(match),
+			}
+
+			return nil
+		})
 	}
 
-	return nil
+	return eg.Wait()
 }
 
 func toQueryLanguage(fileName string, queries NamedQueries) treeutils.LanguageGrammar {
@@ -133,19 +149,31 @@ func toQueryLanguage(fileName string, queries NamedQueries) treeutils.LanguageGr
 	return treeutils.PathToLanguage(fileName)
 }
 
-func runRawQueries(fileName string, sourceCode []byte, queries NamedQueries, queryResults *QueryResults) error {
+func runRawQueries(fileName string, sourceCode []byte, queries NamedQueries, queryResults chan *QueryProcessorResult) error {
 	for key, _ := range queries {
-		(*queryResults)[key] = string(sourceCode)
+		queryResults <- &QueryProcessorResult{
+			Key:    key,
+			Result: string(sourceCode),
+		}
 	}
 	return nil
 }
 
-func runRegexQueries(fileName string, sourceCode []byte, queries NamedQueries, queryResults *QueryResults) error {
-	// TODO: parallelize - run queries concurrently
+func runRegexQueries(fileName string, sourceCode []byte, queries NamedQueries, queryResults chan *QueryProcessorResult) error {
+	eg := errgroup.Group{}
+	eg.SetLimit(10)
+
 	for key, q := range queries {
-		(*queryResults)[key] = runRegexQuery(string(sourceCode), q.Params.(RegexQueryParams))
+		eg.Go(func() error {
+			queryResults <- &QueryProcessorResult{
+				Key:    key,
+				Result: runRegexQuery(string(sourceCode), q.Params.(RegexQueryParams)),
+			}
+			return nil
+		})
 	}
-	return nil
+
+	return eg.Wait()
 }
 
 func runRegexQuery(sourceCode string, re *regexp.Regexp) QueryMatches {
@@ -170,24 +198,33 @@ func runRegexQuery(sourceCode string, re *regexp.Regexp) QueryMatches {
 	return NewQueryMatches(matches)
 }
 
-func runJsonQueries(fileName string, sourceCode []byte, queries NamedQueries, queryResults *QueryResults) error {
+func runJsonQueries(fileName string, sourceCode []byte, queries NamedQueries, queryResults chan *QueryProcessorResult) error {
 	var doc interface{}
 	err := json.Unmarshal(sourceCode, &doc)
 	if err != nil {
 		return err
 	}
 
-	// TODO: parallelize - run queries concurrently
-	for key, q := range queries {
-		r, err := runJsonQuery(doc, q.Params.(JsonQueryParams))
-		if err != nil {
-			return err
-		}
+	eg := errgroup.Group{}
+	eg.SetLimit(10)
 
-		(*queryResults)[key] = r
+	for key, q := range queries {
+		eg.Go(func() error {
+			r, err := runJsonQuery(doc, q.Params.(JsonQueryParams))
+			if err != nil {
+				return err
+			}
+
+			queryResults <- &QueryProcessorResult{
+				Key:    key,
+				Result: r,
+			}
+
+			return nil
+		})
 	}
 
-	return nil
+	return eg.Wait()
 }
 
 func runJsonQuery(doc interface{}, query string) (interface{}, error) {
