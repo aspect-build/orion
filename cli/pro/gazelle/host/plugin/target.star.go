@@ -111,10 +111,16 @@ func readSymbol(v starlark.Value) Symbol {
 	return v.(Symbol)
 }
 
+func readLabel(v starlark.Value) Label {
+	return v.(Label)
+}
+
 func readTargetAttributeValue(v starlark.Value) interface{} {
 	switch v := v.(type) {
 	case TargetImport:
 		return readTargetImport(v)
+	case Label:
+		return readLabel(v)
 	}
 
 	return starUtils.ReadRecurse(v, readTargetAttributeValue)
