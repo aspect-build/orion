@@ -75,6 +75,9 @@ func (configurer *GazelleHost) Configure(c *config.Config, rel string, f *rule.F
 		}
 	}
 
+	// Enable the WALKSUBDIR gazelle patch, setting the flag depending on the GenerationMode.
+	c.Exts[common.ASPECT_WALKSUBDIR] = config.generationMode == common.GenerationModeUpdate
+
 	// All generation may disabled.
 	if config.GenerationMode() == common.GenerationModeNone {
 		BazelLog.Tracef("Configure(%s) disabled: %q", GazelleLanguageName, rel)
