@@ -1,34 +1,18 @@
 diff --git a/config/config.go b/config/config.go
-index fed885d..30ce539 100644
+index fed885d..23b1083 100644
 --- a/config/config.go
 +++ b/config/config.go
-@@ -120,10 +120,23 @@ type MappedKind struct {
+@@ -120,6 +120,8 @@ type MappedKind struct {
  	FromKind, KindName, KindLoad string
  }
  
-+// PATCH ---
-+// Must align with aspect-cli constants
-+const ASPECT_WALKSUBDIR_PATCHED = "__aspect:walksubdir.patched"
 +const ASPECT_WALKSUBDIR = "__aspect:walksubdir"
 +
  func New() *Config {
-+	// PATCH ---
-+	// Mark the config as patched, with an opt-out env var
-+	exts := make(map[string]interface{})
-+	if os.Getenv("__aspect_walksubdir_optout__") != "true" {
-+		exts[ASPECT_WALKSUBDIR_PATCHED] = true
-+	}
-+	// END PATCH ---
-+
  	return &Config{
  		ValidBuildFileNames: DefaultValidBuildFileNames,
--		Exts:                make(map[string]interface{}),
-+		Exts:                exts,
- 	}
- }
- 
 diff --git a/walk/walk.go b/walk/walk.go
-index cfc088c..5abc5d7 100644
+index cfc088c..226d61d 100644
 --- a/walk/walk.go
 +++ b/walk/walk.go
 @@ -125,9 +125,9 @@ func Walk(c *config.Config, cexts []config.Configurer, dirs []string, mode Mode,
@@ -96,7 +80,7 @@ index cfc088c..5abc5d7 100644
 +	}
 +
 +	// PATCH ---
-+	// If there is no BUILD, no patch opt-out, and walking subdirs is enabled:
++	// If there is no BUILD and the ASPECT_WALKSUBDIR flag is set then return the files to the parent 'visit' then
 +	// return the regular files to be included in the parent 'wf' call.
 +	if f == nil {
 +		if aspectWalkSubdirs, aspectWalkSubdirsExists := c.Exts[config.ASPECT_WALKSUBDIR]; aspectWalkSubdirsExists {

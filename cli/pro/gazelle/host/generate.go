@@ -55,7 +55,7 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 
 	// Collect source files grouped by plugins consuming them.
 	// Recurse if subdirectories will not generate their own BUILD files
-	sourceFilesByPlugin := host.collectSourceFilesByPlugin(cfg, args, cfg.GenerationMode() == common.GenerationModeUpdate)
+	sourceFilesByPlugin := host.collectSourceFilesByPlugin(cfg, args)
 
 	pluginTargets := make(map[string][]plugin.TargetDeclaration)
 	pluginTargetsLock := sync.Mutex{}
@@ -273,16 +273,11 @@ func runPluginQueries(prep pluginConfig, baseDir, f string) (plugin.QueryResults
 }
 
 // Collect source files managed by this BUILD and batch them by plugins interested in them.
-func (host *GazelleHost) collectSourceFilesByPlugin(cfg *BUILDConfig, args gazelleLanguage.GenerateArgs, recurse bool) map[string][]string {
+func (host *GazelleHost) collectSourceFilesByPlugin(cfg *BUILDConfig, args gazelleLanguage.GenerateArgs) map[string][]string {
 	sourceFilesByPlugin := make(map[string][]string)
 
-	excludes, has_excludes := cfg.directiveRawValues["excludes"]
-	if !has_excludes {
-		excludes = []string{}
-	}
-
 	// Collect source files managed by this BUILD for each plugin.
-	common.GazelleWalkDir(args, host.gitignore.Matches, excludes, recurse, func(f string) error {
+	common.GazelleWalkDir(args, host.gitignore.Matches, func(f string) error {
 		for pluginId, p := range cfg.pluginPrepareResults {
 			for _, s := range p.Sources {
 				if s.Match(f) {
