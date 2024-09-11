@@ -3,11 +3,11 @@ package plugin
 import (
 	"encoding/json"
 	"fmt"
-	"path/filepath"
 	"regexp"
 
 	treeutils "github.com/aspect-build/silo/cli/core/gazelle/common/treesitter"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
+	"github.com/bmatcuk/doublestar/v4"
 	"github.com/itchyny/gojq"
 	"golang.org/x/sync/errgroup"
 
@@ -41,7 +41,7 @@ func (q QueryDefinition) Match(f string) bool {
 	}
 
 	for _, filter := range q.Filter {
-		is_match, err := filepath.Match(filter, f)
+		is_match, err := doublestar.Match(filter, f)
 
 		if err != nil {
 			fmt.Println("Error matching filter: ", err)
