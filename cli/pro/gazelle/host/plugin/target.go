@@ -1,6 +1,7 @@
 package plugin
 
 import (
+	common "github.com/aspect-build/silo/cli/core/gazelle/common"
 	godsutils "github.com/emirpasic/gods/utils"
 )
 
@@ -67,5 +68,5 @@ func TargetExportComparator(a, b interface{}) int {
 		return nc
 	}
 
-	return godsutils.StringComparator(a.(TargetSymbol).Label, b.(TargetSymbol).Label)
+	return common.LabelComparator(a.(TargetSymbol).Label, b.(TargetSymbol).Label)
 }

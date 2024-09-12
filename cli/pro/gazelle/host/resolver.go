@@ -88,20 +88,25 @@ func (re *GazelleHost) Resolve(c *config.Config, ix *resolve.RuleIndex, rc *repo
 		}
 
 		if !importLabels.Empty() {
-			// The resolved labels
 			attrLabels := importLabels.Labels()
+			attrValue := make([]interface{}, 0, len(attrLabels))
+
+			// The resolved labels
+			for _, l := range attrLabels {
+				attrValue = append(attrValue, l.String())
+			}
 
 			// The attribute may have had some explicit values set by the plugin in addition to the imports.
-			if attrValue, hasAttrValue := attrValues[attr]; hasAttrValue {
-				for _, val := range attrValue.([]interface{}) {
-					attrLabels = append(attrLabels, val.(string))
+			if attrConstValue, hasAttrValue := attrValues[attr]; hasAttrValue {
+				for _, val := range attrConstValue.([]interface{}) {
+					attrValue = append(attrValue, val)
 				}
 			}
 
 			// NOTE: the attribute might have additional values added via # keep which gazelle will maintain
 			// despite doing SetAttr.
 
-			r.SetAttr(attr, attrLabels)
+			r.SetAttr(attr, attrValue)
 		}
 	}
 

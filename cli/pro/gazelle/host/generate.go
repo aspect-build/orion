@@ -9,6 +9,7 @@ import (
 	common "github.com/aspect-build/silo/cli/core/gazelle/common"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
 	plugin "github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
+	gazelleLabel "github.com/bazelbuild/bazel-gazelle/label"
 	gazelleLanguage "github.com/bazelbuild/bazel-gazelle/language"
 	gazelleRule "github.com/bazelbuild/bazel-gazelle/rule"
 	"golang.org/x/sync/errgroup"
@@ -179,8 +180,15 @@ func convertPluginAttribute(args gazelleLanguage.GenerateArgs, val interface{}) 
 		return nil, []plugin.TargetImport{targetImport}
 	}
 
+	// Convert plugin.Label to a gazelle Label
 	if l, isLabel := val.(plugin.Label); isLabel {
-		return l.ToRelativeString("", args.Rel), nil
+		val = gazelleLabel.New(l.Repo, l.Pkg, l.Name)
+	}
+
+	// Normalize gazelle labels to be relative to the BUILD file
+	if l, isLabel := val.(gazelleLabel.Label); isLabel {
+		// TODO: also convert the `args.Config.RepoName` repo to relative?
+		return l.Rel("", args.Rel), nil
 	}
 
 	return val, nil
