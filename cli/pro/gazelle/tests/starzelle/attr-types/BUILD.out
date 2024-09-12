@@ -14,8 +14,8 @@ x_lib(
     types2 = [
         "//p2:l2",
         ":rel",
-        "//default:default",
-        "@foo//repo-default:repo-default",
+        "//default",
+        "@foo//repo-default",
         ":value",
         "//:value",
     ],
