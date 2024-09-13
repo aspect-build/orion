@@ -46,11 +46,13 @@ func (configurer *GazelleHost) Configure(c *config.Config, rel string, f *rule.F
 	configurer.gitignore.CollectIgnoreFiles(c, rel)
 
 	// Generate hierarchical configuration.
-	if _, exists := c.Exts[GazelleLanguageName]; !exists {
+	if rel == "" {
 		c.Exts[GazelleLanguageName] = NewRootConfig(c.RepoName)
+	} else {
+		c.Exts[GazelleLanguageName] = c.Exts[GazelleLanguageName].(*BUILDConfig).NewChildConfig(rel)
 	}
 
-	config := c.Exts[GazelleLanguageName].(*BUILDConfig).GetConfig(rel)
+	config := c.Exts[GazelleLanguageName].(*BUILDConfig)
 
 	// Record directives from the existing BUILD file.
 	if f != nil {
