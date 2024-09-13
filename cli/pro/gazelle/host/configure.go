@@ -66,8 +66,6 @@ func (configurer *GazelleHost) Configure(c *config.Config, rel string, f *rule.F
 					config.SetGenerationMode(mode)
 				case common.GenerationModeUpdate:
 					config.SetGenerationMode(mode)
-				case common.GenerationModeNone:
-					config.SetGenerationMode(mode)
 				default:
 					BazelLog.Fatalf("invalid value for directive %q: %s", common.Directive_GenerationMode, d.Value)
 				}
@@ -78,12 +76,6 @@ func (configurer *GazelleHost) Configure(c *config.Config, rel string, f *rule.F
 	// TODO: move to common global config.Configurer
 	// Enable the WALKSUBDIR gazelle patch, setting the flag depending on the GenerationMode.
 	c.Exts[common.ASPECT_WALKSUBDIR] = config.generationMode == common.GenerationModeUpdate
-
-	// All generation may disabled.
-	if config.GenerationMode() == common.GenerationModeNone {
-		BazelLog.Tracef("Configure(%s) disabled: %q", GazelleLanguageName, rel)
-		return
-	}
 
 	// Generating new BUILDs may disabled.
 	if config.GenerationMode() == common.GenerationModeUpdate && f == nil {
