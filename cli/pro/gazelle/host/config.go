@@ -2,7 +2,6 @@ package gazelle
 
 import (
 	"fmt"
-	"path/filepath"
 
 	common "github.com/aspect-build/silo/cli/core/gazelle/common"
 	plugin "github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
@@ -13,7 +12,6 @@ import (
 
 type BUILDConfig struct {
 	// Shared across all
-	all      map[string]*BUILDConfig
 	repoName string
 
 	// This config
@@ -34,10 +32,9 @@ type BUILDConfig struct {
 }
 
 func NewRootConfig(repoName string) *BUILDConfig {
-	r := &BUILDConfig{
+	return &BUILDConfig{
 		repoName:           repoName,
 		rel:                "",
-		all:                make(map[string]*BUILDConfig),
 		directiveRawValues: make(map[string][]string),
 
 		generationMode: common.GenerationModeCreate,
@@ -45,8 +42,6 @@ func NewRootConfig(repoName string) *BUILDConfig {
 
 		pluginPrepareResults: make(map[string]pluginConfig),
 	}
-	r.all[r.rel] = r
-	return r
 }
 
 func (c *BUILDConfig) NewChildConfig(rel string) *BUILDConfig {
@@ -77,20 +72,6 @@ func (p *BUILDConfig) appendDirectiveValue(key, value string) {
 	} else {
 		p.directiveRawValues[key] = append(values, value)
 	}
-}
-
-func (p *BUILDConfig) GetConfig(rel string) *BUILDConfig {
-	if p.all[rel] == nil {
-		// TODO: find first parent with a config
-		parentRel := filepath.Dir(rel)
-		if parentRel == "." {
-			parentRel = ""
-		}
-
-		p.all[rel] = p.all[parentRel].NewChildConfig(rel)
-	}
-
-	return p.all[rel]
 }
 
 // GenerationMode returns whether coarse-grained targets should be

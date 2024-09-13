@@ -31,7 +31,7 @@ const (
 //   - which rules to delete (GenerateResult.Empty)
 //   - which rules to create (or merge with existing) and their associated metadata (GenerateResult.Gen + GenerateResult.Imports)
 func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazelleLanguage.GenerateResult {
-	cfg := args.Config.Exts[GazelleLanguageName].(*BUILDConfig).GetConfig(args.Rel)
+	cfg := args.Config.Exts[GazelleLanguageName].(*BUILDConfig)
 
 	// Generating new BUILDs may disabled.
 	if cfg.GenerationMode() == common.GenerationModeUpdate && args.File == nil {
