@@ -33,12 +33,6 @@ const (
 func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazelleLanguage.GenerateResult {
 	cfg := args.Config.Exts[GazelleLanguageName].(*BUILDConfig).GetConfig(args.Rel)
 
-	// All generation may disabled.
-	if cfg.GenerationMode() == common.GenerationModeNone {
-		BazelLog.Tracef("GenerateRules(%s) disabled: %q", GazelleLanguageName, args.Rel)
-		return gazelleLanguage.GenerateResult{}
-	}
-
 	// Generating new BUILDs may disabled.
 	if cfg.GenerationMode() == common.GenerationModeUpdate && args.File == nil {
 		BazelLog.Tracef("GenerateRules(%s) BUILD creation disabled: %s", GazelleLanguageName, args.Rel)
