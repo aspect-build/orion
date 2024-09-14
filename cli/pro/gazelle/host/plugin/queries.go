@@ -192,7 +192,7 @@ func runRegexQuery(sourceCode string, re *regexp.Regexp) QueryMatches {
 			}
 		}
 
-		matches = append(matches, NewQueryMatch(captures, nil))
+		matches = append(matches, NewQueryMatch(captures, reMatch[0]))
 	}
 
 	return NewQueryMatches(matches)
