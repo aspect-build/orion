@@ -2,7 +2,7 @@ package plugin
 
 import (
 	"fmt"
-	"strings"
+	"maps"
 
 	starUtils "github.com/aspect-build/silo/cli/core/gazelle/common/starlark/utils"
 	"go.starlark.net/starlark"
@@ -29,8 +29,10 @@ func (q *QueryCapture) Hash() (uint32, error) {
 	return 0, fmt.Errorf("unhashable: %s", q.Type())
 }
 
-func (q *QueryCapture) Freeze()              {}
-func (q *QueryCapture) String() string       { return q.Type() }
+func (q *QueryCapture) Freeze() {}
+func (q *QueryCapture) String() string {
+	return fmt.Sprintf("QueryCapture{%v}", maps.Keys(*q))
+}
 func (q *QueryCapture) Truth() starlark.Bool { return starlark.True }
 func (q *QueryCapture) Type() string         { return "QueryCapture" }
 
@@ -49,7 +51,7 @@ func (q *QueryMatch) Attr(name string) (starlark.Value, error) {
 	}
 }
 func (q *QueryMatch) AttrNames() []string {
-	return []string{"captures"}
+	return []string{"result", "captures"}
 }
 
 func (q *QueryMatch) String() string {
@@ -126,6 +128,7 @@ func (q QueryMatches) Type() string {
 // ---------------- QueryDefinition
 
 var _ starlark.Value = (*QueryDefinition)(nil)
+var _ starlark.HasAttrs = (*QueryDefinition)(nil)
 
 func (qd QueryDefinition) String() string {
 	return fmt.Sprintf("QueryDefinition{filter: %v}", qd.Filter)
@@ -136,17 +139,27 @@ func (qd QueryDefinition) Truth() starlark.Bool { return starlark.True }
 func (qd QueryDefinition) Hash() (uint32, error) {
 	return 0, fmt.Errorf("unhashable: %s", qd.Type())
 }
+func (qd QueryDefinition) Attr(name string) (starlark.Value, error) {
+	switch name {
+	case "filter":
+		return starUtils.Write(qd.Filter), nil
+	case "params":
+		return starUtils.Write(qd.Params), nil
+	default:
+		return nil, starlark.NoSuchAttrError(name)
+	}
+}
+func (qd QueryDefinition) AttrNames() []string {
+	return []string{"filter", "params"}
+}
 
 // ---------------- NamedQueries
 
 var _ starlark.Value = (*NamedQueries)(nil)
+var _ starlark.Mapping = (*NamedQueries)(nil)
 
 func (nq NamedQueries) String() string {
-	keys := make([]string, 0, len(nq))
-	for k := range nq {
-		keys = append(keys, k)
-	}
-	return fmt.Sprintf("NamedQueries(%v)", strings.Join(keys, ","))
+	return fmt.Sprintf("NamedQueries(%v)", maps.Keys(nq))
 }
 func (nq NamedQueries) Type() string         { return "NamedQueries" }
 func (nq NamedQueries) Freeze()              {}
@@ -155,14 +168,25 @@ func (nq NamedQueries) Hash() (uint32, error) {
 	return 0, fmt.Errorf("unhashable: %s", nq.Type())
 }
 
+func (nq NamedQueries) Get(k starlark.Value) (v starlark.Value, found bool, err error) {
+	if k.Type() != "string" {
+		return nil, false, fmt.Errorf("invalid key type, expected string")
+	}
+	key := k.(starlark.String).GoString()
+	r, found := nq[key]
+
+	if !found {
+		return nil, false, fmt.Errorf("no query named %q, queries: %v", key, nq)
+	}
+
+	// Pure primitive query results
+	return starUtils.Write(r), true, nil
+}
+
 var _ starlark.Mapping = (*QueryResults)(nil)
 
 func (qr QueryResults) String() string {
-	keys := make([]string, 0, len(qr))
-	for k, _ := range qr {
-		keys = append(keys, k)
-	}
-	return fmt.Sprintf("QueryResults(%v)", strings.Join(keys, ","))
+	return fmt.Sprintf("QueryResults(%v)", maps.Keys(qr))
 }
 func (qr QueryResults) Type() string         { return "QueryResults" }
 func (qr QueryResults) Freeze()              {}
@@ -179,7 +203,7 @@ func (qr QueryResults) Get(k starlark.Value) (v starlark.Value, found bool, err 
 	r, found := qr[key]
 
 	if !found {
-		return nil, false, fmt.Errorf("no query named %q, queries: %v", key, qr)
+		return nil, false, fmt.Errorf("no query result named %q, queries: %v", key, qr)
 	}
 
 	// Pure primitive query results
