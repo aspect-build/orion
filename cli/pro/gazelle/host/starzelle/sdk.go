@@ -84,14 +84,17 @@ func newAstQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, k
 	var filterValue starlark.Value
 	var grammarValue starlark.String
 
-	starlark.UnpackArgs(
-		"NewAstQuery",
+	err := starlark.UnpackArgs(
+		"AstQuery",
 		args,
 		kwargs,
 		"query", &query,
-		"grammar", &grammarValue,
+		"grammar?", &grammarValue,
 		"filter??", &filterValue,
 	)
+	if err != nil {
+		return nil, err
+	}
 
 	return plugin.QueryDefinition{
 		Filter:    readQueryFilter(filterValue),
@@ -107,17 +110,20 @@ func newRegexQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple,
 	var expression starlark.String
 	var filterValue starlark.Value
 
-	starlark.UnpackArgs(
-		"NewRegexQuery",
+	err := starlark.UnpackArgs(
+		"RegexQuery",
 		args,
 		kwargs,
 		"expression", &expression,
 		"filter??", &filterValue,
 	)
+	if err != nil {
+		return nil, err
+	}
 
 	re, err := common.ParseRegex(expression.GoString())
 	if err != nil {
-		return starlark.None, err
+		return nil, err
 	}
 
 	return plugin.QueryDefinition{
@@ -130,12 +136,15 @@ func newRegexQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple,
 func newRawQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	var filterValue starlark.Value
 
-	starlark.UnpackArgs(
-		"NewRawQuery",
+	err := starlark.UnpackArgs(
+		"RawQuery",
 		args,
 		kwargs,
 		"filter??", &filterValue,
 	)
+	if err != nil {
+		return nil, err
+	}
 
 	return plugin.QueryDefinition{
 		Filter:    readQueryFilter(filterValue),
@@ -147,13 +156,16 @@ func newJsonQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, 
 	var queryValue starlark.String
 	var filterValue starlark.Value
 
-	starlark.UnpackArgs(
-		"NewJsonQuery",
+	err := starlark.UnpackArgs(
+		"JsonQuery",
 		args,
 		kwargs,
 		"query?", &queryValue,
 		"filter??", &filterValue,
 	)
+	if err != nil {
+		return nil, err
+	}
 
 	return plugin.QueryDefinition{
 		Filter:    readQueryFilter(filterValue),
@@ -184,13 +196,16 @@ func newPrepareResult(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tup
 	var queriesValue *starlark.Dict
 	var sourcesValue *starlark.List
 
-	starlark.UnpackArgs(
-		"NewPrepareResult",
+	err := starlark.UnpackArgs(
+		"PrepareResult",
 		args,
 		kwargs,
 		"sources", &sourcesValue,
 		"queries??", &queriesValue,
 	)
+	if err != nil {
+		return nil, err
+	}
 
 	queries := make(plugin.NamedQueries)
 	if queriesValue != nil {
@@ -235,15 +250,18 @@ func newImport(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwa
 	var id, provider, from starlark.String
 	var optional starlark.Bool
 
-	starlark.UnpackArgs(
-		"NewImport",
+	err := starlark.UnpackArgs(
+		"Import",
 		args,
 		kwargs,
 		"id", &id,
 		"provider", &provider,
-		"src", &from,
-		"optional", &optional,
+		"src?", &from,
+		"optional?", &optional,
 	)
+	if err != nil {
+		return nil, err
+	}
 
 	if id.GoString() == "" || provider.GoString() == "" {
 		msg := "Import id and provider cannot be empty\n"
@@ -264,13 +282,16 @@ func newImport(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwa
 func newSymbol(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	var id, provider starlark.String
 
-	starlark.UnpackArgs(
-		"NewSymbol",
+	err := starlark.UnpackArgs(
+		"Symbol",
 		args,
 		kwargs,
 		"id", &id,
 		"provider", &provider,
 	)
+	if err != nil {
+		return nil, err
+	}
 
 	return plugin.Symbol{
 		Id:       id.GoString(),
@@ -281,14 +302,17 @@ func newSymbol(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwa
 func newLabel(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	var repo, pkg, name starlark.String
 
-	starlark.UnpackArgs(
-		"NewLabel",
+	err := starlark.UnpackArgs(
+		"Label",
 		args,
 		kwargs,
-		"repo", &repo,
-		"pkg", &pkg,
+		"repo?", &repo,
+		"pkg?", &pkg,
 		"name", &name,
 	)
+	if err != nil {
+		return nil, err
+	}
 
 	return plugin.Label{
 		Repo: repo.GoString(),
@@ -300,13 +324,16 @@ func newLabel(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwar
 func newProperty(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	var propType, propDefault starlark.String
 
-	starlark.UnpackArgs(
-		"NewProperty",
+	err := starlark.UnpackArgs(
+		"Property",
 		args,
 		kwargs,
 		"type", &propType,
 		"default", &propDefault,
 	)
+	if err != nil {
+		return nil, err
+	}
 
 	return plugin.Property{
 		PropertyType: propType.GoString(),
