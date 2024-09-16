@@ -67,7 +67,7 @@ func (ti TargetImport) Attr(name string) (starlark.Value, error) {
 	return nil, fmt.Errorf("no such attribute: %s", name)
 }
 func (ti TargetImport) AttrNames() []string {
-	return []string{"id", "provider", "from"}
+	return []string{"id", "provider", "from", "optional"}
 }
 
 // ---------------- TargetSymbol

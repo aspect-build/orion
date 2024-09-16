@@ -10,12 +10,10 @@ import (
 
 	starUtils "github.com/aspect-build/silo/cli/core/gazelle/common/starlark/utils"
 	"go.starlark.net/starlark"
-	"golang.org/x/exp/maps"
 )
 
 // ---------------- PropertyValues
 var _ starlark.Value = (*PropertyValues)(nil)
-var _ starlark.HasAttrs = (*PropertyValues)(nil)
 var _ starlark.Mapping = (*PropertyValues)(nil)
 
 func (p PropertyValues) String() string {
@@ -26,18 +24,6 @@ func (p PropertyValues) Freeze()              {}
 func (p PropertyValues) Truth() starlark.Bool { return starlark.True }
 func (p PropertyValues) Hash() (uint32, error) {
 	return 0, fmt.Errorf("unhashable: %s", p.Type())
-}
-
-func (p PropertyValues) Attr(name string) (starlark.Value, error) {
-	if v, ok := p.values[name]; ok {
-		return starUtils.Write(v), nil
-	}
-
-	return nil, nil
-
-}
-func (p PropertyValues) AttrNames() []string {
-	return maps.Keys(p.values)
 }
 func (p PropertyValues) Get(k starlark.Value) (v starlark.Value, found bool, err error) {
 	if k.Type() != "string" {
@@ -227,9 +213,10 @@ func (ctx TargetSource) AttrNames() []string {
 // ---------------- Property
 
 var _ starlark.Value = (*Property)(nil)
+var _ starlark.HasAttrs = (*Property)(nil)
 
 func (p Property) String() string {
-	return fmt.Sprintf("Property{name: %q, property_type: %q, default_value: %q}", p.Name, p.PropertyType, p.Default)
+	return fmt.Sprintf("Property{name: %q, type: %q, default: %q}", p.Name, p.PropertyType, p.Default)
 }
 func (p Property) Type() string         { return "Property" }
 func (p Property) Freeze()              {}
@@ -237,10 +224,26 @@ func (p Property) Truth() starlark.Bool { return starlark.True }
 func (p Property) Hash() (uint32, error) {
 	return 0, fmt.Errorf("unhashable: %s", p.Type())
 }
+func (p Property) Attr(name string) (starlark.Value, error) {
+	switch name {
+	case "name":
+		return starUtils.Write(p.Name), nil
+	case "type":
+		return starUtils.Write(p.PropertyType), nil
+	case "default":
+		return starUtils.Write(p.Default), nil
+	default:
+		return nil, starlark.NoSuchAttrError(name)
+	}
+}
+func (p Property) AttrNames() []string {
+	return []string{"name", "type", "default"}
+}
 
 // ---------------- PrepareResult
 
 var _ starlark.Value = (*PrepareResult)(nil)
+var _ starlark.HasAttrs = (*PrepareResult)(nil)
 
 func (r PrepareResult) String() string {
 	return fmt.Sprintf("PrepareResult{sources: %v, queries: %v}", r.Sources, r.Queries)
@@ -251,10 +254,24 @@ func (r PrepareResult) Truth() starlark.Bool { return starlark.True }
 func (r PrepareResult) Hash() (uint32, error) {
 	return 0, fmt.Errorf("unhashable: %s", r.Type())
 }
+func (r PrepareResult) Attr(name string) (starlark.Value, error) {
+	switch name {
+	case "sources":
+		return starUtils.Write(r.Sources), nil
+	case "queries":
+		return starUtils.Write(r.Queries), nil
+	default:
+		return nil, starlark.NoSuchAttrError(name)
+	}
+}
+func (r PrepareResult) AttrNames() []string {
+	return []string{"sources", "queries"}
+}
 
 // ---------------- SourceExtensionsFilter
 
 var _ starlark.Value = (*SourceExtensionsFilter)(nil)
+var _ starlark.HasAttrs = (*SourceExtensionsFilter)(nil)
 
 func (r SourceExtensionsFilter) String() string {
 	return fmt.Sprintf("SourceExtensionsFilter{Extensions: %v}", r.Extensions)
@@ -265,10 +282,22 @@ func (r SourceExtensionsFilter) Truth() starlark.Bool { return starlark.True }
 func (r SourceExtensionsFilter) Hash() (uint32, error) {
 	return 0, fmt.Errorf("unhashable: %s", r.Type())
 }
+func (r SourceExtensionsFilter) Attr(name string) (starlark.Value, error) {
+	switch name {
+	case "extensions":
+		return starUtils.Write(r.Extensions), nil
+	default:
+		return nil, starlark.NoSuchAttrError(name)
+	}
+}
+func (r SourceExtensionsFilter) AttrNames() []string {
+	return []string{"extensions"}
+}
 
 // ---------------- SourceFileFilter
 
 var _ starlark.Value = (*SourceGlobFilter)(nil)
+var _ starlark.HasAttrs = (*SourceGlobFilter)(nil)
 
 func (r SourceGlobFilter) String() string {
 	return fmt.Sprintf("SourceGlobFilter{Globs: %v}", r.Globs)
@@ -279,10 +308,22 @@ func (r SourceGlobFilter) Truth() starlark.Bool { return starlark.True }
 func (r SourceGlobFilter) Hash() (uint32, error) {
 	return 0, fmt.Errorf("unhashable: %s", r.Type())
 }
+func (r SourceGlobFilter) Attr(name string) (starlark.Value, error) {
+	switch name {
+	case "globs":
+		return starUtils.Write(r.Globs), nil
+	default:
+		return nil, starlark.NoSuchAttrError(name)
+	}
+}
+func (r SourceGlobFilter) AttrNames() []string {
+	return []string{"globs"}
+}
 
 // ---------------- SourceFileFilter
 
 var _ starlark.Value = (*SourceFileFilter)(nil)
+var _ starlark.HasAttrs = (*SourceFileFilter)(nil)
 
 func (r SourceFileFilter) String() string {
 	return fmt.Sprintf("SourceFileFilter{Files: %v}", r.Files)
@@ -292,6 +333,17 @@ func (r SourceFileFilter) Freeze()              {}
 func (r SourceFileFilter) Truth() starlark.Bool { return starlark.True }
 func (r SourceFileFilter) Hash() (uint32, error) {
 	return 0, fmt.Errorf("unhashable: %s", r.Type())
+}
+func (r SourceFileFilter) Attr(name string) (starlark.Value, error) {
+	switch name {
+	case "files":
+		return starUtils.Write(r.Files), nil
+	default:
+		return nil, starlark.NoSuchAttrError(name)
+	}
+}
+func (r SourceFileFilter) AttrNames() []string {
+	return []string{"files"}
 }
 
 // ---------------- AnalyzeContext
@@ -311,7 +363,7 @@ func (a *AnalyzeContext) Attr(name string) (starlark.Value, error) {
 }
 
 func (a *AnalyzeContext) AttrNames() []string {
-	return []string{"source"}
+	return []string{"source", "add_symbol"}
 }
 func (a *AnalyzeContext) Freeze() {}
 func (a *AnalyzeContext) Hash() (uint32, error) {
