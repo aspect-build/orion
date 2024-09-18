@@ -187,8 +187,8 @@ def go_dependencies():
         name = "com_github_bazelbuild_rules_go",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bazelbuild/rules_go",
-        sum = "h1:jmV6tlB0rTk4+dVFCzZFhga1ooEndMkkFvtGrrp5Vmw=",
-        version = "v0.49.1-0.20240813120622-9d1456e778a3",
+        sum = "h1:/BUvuaB8MEiUA2oLPPCGtuw5V+doAYyiGTFyoSWlkrw=",
+        version = "v0.50.1",
     )
     go_repository(
         name = "com_github_bazelbuild_rules_python_gazelle",
