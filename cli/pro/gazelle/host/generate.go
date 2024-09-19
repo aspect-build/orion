@@ -91,7 +91,14 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 func (host *GazelleHost) convertPlugTargetsToGenerateResult(pluginTargets map[string][]plugin.TargetDeclaration, args gazelleLanguage.GenerateArgs) gazelleLanguage.GenerateResult {
 	var result gazelleLanguage.GenerateResult
 
-	for pluginId, declareResults := range pluginTargets {
+	// Iterate over the pluginIds[] in a deterministic order
+	// instead of iterating over the plugins[] or pluginTargets[pluginId] map
+	for _, pluginId := range host.pluginIds {
+		declareResults, pluginHasDeclarations := pluginTargets[pluginId]
+		if !pluginHasDeclarations {
+			continue
+		}
+
 		for _, target := range declareResults {
 			// If marked for removal simply add to the empty list and continue
 			if target.Remove {
