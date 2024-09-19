@@ -16,7 +16,6 @@ gazelle_binary(
 [
     gazelle_generation_test(
         name = "%s_test" % t,
-        data = glob(["%s/**/*.star" % t]),
         dir = t,
         env = {
             "TEST_STARZELLE_PLUGINS": "%s/%s" % (
