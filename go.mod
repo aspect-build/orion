@@ -6,7 +6,7 @@ require (
 	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/alphadose/haxmap v1.4.0
 	github.com/bazel-contrib/rules_jvm v0.27.0
-	github.com/bazelbuild/bazel-gazelle v0.38.1-0.20240912103354-089096315dca // NOTE: keep in sync with fetch.bzl
+	github.com/bazelbuild/bazel-gazelle v0.38.1-0.20240917180916-571d953b2bb9 // NOTE: keep in sync with fetch.bzl
 	github.com/bazelbuild/bazelisk v1.17.0
 	github.com/bazelbuild/buildtools v0.0.0-20240918101019-be1c24cc9a44
 	github.com/bazelbuild/rules_go v0.50.1 // NOTE: keep in sync with fetch.bzl
@@ -188,10 +188,10 @@ require (
 	github.com/xanzy/go-gitlab v0.105.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	golang.org/x/crypto v0.25.0 // indirect
-	golang.org/x/mod v0.19.0 // indirect
+	golang.org/x/mod v0.20.0 // indirect
 	golang.org/x/net v0.27.0 // indirect
 	golang.org/x/oauth2 v0.21.0 // indirect
-	golang.org/x/sys v0.24.0 // indirect
+	golang.org/x/sys v0.25.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
 	google.golang.org/api v0.183.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20240604185151-ef581f913117 // indirect
