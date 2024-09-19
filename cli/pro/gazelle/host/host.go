@@ -10,6 +10,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"github.com/aspect-build/silo/cli/core/gazelle/common/git"
@@ -30,7 +31,8 @@ type GazelleHost struct {
 
 	// Hosted plugins
 	// TODO: support enabling/disabling/adding in subdirs
-	plugins map[string]plugin.Plugin
+	pluginIds []string
+	plugins   map[string]plugin.Plugin
 
 	// Metadata about rules being generated. May be pre-configured, potentially loaded from *.star etc
 	kinds           map[string]plugin.RuleKind
@@ -94,6 +96,9 @@ func (h *GazelleHost) loadEnvStarzellePlugins() {
 		BazelLog.Fatalf("Failed to find builtin plugins: %v", err)
 	}
 
+	// Sort to ensure a consistent order not dependent on the fs or glob ordering.
+	sort.Strings(builtinPlugins)
+
 	// Split the plugin paths to dir + rel for better logging and load API
 	for i, p := range builtinPlugins {
 		builtinPlugins[i] = p[len(builtinPluginParentDir)+1:]
@@ -136,6 +141,7 @@ func (h *GazelleHost) AddPlugin(plugin plugin.Plugin) {
 	}
 
 	BazelLog.Infof("Plugin added: %q", plugin.Name())
+	h.pluginIds = append(h.pluginIds, plugin.Name())
 	h.plugins[plugin.Name()] = plugin
 }
 
