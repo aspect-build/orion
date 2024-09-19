@@ -180,8 +180,8 @@ def go_dependencies():
         name = "com_github_bazelbuild_buildtools",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bazelbuild/buildtools",
-        sum = "h1:3UwzfrfwoxlyGlPhbQR1O1HLOd4qNEyAwxHRSE+Yde4=",
-        version = "v0.0.0-20240606140350-80f1f6802857",
+        sum = "h1:FGzENZi+SX9I7h9xvMtRA3rel8hCEfyzSixteBgn7MU=",
+        version = "v0.0.0-20240918101019-be1c24cc9a44",
     )
     go_repository(
         name = "com_github_bazelbuild_rules_go",
@@ -1620,8 +1620,8 @@ def go_dependencies():
         build_file_proto_mode = "disable_global",
         importpath = "github.com/smacker/go-tree-sitter",
         patches = ["//third_party:github.com/smacker/go-tree-sitter/cc_library.patch"],  # keep
-        sum = "h1:mtD4ESyObQZnRVxHFcaYp2d7jMBDa4WJRXSB1Vszj+A=",
-        version = "v0.0.0-20240625050157-a31a98a7c0f6",
+        sum = "h1:6C8qej6f1bStuePVkLSFxoU22XBS165D3klxlzRg8F4=",
+        version = "v0.0.0-20240827094217-dd81d9e9be82",
     )
     go_repository(
         name = "com_github_sourcegraph_conc",
@@ -2782,8 +2782,8 @@ def go_dependencies():
         name = "net_starlark_go",
         build_file_proto_mode = "disable_global",
         importpath = "go.starlark.net",
-        sum = "h1:3qhteRISupnJvaWshOmeqEUs2y9oc/+/ePPvDh3Eygg=",
-        version = "v0.0.0-20240520160348-046347dcd104",
+        sum = "h1:YyGqCjZtGZJ+mRPaenEiB87afEO2MFRzLiJNZ0Z0bPw=",
+        version = "v0.0.0-20240725214946-42030a7cedce",
     )
     go_repository(
         name = "org_bazil_fuse",
