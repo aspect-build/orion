@@ -162,9 +162,9 @@ def go_dependencies():
             "//cli/core:patches/bazelbuild_bazel-gazelle_aspect-cli.patch",  # keep
             "//cli/core:patches/bazelbuild_bazel-gazelle_aspect-walk-subdir.patch",  # keep
         ],
-        sum = "h1:tF6uoQ1NTVaVnh+Xhg+hwE6Q1dDOZoripL3kWzjpZ+c=",
+        sum = "h1:41XpkyMMp4jZ0JKVDu4G6ADxch1DhAYTWHKLzETCE4o=",
         # Ensure this version always matches the version of @bazel_gazelle set in fetch.bzl.
-        version = "v0.38.1-0.20240912103354-089096315dca",
+        version = "v0.38.1-0.20240917180916-571d953b2bb9",
     )
     go_repository(
         name = "com_github_bazelbuild_bazelisk",
@@ -2901,8 +2901,8 @@ def go_dependencies():
         name = "org_golang_x_mod",
         build_file_proto_mode = "disable_global",
         importpath = "golang.org/x/mod",
-        sum = "h1:fEdghXQSo20giMthA7cd28ZC+jts4amQ3YMXiP5oMQ8=",
-        version = "v0.19.0",
+        sum = "h1:utOm6MM3R3dnawAiJgn0y+xvuYRsm1RKM/4giyfDgV0=",
+        version = "v0.20.0",
     )
     go_repository(
         name = "org_golang_x_net",
@@ -2929,8 +2929,8 @@ def go_dependencies():
         name = "org_golang_x_sys",
         build_file_proto_mode = "disable_global",
         importpath = "golang.org/x/sys",
-        sum = "h1:Twjiwq9dn6R1fQcyiK+wQyHWfaz/BJB+YIpzU/Cv3Xg=",
-        version = "v0.24.0",
+        sum = "h1:r+8e+loiHxRqhXVl6ML1nO3l1+oFoWbnlu2Ehimmi34=",
+        version = "v0.25.0",
     )
     go_repository(
         name = "org_golang_x_term",
