@@ -1,24 +1,23 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 
+# TODO: this seems broken
+
 copy_to_bin(
     name = "ctb",
-    srcs = ["a.txt"],
 )
 
 sh_library(
     name = "shells",
-    srcs = ["x.sh"],
 )
 
 sh_binary(
     name = "shells-bin",
-    srcs = ["x.sh"],
+)
+
+sh_test(
+    name = "shells-test",
 )
 
 filegroup(
     name = "all-files",
-    srcs = [
-        "a.txt",
-        "x.sh",
-    ],
 )
