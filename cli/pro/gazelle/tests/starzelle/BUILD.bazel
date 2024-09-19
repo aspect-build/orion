@@ -5,7 +5,6 @@ load("//cli/core/gazelle:gazelle.bzl", "gazelle_generation_test")
 [
     gazelle_generation_test(
         name = "%s_test" % t,
-        data = glob(["%s/**/*.star" % t]),
         dir = t,
         env = {
             "TEST_STARZELLE_PLUGINS": "%s/%s" % (
