@@ -1,8 +1,29 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 
 copy_to_bin(
-    name = "keep",
+    name = "ctb",
     srcs = [
         "kept.txt",  # keep
     ],
+)
+
+sh_library(
+    name = "shells",
+    srcs = [
+        "kept.sh", # keep
+    ],
+)
+
+sh_binary(
+    name = "shells-bin",
+    srcs = [
+        "kept.sh", # keep
+    ],
+)
+
+filegroup(
+    name = "all-files",
+    srcs = [
+        "kept.sh", # keep
+    ]
 )
