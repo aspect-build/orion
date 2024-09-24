@@ -13,7 +13,6 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/aspect-build/silo/cli/core/gazelle/common/git"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
 	plugin "github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
 	starzelle "github.com/aspect-build/silo/cli/pro/gazelle/host/starzelle"
@@ -38,9 +37,6 @@ type GazelleHost struct {
 	kinds           map[string]plugin.RuleKind
 	sourceRuleKinds *treeset.Set
 
-	// Ignore configurations for the workspace.
-	gitignore *git.GitIgnore
-
 	// Lazy loaded from plugins
 	gazelleDirectives []string
 	gazelleLoadInfo   []rule.LoadInfo
@@ -57,7 +53,6 @@ func NewLanguage() gazelleLanguage.Language {
 
 func NewHost() *GazelleHost {
 	l := &GazelleHost{
-		gitignore:       git.NewGitIgnore(),
 		plugins:         make(map[string]plugin.Plugin),
 		kinds:           make(map[string]plugin.RuleKind),
 		sourceRuleKinds: treeset.NewWithStringComparator(),

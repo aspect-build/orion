@@ -7,6 +7,7 @@ import (
 	"sync"
 
 	common "github.com/aspect-build/silo/cli/core/gazelle/common"
+	"github.com/aspect-build/silo/cli/core/gazelle/common/git"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
 	"github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
 	"github.com/bazelbuild/bazel-gazelle/config"
@@ -21,6 +22,7 @@ func (c *GazelleHost) KnownDirectives() []string {
 		c.gazelleDirectives = []string{
 			// Core builtin directives
 			common.Directive_GenerationMode,
+			git.Directive_GitIgnore,
 		}
 
 		// TODO: verify no collisions with other plugins/globals
@@ -43,7 +45,7 @@ func (configurer *GazelleHost) Configure(c *config.Config, rel string, f *rule.F
 	BazelLog.Tracef("Configure(%s): %s", GazelleLanguageName, rel)
 
 	// Collect the ignore files for this package
-	configurer.gitignore.CollectIgnoreFiles(c, rel)
+	git.CollectIgnoreFiles(c, rel)
 
 	// Generate hierarchical configuration.
 	if rel == "" {
@@ -71,6 +73,9 @@ func (configurer *GazelleHost) Configure(c *config.Config, rel string, f *rule.F
 				default:
 					BazelLog.Fatalf("invalid value for directive %q: %s", common.Directive_GenerationMode, d.Value)
 				}
+			// TODO: move to common
+			case git.Directive_GitIgnore:
+				git.EnableGitignore(c, common.ReadEnabled(d))
 			}
 		}
 	}
