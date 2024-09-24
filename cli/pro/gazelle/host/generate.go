@@ -286,7 +286,7 @@ func (host *GazelleHost) collectSourceFilesByPlugin(cfg *BUILDConfig, args gazel
 	sourceFilesByPlugin := make(map[string][]string)
 
 	// Collect source files managed by this BUILD for each plugin.
-	common.GazelleWalkDir(args, host.gitignore.Matches, func(f string) error {
+	common.GazelleWalkDir(args, func(f string) error {
 		for pluginId, p := range cfg.pluginPrepareResults {
 			for _, s := range p.Sources {
 				if s.Match(f) {
