@@ -142,7 +142,7 @@ func (p starzellePluginProxy) DeclareTargets(ctx plugin.DeclareTargetsContext) p
 		return EmptyDeclareTargetsResult
 	}
 
-	v, err := starEval.Call(p.declare, starlark.Tuple{ctx}, starUtils.EmptyKwArgs)
+	_, err := starEval.Call(p.declare, starlark.Tuple{ctx}, starUtils.EmptyKwArgs)
 	if err != nil {
 		errStr := starUtils.ErrorStr(fmt.Sprintf("Failed to invoke %s:DeclareTargets()", p.name), err)
 		BazelLog.Errorf(errStr)
@@ -150,17 +150,12 @@ func (p starzellePluginProxy) DeclareTargets(ctx plugin.DeclareTargetsContext) p
 		return EmptyDeclareTargetsResult
 	}
 
-	// Allow no-return
-	if v == starlark.None {
-		return EmptyDeclareTargetsResult
+	actions := ctx.Targets.Actions()
+
+	BazelLog.Debugf("Invoked plugin %s:DeclareTargets(%q): %v\n", p.name, ctx.Rel, actions)
+	return plugin.DeclareTargetsResult{
+		Actions: actions,
 	}
-
-	BazelLog.Debugf("Invoked plugin %s:DeclareTargets(%q): %v\n", p.name, ctx.Rel, v)
-	return readDeclareTargetsResult(v)
-}
-
-func readDeclareTargetsResult(_ starlark.Value) plugin.DeclareTargetsResult {
-	return plugin.DeclareTargetsResult{}
 }
 
 func readRuleKind(n starlark.String, v starlark.Value) plugin.RuleKind {

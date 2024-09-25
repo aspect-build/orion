@@ -206,37 +206,37 @@ type DeclareTargetsContext struct {
 type DeclareTargetActions interface {
 	Add(target TargetDeclaration)
 	Remove(target string)
-	Targets() []TargetDeclaration
+	Actions() []TargetAction
 }
 
 var _ DeclareTargetActions = (*declareTargetActionsImpl)(nil)
 
 type declareTargetActionsImpl struct {
-	targets []TargetDeclaration
+	actions []TargetAction
 }
 
 func NewDeclareTargetActions() DeclareTargetActions {
 	return &declareTargetActionsImpl{
-		targets: make([]TargetDeclaration, 0),
+		actions: make([]TargetAction, 0),
 	}
 }
-
-func (ctx *declareTargetActionsImpl) Targets() []TargetDeclaration {
-	return ctx.targets
+func (ctx *declareTargetActionsImpl) Actions() []TargetAction {
+	return ctx.actions
 }
 func (ctx *declareTargetActionsImpl) Add(t TargetDeclaration) {
-	ctx.targets = append(ctx.targets, t)
+	ctx.actions = append(ctx.actions, AddTargetAction{
+		TargetDeclaration: t,
+	})
 }
 func (ctx *declareTargetActionsImpl) Remove(t string) {
-	for i, target := range ctx.targets {
-		if target.Name == t {
-			ctx.targets = append(ctx.targets[:i], ctx.targets[i+1:]...)
-		}
-	}
+	ctx.actions = append(ctx.actions, RemoveTargetAction{
+		Name: t,
+	})
 }
 
 // The result of declaring targets
 type DeclareTargetsResult struct {
+	Actions []TargetAction
 }
 
 type TargetSource struct {

@@ -104,7 +104,7 @@ var _ starlark.Value = (*declareTargetActionsImpl)(nil)
 var _ starlark.HasAttrs = (*declareTargetActionsImpl)(nil)
 
 func (a *declareTargetActionsImpl) String() string {
-	return fmt.Sprintf("declareTargetActionsImpl{%v}", a.targets)
+	return fmt.Sprintf("declareTargetActionsImpl{%v}", a.actions)
 }
 func (a *declareTargetActionsImpl) Type() string         { return "declareTargetActionsImpl" }
 func (a *declareTargetActionsImpl) Freeze()              {}
