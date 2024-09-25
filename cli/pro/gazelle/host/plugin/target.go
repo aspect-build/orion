@@ -36,12 +36,20 @@ type TargetDeclaration struct {
 	Kind  string
 	Attrs map[string]interface{}
 
-	// Whether to remove the target from the BUILD
-	// TODO: do this somewhere else, it should not be in a flag within a "declaration".
-	Remove bool
-
 	// Names (possibly as paths) exported from this target
 	Symbols []Symbol
+}
+
+type TargetAction interface{}
+
+type AddTargetAction struct {
+	TargetAction
+	TargetDeclaration
+}
+
+type RemoveTargetAction struct {
+	TargetAction
+	Name string
 }
 
 func symbolComparator(a, b interface{}) int {

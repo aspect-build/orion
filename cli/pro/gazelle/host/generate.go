@@ -52,30 +52,28 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 	// Recurse if subdirectories will not generate their own BUILD files
 	sourceFilesByPlugin := host.collectSourceFilesByPlugin(cfg, args)
 
-	pluginTargets := make(map[string][]plugin.TargetDeclaration)
+	pluginTargetActions := make(map[string][]plugin.TargetAction)
 	pluginTargetsLock := sync.Mutex{}
 
 	// Parse and query source files
 	// TODO: only parse source files once, not once per plugin (most likely they only belong to one plugin though)
 	eg := errgroup.Group{}
 	eg.SetLimit(10)
-	for pluginId, files := range sourceFilesByPlugin {
-		prep := cfg.pluginPrepareResults[pluginId]
-
+	for pluginId, prep := range cfg.pluginPrepareResults {
 		eg.Go(func() error {
 			// Collect source files and plugin metadata for those sources.
-			targetSources := host.collectPluginTargetSources(pluginId, prep, args.Dir, files)
+			targetSources := host.collectPluginTargetSources(pluginId, prep, args.Dir, sourceFilesByPlugin[pluginId])
 
 			// Analyze the source file metadata for this plugin.
 			host.analyzePluginTargetSources(pluginId, prep, targetSources)
 
 			// Use the collected sources and analysis to generate rules
-			targets := host.generateTargets(pluginId, prep, targetSources)
+			actions := host.generateTargets(pluginId, prep, targetSources)
 
 			// Lock for the assignment into the cross-thread pluginTargets
 			pluginTargetsLock.Lock()
 			defer pluginTargetsLock.Unlock()
-			pluginTargets[pluginId] = targets
+			pluginTargetActions[pluginId] = actions
 
 			return nil
 		})
@@ -85,46 +83,63 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 		BazelLog.Errorf("Unknown GenerateRules(%s) error: %v", GazelleLanguageName, err)
 	}
 
-	return host.convertPlugTargetsToGenerateResult(pluginTargets, args)
+	return host.convertPlugActionsToGenerateResult(pluginTargetActions, args)
 }
 
-func (host *GazelleHost) convertPlugTargetsToGenerateResult(pluginTargets map[string][]plugin.TargetDeclaration, args gazelleLanguage.GenerateArgs) gazelleLanguage.GenerateResult {
+func applyRemoveAction(args gazelleLanguage.GenerateArgs, rm plugin.RemoveTargetAction) *gazelleRule.Rule {
+	if args.File == nil {
+		return nil
+	}
+
+	for _, r := range args.File.Rules {
+		if r.Name() == rm.Name {
+			r.Delete()
+			return r
+		}
+	}
+	return nil
+}
+
+func (host *GazelleHost) convertPlugActionsToGenerateResult(pluginActions map[string][]plugin.TargetAction, args gazelleLanguage.GenerateArgs) gazelleLanguage.GenerateResult {
 	var result gazelleLanguage.GenerateResult
 
 	// Iterate over the pluginIds[] in a deterministic order
-	// instead of iterating over the plugins[] or pluginTargets[pluginId] map
+	// instead of iterating over the plugins[] or pluginActions[pluginId] map
 	for _, pluginId := range host.pluginIds {
-		declareResults, pluginHasDeclarations := pluginTargets[pluginId]
-		if !pluginHasDeclarations {
-			continue
-		}
-
-		for _, target := range declareResults {
-			// If marked for removal simply add to the empty list and continue
-			if target.Remove {
-				BazelLog.Debugf("GenerateRules remove target: %s %s(%q)", args.Rel, target.Kind, target.Name)
-				result.Empty = append(result.Empty, gazelleRule.NewRule(target.Kind, target.Name))
-				continue
-			}
-
-			// Check for name-collisions with the rule being generated.
-			colError := common.CheckCollisionErrors(target.Name, target.Kind, host.sourceRuleKinds, args)
-			if colError != nil {
-				fmt.Fprintf(os.Stderr, "Source rule generation error: %v\n", colError)
-				os.Exit(1)
-			}
-
-			// Generate the gazelle Rule to be added/merged into the BUILD file.
-			rule := convertPluginTargetDeclaration(args, pluginId, target)
-
-			result.Gen = append(result.Gen, rule)
-			result.Imports = append(result.Imports, rule.PrivateAttr(targetAttrImports))
-
-			BazelLog.Tracef("GenerateRules(%s) add target: %s %s(%q)", GazelleLanguageName, args.Rel, target.Kind, target.Name)
+		for _, action := range pluginActions[pluginId] {
+			host.applyPluginAction(args, pluginId, action, &result)
 		}
 	}
 
 	return result
+}
+
+func (host *GazelleHost) applyPluginAction(args gazelleLanguage.GenerateArgs, pluginId string, action plugin.TargetAction, result *gazelleLanguage.GenerateResult) {
+	switch action.(type) {
+	case plugin.RemoveTargetAction:
+		// If marked for removal simply add to the empty list and continue
+		if removed := applyRemoveAction(args, action.(plugin.RemoveTargetAction)); removed != nil {
+			BazelLog.Debugf("GenerateRules remove target: %s %s(%q)", args.Rel, removed.Kind(), removed.Name())
+		}
+	case plugin.AddTargetAction:
+		// Check for name-collisions with the rule being generated.
+		target := action.(plugin.AddTargetAction).TargetDeclaration
+		colError := common.CheckCollisionErrors(target.Name, target.Kind, host.sourceRuleKinds, args)
+		if colError != nil {
+			fmt.Fprintf(os.Stderr, "Source rule generation error: %v\n", colError)
+			os.Exit(1)
+		}
+
+		// Generate the gazelle Rule to be added/merged into the BUILD file.
+		rule := convertPluginTargetDeclaration(args, pluginId, target)
+
+		result.Gen = append(result.Gen, rule)
+		result.Imports = append(result.Imports, rule.PrivateAttr(targetAttrImports))
+
+		BazelLog.Tracef("GenerateRules(%s) add target: %s %s(%q)", GazelleLanguageName, args.Rel, target.Kind, target.Name)
+	default:
+		BazelLog.Fatalf("Unknown plugin action type: %T", action)
+	}
 }
 
 func convertPluginTargetDeclaration(args gazelleLanguage.GenerateArgs, pluginId string, target plugin.TargetDeclaration) *gazelleRule.Rule {
@@ -329,14 +344,12 @@ func (host *GazelleHost) analyzePluginTargetSources(pluginId string, prep plugin
 }
 
 // Let plugins declare any targets they want to generate for the target sources.
-func (host *GazelleHost) generateTargets(pluginId string, prep pluginConfig, targetSources []plugin.TargetSource) []plugin.TargetDeclaration {
+func (host *GazelleHost) generateTargets(pluginId string, prep pluginConfig, targetSources []plugin.TargetSource) []plugin.TargetAction {
 	ctx := plugin.DeclareTargetsContext{
 		PrepareContext: prep.PrepareContext,
 		Sources:        targetSources,
 		Targets:        plugin.NewDeclareTargetActions(),
 	}
 
-	host.plugins[pluginId].DeclareTargets(ctx)
-
-	return ctx.Targets.Targets()
+	return host.plugins[pluginId].DeclareTargets(ctx).Actions
 }
