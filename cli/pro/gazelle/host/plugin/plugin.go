@@ -174,6 +174,7 @@ type Label struct {
 }
 
 type AnalyzeContext struct {
+	PrepareContext
 	Source   *TargetSource
 	database *Database
 }
@@ -182,10 +183,11 @@ func (a AnalyzeContext) AddSymbol(label Label, symbol Symbol) {
 	a.database.AddSymbol(label, symbol)
 }
 
-func NewAnalyzeContext(source *TargetSource, database *Database) AnalyzeContext {
+func NewAnalyzeContext(prep PrepareContext, source *TargetSource, database *Database) AnalyzeContext {
 	return AnalyzeContext{
-		Source:   source,
-		database: database,
+		PrepareContext: prep,
+		Source:         source,
+		database:       database,
 	}
 }
 
