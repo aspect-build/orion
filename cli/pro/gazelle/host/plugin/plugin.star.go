@@ -359,13 +359,12 @@ func (a *AnalyzeContext) Attr(name string) (starlark.Value, error) {
 		return a.Source, nil
 	case "add_symbol":
 		return contextAddSymbol.BindReceiver(a), nil
-	default:
-		return nil, starlark.NoSuchAttrError(name)
 	}
+	return a.PrepareContext.Attr(name)
 }
 
 func (a *AnalyzeContext) AttrNames() []string {
-	return []string{"source", "add_symbol"}
+	return []string{"repo_name", "rel", "properties", "source", "add_symbol"}
 }
 func (a *AnalyzeContext) Freeze() {}
 func (a *AnalyzeContext) Hash() (uint32, error) {

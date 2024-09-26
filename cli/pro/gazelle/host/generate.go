@@ -327,7 +327,7 @@ func (host *GazelleHost) analyzePluginTargetSources(pluginId string, prep plugin
 
 	for _, src := range sources {
 		eg.Go(func() error {
-			actx := plugin.NewAnalyzeContext(&src, host.database)
+			actx := plugin.NewAnalyzeContext(prep.PrepareContext, &src, host.database)
 
 			err := host.plugins[pluginId].Analyze(actx)
 			if err != nil {
