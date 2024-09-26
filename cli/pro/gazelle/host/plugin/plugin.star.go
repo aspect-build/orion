@@ -86,6 +86,8 @@ func (ctx DeclareTargetsContext) Attr(name string) (starlark.Value, error) {
 		return starlark.NewList(srcs), nil
 	case "targets":
 		return ctx.Targets.(*declareTargetActionsImpl), nil
+	case "add_symbol":
+		return contextAddSymbol.BindReceiver(ctx), nil
 	}
 
 	return ctx.PrepareContext.Attr(name)
@@ -356,7 +358,7 @@ func (a *AnalyzeContext) Attr(name string) (starlark.Value, error) {
 	case "source":
 		return a.Source, nil
 	case "add_symbol":
-		return analyzeContextAddSymbol.BindReceiver(a), nil
+		return contextAddSymbol.BindReceiver(a), nil
 	default:
 		return nil, starlark.NoSuchAttrError(name)
 	}
@@ -375,7 +377,7 @@ func (a *AnalyzeContext) String() string {
 func (a *AnalyzeContext) Truth() starlark.Bool { return starlark.True }
 func (a *AnalyzeContext) Type() string         { return "AnalyzeContext" }
 
-var analyzeContextAddSymbol = starlark.NewBuiltin("add_symbol", func(thread *starlark.Thread, fn *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
+var contextAddSymbol = starlark.NewBuiltin("add_symbol", func(thread *starlark.Thread, fn *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	var id, provider_type string
 	var label Label
 	err := starlark.UnpackArgs(
@@ -388,11 +390,19 @@ var analyzeContextAddSymbol = starlark.NewBuiltin("add_symbol", func(thread *sta
 		return nil, err
 	}
 
-	ctx := fn.Receiver().(*AnalyzeContext)
-	ctx.AddSymbol(label, Symbol{
-		Id:       id,
-		Provider: provider_type,
-	})
+	ctx := fn.Receiver()
+
+	if actx, isACtx := ctx.(*AnalyzeContext); isACtx {
+		actx.AddSymbol(label, Symbol{
+			Id:       id,
+			Provider: provider_type,
+		})
+	} else {
+		ctx.(*DeclareTargetsContext).AddSymbol(label, Symbol{
+			Id:       id,
+			Provider: provider_type,
+		})
+	}
 
 	return starlark.None, nil
 })

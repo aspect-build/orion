@@ -179,10 +179,7 @@ type AnalyzeContext struct {
 }
 
 func (a AnalyzeContext) AddSymbol(label Label, symbol Symbol) {
-	a.database.Symbols = append(a.database.Symbols, TargetSymbol{
-		Symbol: symbol,
-		Label:  label,
-	})
+	a.database.AddSymbol(label, symbol)
 }
 
 func NewAnalyzeContext(source *TargetSource, database *Database) AnalyzeContext {
@@ -198,9 +195,13 @@ func NewAnalyzeContext(source *TargetSource, database *Database) AnalyzeContext 
 // query name to result.
 type DeclareTargetsContext struct {
 	PrepareContext
-	Sources []TargetSource
+	Sources  []TargetSource
+	Targets  DeclareTargetActions
+	database *Database
+}
 
-	Targets DeclareTargetActions
+func (d DeclareTargetsContext) AddSymbol(label Label, symbol Symbol) {
+	d.database.AddSymbol(label, symbol)
 }
 
 type DeclareTargetActions interface {
