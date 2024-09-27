@@ -206,6 +206,15 @@ func (d DeclareTargetsContext) AddSymbol(label Label, symbol Symbol) {
 	d.database.AddSymbol(label, symbol)
 }
 
+func NewDeclareTargetsContext(prep PrepareContext, sources []TargetSource, targets DeclareTargetActions, database *Database) DeclareTargetsContext {
+	return DeclareTargetsContext{
+		PrepareContext: prep,
+		Sources:        sources,
+		Targets:        targets,
+		database:       database,
+	}
+}
+
 type DeclareTargetActions interface {
 	Add(target TargetDeclaration)
 	Remove(target string)

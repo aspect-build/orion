@@ -345,11 +345,12 @@ func (host *GazelleHost) analyzePluginTargetSources(pluginId string, prep plugin
 
 // Let plugins declare any targets they want to generate for the target sources.
 func (host *GazelleHost) generateTargets(pluginId string, prep pluginConfig, targetSources []plugin.TargetSource) []plugin.TargetAction {
-	ctx := plugin.DeclareTargetsContext{
-		PrepareContext: prep.PrepareContext,
-		Sources:        targetSources,
-		Targets:        plugin.NewDeclareTargetActions(),
-	}
+	ctx := plugin.NewDeclareTargetsContext(
+		prep.PrepareContext,
+		targetSources,
+		plugin.NewDeclareTargetActions(),
+		host.database,
+	)
 
 	return host.plugins[pluginId].DeclareTargets(ctx).Actions
 }
