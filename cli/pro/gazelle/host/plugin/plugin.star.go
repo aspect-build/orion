@@ -353,7 +353,7 @@ func (r SourceFileFilter) AttrNames() []string {
 var _ starlark.Value = (*AnalyzeContext)(nil)
 var _ starlark.HasAttrs = (*AnalyzeContext)(nil)
 
-func (a *AnalyzeContext) Attr(name string) (starlark.Value, error) {
+func (a AnalyzeContext) Attr(name string) (starlark.Value, error) {
 	switch name {
 	case "source":
 		return a.Source, nil
@@ -363,18 +363,18 @@ func (a *AnalyzeContext) Attr(name string) (starlark.Value, error) {
 	return a.PrepareContext.Attr(name)
 }
 
-func (a *AnalyzeContext) AttrNames() []string {
+func (a AnalyzeContext) AttrNames() []string {
 	return []string{"repo_name", "rel", "properties", "source", "add_symbol"}
 }
-func (a *AnalyzeContext) Freeze() {}
-func (a *AnalyzeContext) Hash() (uint32, error) {
+func (a AnalyzeContext) Freeze() {}
+func (a AnalyzeContext) Hash() (uint32, error) {
 	return 0, fmt.Errorf("unhashable: %s", a.Type())
 }
-func (a *AnalyzeContext) String() string {
+func (a AnalyzeContext) String() string {
 	return fmt.Sprintf("AnalyzeContext{source: %v}", a.Source)
 }
-func (a *AnalyzeContext) Truth() starlark.Bool { return starlark.True }
-func (a *AnalyzeContext) Type() string         { return "AnalyzeContext" }
+func (a AnalyzeContext) Truth() starlark.Bool { return starlark.True }
+func (a AnalyzeContext) Type() string         { return "AnalyzeContext" }
 
 var contextAddSymbol = starlark.NewBuiltin("add_symbol", func(thread *starlark.Thread, fn *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	var id, provider_type string
@@ -391,13 +391,13 @@ var contextAddSymbol = starlark.NewBuiltin("add_symbol", func(thread *starlark.T
 
 	ctx := fn.Receiver()
 
-	if actx, isACtx := ctx.(*AnalyzeContext); isACtx {
+	if actx, isACtx := ctx.(AnalyzeContext); isACtx {
 		actx.AddSymbol(label, Symbol{
 			Id:       id,
 			Provider: provider_type,
 		})
 	} else {
-		ctx.(*DeclareTargetsContext).AddSymbol(label, Symbol{
+		ctx.(DeclareTargetsContext).AddSymbol(label, Symbol{
 			Id:       id,
 			Provider: provider_type,
 		})

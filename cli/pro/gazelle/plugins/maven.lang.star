@@ -18,8 +18,11 @@ def prepare(ctx):
         },
     )
 
-def analyze_source(ctx):
-    for dep in ctx.source.query_results["imports"]:
+def declare_maven_targets(ctx):
+    if not ctx.sources:
+        return
+
+    for dep in ctx.sources[0].query_results["imports"]:
         coord = dep["coord"].rsplit(":", 1)[0].replace(".", "_").replace(":", "_")
 
         for pkg in dep["packages"]:
@@ -41,5 +44,5 @@ aspect.register_configure_extension(
         ),
     },
     prepare = prepare,
-    analyze = analyze_source,
+    declare = declare_maven_targets,
 )
