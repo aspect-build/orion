@@ -1,3 +1,13 @@
+filegroup(
+    name = "other1",
+    srcs = glob(["**/*.foo"]),
+)
+
 sh_test(
     name = "shells-test",
+)
+
+filegroup(
+    name = "other2",
+    srcs = glob(["**/*.foo"]),
 )
