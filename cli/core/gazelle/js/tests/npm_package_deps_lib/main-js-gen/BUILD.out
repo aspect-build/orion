@@ -1,4 +1,4 @@
-load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@npm//:defs.bzl", "npm_link_all_packages")
 
 genrule(
@@ -10,10 +10,8 @@ genrule(
 
 npm_link_all_packages(name = "node_modules")
 
-npm_package(
+js_library(
     name = "pkg",
-    srcs = [
-        "package.json",
-        ":start.js",
-    ],
+    srcs = ["package.json"],
+    deps = [":start.js"],
 )
