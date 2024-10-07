@@ -34,7 +34,7 @@ def prepare(_):
                 query = """
                     (source_file
                         (import_list
-                            (import_header (identifier) @imp (".*")? @is_star)
+                            (import_header (identifier) @imp (wildcard_import)? @is_star)
                         )
                     )
                 """,
