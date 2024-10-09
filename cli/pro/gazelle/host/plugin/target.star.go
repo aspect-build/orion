@@ -31,7 +31,7 @@ func (s Symbol) Attr(name string) (starlark.Value, error) {
 		return starlark.String(s.Provider), nil
 	}
 
-	return nil, fmt.Errorf("no such attribute: %s", name)
+	return nil, fmt.Errorf("no such attribute: %s on %s", name, s.Type())
 }
 func (s Symbol) AttrNames() []string {
 	return []string{"id", "provider"}
@@ -64,7 +64,7 @@ func (ti TargetImport) Attr(name string) (starlark.Value, error) {
 		return starlark.Bool(ti.Optional), nil
 	}
 
-	return nil, fmt.Errorf("no such attribute: %s", name)
+	return nil, fmt.Errorf("no such attribute: %s on %s", name, ti.Type())
 }
 func (ti TargetImport) AttrNames() []string {
 	return []string{"id", "provider", "from", "optional"}
@@ -95,7 +95,7 @@ func (te TargetSymbol) Attr(name string) (starlark.Value, error) {
 		return te.Label, nil
 	}
 
-	return nil, fmt.Errorf("no such attribute: %s", name)
+	return nil, fmt.Errorf("no such attribute: %s on %s", name, te.Type())
 }
 func (te TargetSymbol) AttrNames() []string {
 	return []string{"id", "provider", "label"}

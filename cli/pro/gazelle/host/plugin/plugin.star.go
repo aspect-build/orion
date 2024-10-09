@@ -64,7 +64,7 @@ func (ctx PrepareContext) Attr(name string) (starlark.Value, error) {
 		return ctx.Properties, nil
 	}
 
-	return nil, fmt.Errorf("no such attribute: %s", name)
+	return nil, fmt.Errorf("no such attribute: %s on %s", name, ctx.Type())
 }
 func (ctx PrepareContext) AttrNames() []string {
 	return []string{"repo_name", "rel", "properties"}
@@ -122,7 +122,7 @@ func (ai *declareTargetActionsImpl) Attr(name string) (starlark.Value, error) {
 		return declareTargetRemove.BindReceiver(ai), nil
 	}
 
-	return nil, fmt.Errorf("no such attribute: %s", name)
+	return nil, fmt.Errorf("no such attribute: %s on %s", name, ai.Type())
 }
 func (*declareTargetActionsImpl) AttrNames() []string {
 	return []string{"add", "remove"}
@@ -206,7 +206,7 @@ func (ctx TargetSource) Attr(name string) (starlark.Value, error) {
 		return ctx.QueryResults, nil
 	}
 
-	return nil, fmt.Errorf("no such attribute: %s", name)
+	return nil, fmt.Errorf("no such attribute: %s on %s", name, ctx.Type())
 }
 func (ctx TargetSource) AttrNames() []string {
 	return []string{"path", "query_results"}
