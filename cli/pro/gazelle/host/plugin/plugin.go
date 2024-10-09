@@ -7,6 +7,8 @@ import (
 	"github.com/bmatcuk/doublestar/v4"
 )
 
+type PluginId = string
+
 type PluginHost interface {
 	AddKind(k RuleKind)
 	AddPlugin(plugin Plugin)
@@ -15,7 +17,7 @@ type PluginHost interface {
 // TODO: change the interface into a factory method (at least in starzelle)
 type Plugin interface {
 	// Static plugin metadata
-	Name() string
+	Name() PluginId
 	Properties() map[string]Property
 
 	// Prepare for generating targets

@@ -28,7 +28,7 @@ type BUILDConfig struct {
 	resolves *linkedhashmap.Map
 
 	// Plugin specific config
-	pluginPrepareResults map[string]pluginConfig
+	pluginPrepareResults map[plugin.PluginId]pluginConfig
 }
 
 func NewRootConfig(repoName string) *BUILDConfig {
@@ -85,7 +85,7 @@ func (c *BUILDConfig) SetGenerationMode(mode common.GenerationModeType) {
 	c.generationMode = mode
 }
 
-func (c *BUILDConfig) IsPluginEnabled(pluginId string) bool {
+func (c *BUILDConfig) IsPluginEnabled(pluginId plugin.PluginId) bool {
 	val, exists := c.directiveRawValues[pluginId]
 	if exists {
 		return val[len(val)-1] == "enabled"
