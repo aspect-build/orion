@@ -74,7 +74,7 @@ func (re *GazelleHost) Resolve(c *config.Config, ix *resolve.RuleIndex, rc *repo
 		return
 	}
 
-	pluginId := pluginIdAttr.(string)
+	pluginId := pluginIdAttr.(plugin.PluginId)
 
 	// The import data is the imports per attribute
 	attrImports := importData.(map[string][]plugin.TargetImport)
@@ -116,7 +116,7 @@ func (re *GazelleHost) Resolve(c *config.Config, ix *resolve.RuleIndex, rc *repo
 func (re *GazelleHost) resolveImports(
 	c *config.Config,
 	ix *resolve.RuleIndex,
-	pluginId string,
+	pluginId plugin.PluginId,
 	imports []plugin.TargetImport,
 	from label.Label,
 ) (*common.LabelSet, error) {
@@ -159,7 +159,7 @@ func (re *GazelleHost) resolveImports(
 func (host *GazelleHost) resolveImport(
 	c *config.Config,
 	ix *resolve.RuleIndex,
-	pluginId string,
+	pluginId plugin.PluginId,
 	impt plugin.TargetImport,
 	from label.Label,
 ) (ResolutionType, *label.Label, error) {

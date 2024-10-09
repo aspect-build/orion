@@ -30,8 +30,8 @@ type GazelleHost struct {
 
 	// Hosted plugins
 	// TODO: support enabling/disabling/adding in subdirs
-	pluginIds []string
-	plugins   map[string]plugin.Plugin
+	pluginIds []plugin.PluginId
+	plugins   map[plugin.PluginId]plugin.Plugin
 
 	// Metadata about rules being generated. May be pre-configured, potentially loaded from *.star etc
 	kinds           map[string]plugin.RuleKind
