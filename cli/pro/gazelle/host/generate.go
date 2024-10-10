@@ -86,14 +86,14 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 	return host.convertPlugActionsToGenerateResult(pluginTargetActions, args)
 }
 
-func applyRemoveAction(args gazelleLanguage.GenerateArgs, rm plugin.RemoveTargetAction) *gazelleRule.Rule {
+func applyRemoveAction(args gazelleLanguage.GenerateArgs, result *gazelleLanguage.GenerateResult, rm plugin.RemoveTargetAction) *gazelleRule.Rule {
 	if args.File == nil {
 		return nil
 	}
 
 	for _, r := range args.File.Rules {
 		if r.Name() == rm.Name {
-			r.Delete()
+			result.Empty = append(result.Empty, gazelleRule.NewRule(r.Kind(), r.Name()))
 			return r
 		}
 	}
@@ -118,7 +118,7 @@ func (host *GazelleHost) applyPluginAction(args gazelleLanguage.GenerateArgs, pl
 	switch action.(type) {
 	case plugin.RemoveTargetAction:
 		// If marked for removal simply add to the empty list and continue
-		if removed := applyRemoveAction(args, action.(plugin.RemoveTargetAction)); removed != nil {
+		if removed := applyRemoveAction(args, result, action.(plugin.RemoveTargetAction)); removed != nil {
 			BazelLog.Debugf("GenerateRules remove target: %s %s(%q)", args.Rel, removed.Kind(), removed.Name())
 		}
 	case plugin.AddTargetAction:
