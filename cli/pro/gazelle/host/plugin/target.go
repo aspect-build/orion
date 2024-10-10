@@ -50,6 +50,7 @@ type AddTargetAction struct {
 type RemoveTargetAction struct {
 	TargetAction
 	Name string
+	Kind string
 }
 
 func symbolComparator(a, b interface{}) int {

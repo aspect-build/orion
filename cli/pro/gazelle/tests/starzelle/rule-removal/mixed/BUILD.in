@@ -3,7 +3,7 @@ filegroup(
     srcs = ["foo.bar"],
 )
 
-filegroup(
+copy_to_bin(
     name = "deleteme",
     srcs = ["foo.bar"],
 )

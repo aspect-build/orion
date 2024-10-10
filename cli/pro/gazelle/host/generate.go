@@ -150,7 +150,11 @@ func applyRemoveAction(args gazelleLanguage.GenerateArgs, result *gazelleLanguag
 
 	for _, r := range args.File.Rules {
 		if r.Name() == rm.Name {
-			result.Empty = append(result.Empty, gazelleRule.NewRule(r.Kind(), r.Name()))
+			kind := rm.Kind
+			if rm.Kind == "" {
+				kind = r.Kind() // TODO: need to reverse map_kind?
+			}
+			result.Empty = append(result.Empty, gazelleRule.NewRule(kind, r.Name()))
 			return r
 		}
 	}

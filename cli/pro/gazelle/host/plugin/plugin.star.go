@@ -169,13 +169,13 @@ var declareTargetAdd = starlark.NewBuiltin("add", func(thread *starlark.Thread, 
 	return starlark.None, nil
 })
 var declareTargetRemove = starlark.NewBuiltin("remove", func(thread *starlark.Thread, fn *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
-	var t starlark.String
-	if err := starlark.UnpackPositionalArgs(fn.Name(), args, kwargs, 1, &t); err != nil {
+	var name, kind starlark.String
+	if err := starlark.UnpackArgs(fn.Name(), args, kwargs, "name", &name, "kind??", &kind); err != nil {
 		return nil, err
 	}
 
 	ai := fn.Receiver().(*declareTargetActionsImpl)
-	ai.Remove(t.GoString())
+	ai.Remove(name.GoString(), kind.GoString())
 	return starlark.None, nil
 })
 

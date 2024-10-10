@@ -219,7 +219,7 @@ func NewDeclareTargetsContext(prep PrepareContext, sources []TargetSource, targe
 
 type DeclareTargetActions interface {
 	Add(target TargetDeclaration)
-	Remove(target string)
+	Remove(name, kind string)
 	Actions() []TargetAction
 }
 
@@ -242,9 +242,10 @@ func (ctx *declareTargetActionsImpl) Add(t TargetDeclaration) {
 		TargetDeclaration: t,
 	})
 }
-func (ctx *declareTargetActionsImpl) Remove(t string) {
+func (ctx *declareTargetActionsImpl) Remove(name, kind string) {
 	ctx.actions = append(ctx.actions, RemoveTargetAction{
-		Name: t,
+		Name: name,
+		Kind: kind,
 	})
 }
 
