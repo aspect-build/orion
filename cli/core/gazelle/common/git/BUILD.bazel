@@ -6,8 +6,10 @@ go_library(
     importpath = "github.com/aspect-build/silo/cli/core/gazelle/common/git",
     visibility = ["//visibility:public"],
     deps = [
+        "//cli/core/gazelle/common",
         "//cli/core/pkg/logger",
         "@bazel_gazelle//config:go_default_library",
+        "@bazel_gazelle//rule:go_default_library",
         "@com_github_go_git_go_git_v5//plumbing/format/gitignore",
     ],
 )
