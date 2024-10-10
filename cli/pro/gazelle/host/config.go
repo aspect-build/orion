@@ -3,7 +3,6 @@ package gazelle
 import (
 	"fmt"
 
-	common "github.com/aspect-build/silo/cli/core/gazelle/common"
 	plugin "github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
 	"github.com/bazelbuild/bazel-gazelle/label"
 	"github.com/bmatcuk/doublestar/v4"
@@ -21,9 +20,6 @@ type BUILDConfig struct {
 	// All directives of this BUILD
 	directiveRawValues map[string][]string
 
-	// General global config
-	generationMode common.GenerationModeType
-
 	// Custom/overridden resolutions
 	resolves *linkedhashmap.Map
 
@@ -37,8 +33,7 @@ func NewRootConfig(repoName string) *BUILDConfig {
 		rel:                "",
 		directiveRawValues: make(map[string][]string),
 
-		generationMode: common.GenerationModeCreate,
-		resolves:       linkedhashmap.New(),
+		resolves: linkedhashmap.New(),
 
 		pluginPrepareResults: make(map[string]pluginConfig),
 	}
@@ -72,17 +67,6 @@ func (p *BUILDConfig) appendDirectiveValue(key, value string) {
 	} else {
 		p.directiveRawValues[key] = append(values, value)
 	}
-}
-
-// GenerationMode returns whether coarse-grained targets should be
-// generated or not.
-func (c *BUILDConfig) GenerationMode() common.GenerationModeType {
-	return c.generationMode
-}
-
-// SetGenerationMode sets the generation mode.
-func (c *BUILDConfig) SetGenerationMode(mode common.GenerationModeType) {
-	c.generationMode = mode
 }
 
 func (c *BUILDConfig) IsPluginEnabled(pluginId plugin.PluginId) bool {

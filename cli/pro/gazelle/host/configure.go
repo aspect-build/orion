@@ -3,7 +3,6 @@ package gazelle
 import (
 	"flag"
 	"strconv"
-	"strings"
 	"sync"
 
 	common "github.com/aspect-build/silo/cli/core/gazelle/common"
@@ -44,8 +43,8 @@ func (c *GazelleHost) KnownDirectives() []string {
 func (configurer *GazelleHost) Configure(c *config.Config, rel string, f *rule.File) {
 	BazelLog.Tracef("Configure(%s): %s", GazelleLanguageName, rel)
 
-	// Collect the ignore files for this package
-	git.CollectIgnoreFiles(c, rel)
+	// Collect gitignore configuration
+	git.ReadGitConfig(c, rel, f)
 
 	// Generate hierarchical configuration.
 	if rel == "" {
@@ -60,32 +59,11 @@ func (configurer *GazelleHost) Configure(c *config.Config, rel string, f *rule.F
 	if f != nil {
 		for _, d := range f.Directives {
 			config.appendDirectiveValue(d.Key, d.Value)
-
-			// Generic non-plugin specific directives
-			switch d.Key {
-			case common.Directive_GenerationMode:
-				mode := common.GenerationModeType(strings.TrimSpace(d.Value))
-				switch mode {
-				case common.GenerationModeCreate:
-					config.SetGenerationMode(mode)
-				case common.GenerationModeUpdate:
-					config.SetGenerationMode(mode)
-				default:
-					BazelLog.Fatalf("invalid value for directive %q: %s", common.Directive_GenerationMode, d.Value)
-				}
-			// TODO: move to common
-			case git.Directive_GitIgnore:
-				git.EnableGitignore(c, common.ReadEnabled(d))
-			}
 		}
 	}
 
-	// TODO: move to common global config.Configurer
-	// Enable the WALKSUBDIR gazelle patch, setting the flag depending on the GenerationMode.
-	c.Exts[common.ASPECT_WALKSUBDIR] = config.generationMode == common.GenerationModeUpdate
-
 	// Generating new BUILDs may disabled.
-	if config.GenerationMode() == common.GenerationModeUpdate && f == nil {
+	if !common.ReadWalkConfig(c, rel, f) {
 		BazelLog.Tracef("Configure(%s) BUILD creation disabled: %q", GazelleLanguageName, rel)
 		return
 	}
