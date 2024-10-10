@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"strings"
 	"sync"
 
 	common "github.com/aspect-build/silo/cli/core/gazelle/common"
@@ -50,20 +51,76 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 
 	// Collect source files grouped by plugins consuming them.
 	// Recurse if subdirectories will not generate their own BUILD files
-	sourceFilesByPlugin := host.collectSourceFilesByPlugin(cfg, args)
+	sourceFilesByPlugin, sourceFilePlugins := host.collectSourceFilesByPlugin(cfg, args)
+
+	// Run queries on source files and collect results
+	eg := errgroup.Group{}
+	eg.SetLimit(100)
+
+	sourceFileQueryResults := make(map[string]plugin.QueryResults)
+	sourceFileQueryResultsLock := sync.Mutex{}
+
+	// Parse and query source files
+	for sourceFile, pluginIds := range sourceFilePlugins {
+		// Collect all queries for this source file from all plugins
+		queries := make(plugin.NamedQueries)
+		for _, pluginId := range pluginIds {
+			prep := cfg.pluginPrepareResults[pluginId]
+			for queryId, query := range prep.GetQueriesForFile(sourceFile) {
+				queries[fmt.Sprintf("%s|%s", pluginId, queryId)] = query
+			}
+		}
+
+		if len(queries) == 0 {
+			continue
+		}
+
+		eg.Go(func() error {
+			queryResults, err := runSourceQueries(queries, args.Dir, sourceFile)
+			if err != nil {
+				msg := fmt.Sprintf("Querying source file %q: %v", path.Join(args.Rel, sourceFile), err)
+				fmt.Printf("%s\n", msg)
+				BazelLog.Errorf(msg)
+				return nil
+			}
+
+			sourceFileQueryResultsLock.Lock()
+			defer sourceFileQueryResultsLock.Unlock()
+			sourceFileQueryResults[sourceFile] = queryResults
+			return nil
+		})
+	}
+
+	if err := eg.Wait(); err != nil {
+		BazelLog.Errorf("Collect plugin sources error: %v", err)
+	}
 
 	pluginTargetActions := make(map[plugin.PluginId][]plugin.TargetAction)
 	pluginTargetsLock := sync.Mutex{}
 
-	// Parse and query source files
-	// TODO: only parse source files once, not once per plugin (most likely they only belong to one plugin though)
-	eg := errgroup.Group{}
-	eg.SetLimit(10)
+	// Loop over all plugins
 	for pluginId, prep := range cfg.pluginPrepareResults {
-		eg.Go(func() error {
-			// Collect source files and plugin metadata for those sources.
-			targetSources := host.collectPluginTargetSources(pluginId, prep, args.Dir, sourceFilesByPlugin[pluginId])
+		pluginSrcs := sourceFilesByPlugin[pluginId]
 
+		queryPrefix := fmt.Sprintf("%s|", pluginId)
+
+		// Collect the query results for this plugin's source files
+		targetSources := make([]plugin.TargetSource, 0, len(pluginSrcs))
+		for _, f := range pluginSrcs {
+			queryResults := make(plugin.QueryResults)
+			for queryId, results := range sourceFileQueryResults[f] {
+				if strings.HasPrefix(queryId, queryPrefix) {
+					queryResults[queryId[len(queryPrefix):]] = results
+				}
+			}
+
+			targetSources = append(targetSources, plugin.TargetSource{
+				Path:         f,
+				QueryResults: queryResults,
+			})
+		}
+
+		eg.Go(func() error {
 			// Analyze the source file metadata for this plugin.
 			host.analyzePluginTargetSources(pluginId, prep, targetSources)
 
@@ -210,47 +267,8 @@ func convertPluginAttribute(args gazelleLanguage.GenerateArgs, val interface{}) 
 	return val, nil
 }
 
-func (host *GazelleHost) collectPluginTargetSources(pluginId plugin.PluginId, prep pluginConfig, baseDir string, pluginSrcs []string) []plugin.TargetSource {
-	targetSources := make([]plugin.TargetSource, len(pluginSrcs))
-
-	eg := errgroup.Group{}
-	eg.SetLimit(100)
-
-	for i, f := range pluginSrcs {
-		eg.Go(func() error {
-			queryResults, err := runPluginQueries(prep, baseDir, f)
-			if err != nil {
-				msg := fmt.Sprintf("Error querying source file %q: %v", f, err)
-				fmt.Printf("%s\n", msg)
-				BazelLog.Errorf(msg)
-			}
-
-			src := plugin.TargetSource{
-				Path:         f,
-				QueryResults: queryResults,
-			}
-
-			// Assignment into a pre-allocated slice is safe across goroutines
-			// and maintains order of the source files.
-			targetSources[i] = src
-
-			return nil
-		})
-	}
-
-	if err := eg.Wait(); err != nil {
-		BazelLog.Errorf("Collect plugin sources error: %v", err)
-	}
-
-	return targetSources
-}
-
-func runPluginQueries(prep pluginConfig, baseDir, f string) (plugin.QueryResults, error) {
-	queries := prep.GetQueriesForFile(f)
-	if len(queries) == 0 {
-		return nil, nil
-	}
-
+func runSourceQueries(queries plugin.NamedQueries, baseDir, f string) (plugin.QueryResults, error) {
+	// Read the file content
 	sourceCode, err := os.ReadFile(path.Join(baseDir, f))
 	if err != nil {
 		return nil, err
@@ -297,8 +315,9 @@ func runPluginQueries(prep pluginConfig, baseDir, f string) (plugin.QueryResults
 }
 
 // Collect source files managed by this BUILD and batch them by plugins interested in them.
-func (host *GazelleHost) collectSourceFilesByPlugin(cfg *BUILDConfig, args gazelleLanguage.GenerateArgs) map[string][]string {
-	sourceFilesByPlugin := make(map[string][]string)
+func (host *GazelleHost) collectSourceFilesByPlugin(cfg *BUILDConfig, args gazelleLanguage.GenerateArgs) (map[plugin.PluginId][]string, map[string][]plugin.PluginId) {
+	sourceFilesByPlugin := make(map[plugin.PluginId][]string)
+	sourceFilePlugins := make(map[string][]plugin.PluginId)
 
 	// Collect source files managed by this BUILD for each plugin.
 	common.GazelleWalkDir(args, func(f string) error {
@@ -309,6 +328,7 @@ func (host *GazelleHost) collectSourceFilesByPlugin(cfg *BUILDConfig, args gazel
 						sourceFilesByPlugin[pluginId] = make([]string, 0, 1)
 					}
 					sourceFilesByPlugin[pluginId] = append(sourceFilesByPlugin[pluginId], f)
+					sourceFilePlugins[f] = append(sourceFilePlugins[f], pluginId)
 					break
 				}
 			}
@@ -317,7 +337,7 @@ func (host *GazelleHost) collectSourceFilesByPlugin(cfg *BUILDConfig, args gazel
 		return nil
 	})
 
-	return sourceFilesByPlugin
+	return sourceFilesByPlugin, sourceFilePlugins
 }
 
 // Let plugins analyze sources and declare their outputs
