@@ -8,6 +8,7 @@ package starzelle
 
 import (
 	"fmt"
+	"log"
 	"reflect"
 
 	common "github.com/aspect-build/silo/cli/core/gazelle/common"
@@ -15,6 +16,7 @@ import (
 	"github.com/aspect-build/silo/cli/core/gazelle/common/treesitter"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
 	"github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
+	"github.com/bmatcuk/doublestar/v4"
 	"go.starlark.net/starlark"
 )
 
@@ -67,16 +69,30 @@ func addKind(t *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwarg
 	return starlark.None, nil
 }
 
-func readQueryFilter(v starlark.Value) []string {
+func readQueryFilters(v starlark.Value) []string {
 	if v == nil {
 		return nil
 	}
 
 	if filterString, ok := v.(starlark.String); ok {
-		return []string{filterString.GoString()}
+		return []string{readQueryFilter(filterString)}
 	}
 
-	return starUtils.ReadStringList(v)
+	return starUtils.ReadList(v, readQueryFilter)
+}
+
+func readQueryFilter(v starlark.Value) string {
+	return readGlobPatternFatal(v, "query filter")
+}
+
+func readGlobPatternFatal(v starlark.Value, what string) string {
+	s := v.(starlark.String).GoString()
+
+	if !doublestar.ValidatePattern(s) {
+		log.Fatalf("Invalid %s: %v", what, s)
+	}
+
+	return s
 }
 
 func newAstQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
@@ -97,7 +113,7 @@ func newAstQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, k
 	}
 
 	return plugin.QueryDefinition{
-		Filter:    readQueryFilter(filterValue),
+		Filter:    readQueryFilters(filterValue),
 		Processor: plugin.ASTQueryProcessor,
 		Params: plugin.AstQueryParams{
 			Grammar: treesitter.LanguageGrammar(grammarValue.GoString()),
@@ -127,7 +143,7 @@ func newRegexQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple,
 	}
 
 	return plugin.QueryDefinition{
-		Filter:    readQueryFilter(filterValue),
+		Filter:    readQueryFilters(filterValue),
 		Processor: plugin.RegexQueryProcessor,
 		Params:    re,
 	}, nil
@@ -147,7 +163,7 @@ func newRawQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, k
 	}
 
 	return plugin.QueryDefinition{
-		Filter:    readQueryFilter(filterValue),
+		Filter:    readQueryFilters(filterValue),
 		Processor: plugin.RawQueryProcessor,
 	}, nil
 }
@@ -168,7 +184,7 @@ func newJsonQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, 
 	}
 
 	return plugin.QueryDefinition{
-		Filter:    readQueryFilter(filterValue),
+		Filter:    readQueryFilters(filterValue),
 		Processor: plugin.JsonQueryProcessor,
 		Params:    queryValue.GoString(),
 	}, nil
@@ -182,8 +198,12 @@ func newSourceExtensions(_ *starlark.Thread, b *starlark.Builtin, args starlark.
 
 func newSourceGlobs(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	return plugin.SourceGlobFilter{
-		Globs: starUtils.ReadStringTuple(args),
+		Globs: starUtils.ReadTuple(args, readSourceGlob),
 	}, nil
+}
+
+func readSourceGlob(v starlark.Value) string {
+	return readGlobPatternFatal(v, "source glob")
 }
 
 func newSourceFiles(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {

@@ -15,6 +15,7 @@ go_library(
         "//cli/core/gazelle/common/treesitter",
         "//cli/core/pkg/logger",
         "//cli/pro/gazelle/host/plugin",
+        "@com_github_bmatcuk_doublestar_v4//:doublestar",
         "@net_starlark_go//starlark",
     ],
 )

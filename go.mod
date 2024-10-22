@@ -11,7 +11,7 @@ require (
 	github.com/bazelbuild/buildtools v0.0.0-20240918101019-be1c24cc9a44
 	github.com/bazelbuild/rules_go v0.50.1 // NOTE: keep in sync with fetch.bzl
 	github.com/bluekeyes/go-gitdiff v0.7.3
-	github.com/bmatcuk/doublestar/v4 v4.6.1
+	github.com/bmatcuk/doublestar/v4 v4.7.1
 	github.com/buildkite/terminal v3.2.0+incompatible
 	github.com/emirpasic/gods v1.18.1
 	github.com/fatih/color v1.17.0

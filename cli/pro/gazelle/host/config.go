@@ -1,8 +1,6 @@
 package gazelle
 
 import (
-	"fmt"
-
 	plugin "github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
 	"github.com/bazelbuild/bazel-gazelle/label"
 	"github.com/bmatcuk/doublestar/v4"
@@ -86,13 +84,7 @@ func (c *BUILDConfig) GetResolution(imprt string) *label.Label {
 	config := c
 	for config != nil {
 		for _, glob := range config.resolves.Keys() {
-			m, e := doublestar.Match(glob.(string), imprt)
-			if e != nil {
-				fmt.Println("Resolve import glob error: ", e)
-				return nil
-			}
-
-			if m {
+			if doublestar.MatchUnvalidated(glob.(string), imprt) {
 				resolveLabel, _ := config.resolves.Get(glob)
 				return resolveLabel.(*label.Label)
 			}

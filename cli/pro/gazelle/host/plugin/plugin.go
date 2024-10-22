@@ -1,7 +1,6 @@
 package plugin
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/bmatcuk/doublestar/v4"
@@ -129,12 +128,7 @@ type SourceGlobFilter struct {
 
 func (f SourceGlobFilter) Match(p string) bool {
 	for _, glob := range f.Globs {
-		m, err := doublestar.Match(glob, p)
-		if err != nil {
-			fmt.Printf("Error matching glob: %v", err)
-			return false
-		}
-		if m {
+		if doublestar.MatchUnvalidated(glob, p) {
 			return true
 		}
 	}
