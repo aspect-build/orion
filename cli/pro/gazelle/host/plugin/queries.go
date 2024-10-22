@@ -2,7 +2,6 @@ package plugin
 
 import (
 	"encoding/json"
-	"fmt"
 	"regexp"
 
 	treeutils "github.com/aspect-build/silo/cli/core/gazelle/common/treesitter"
@@ -41,12 +40,7 @@ func (q QueryDefinition) Match(f string) bool {
 	}
 
 	for _, filter := range q.Filter {
-		is_match, err := doublestar.Match(filter, f)
-
-		if err != nil {
-			fmt.Println("Error matching filter: ", err)
-		}
-		if is_match {
+		if doublestar.MatchUnvalidated(filter, f) {
 			return true
 		}
 	}
