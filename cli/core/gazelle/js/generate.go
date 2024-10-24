@@ -384,10 +384,10 @@ func (ts *typeScriptLang) addProjectRule(cfg *JsGazelleConfig, tsconfigRel strin
 	colError := gazelle.CheckCollisionErrors(targetName, TsProjectKind, sourceRuleKinds, args)
 	if colError != nil {
 		return nil, fmt.Errorf(colError.Error()+" "+
-			"Use the '# gazelle:%s' directive to change the naming convention.\n\n"+
+			"Use the '# aspect:%s' directive to change the naming convention.\n\n"+
 			"For example:\n"+
-			"\t# gazelle:%s {dirname}_js\n"+
-			"\t# gazelle:%s {dirname}_js_tests",
+			"\t# aspect:%s {dirname}_js\n"+
+			"\t# aspect:%s {dirname}_js_tests",
 			Directive_LibraryNamingConvention,
 			Directive_LibraryNamingConvention,
 			Directive_TestsNamingConvention,

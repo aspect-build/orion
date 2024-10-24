@@ -313,11 +313,11 @@ func (ts *typeScriptLang) resolveImports(
 				notFound := fmt.Errorf(
 					"Import %[1]q from %[2]q is an unknown dependency. Possible solutions:\n"+
 						"\t1. Instruct Gazelle to resolve to a known dependency using a directive:\n"+
-						"\t\t# gazelle:resolve [src-lang] js import-string label\n"+
+						"\t\t# aspect:resolve [src-lang] js import-string label\n"+
 						"\t\t   or\n"+
-						"\t\t# gazelle:js_resolve import-string-glob label\n"+
-						"\t2. Ignore the dependency using the '# gazelle:%[3]s %[1]s' directive.\n"+
-						"\t3. Disable Gazelle resolution validation using '# gazelle:%[4]s off'",
+						"\t\t# aspect:js_resolve import-string-glob label\n"+
+						"\t2. Ignore the dependency using the '# aspect:%[3]s %[1]s' directive.\n"+
+						"\t3. Disable Gazelle resolution validation using '# aspect:%[4]s off'",
 					imp.ImportPath, imp.SourcePath, Directive_IgnoreImports, Directive_ValidateImportStatements,
 				)
 				resolutionErrors = append(resolutionErrors, notFound)
@@ -429,7 +429,7 @@ func (ts *typeScriptLang) resolveImportFromIndex(
 	// Too many results, don't know which is correct
 	if len(filteredMatches) > 1 {
 		return Resolution_Error, nil, fmt.Errorf(
-			"Import %q from %q resolved to multiple targets (%s) - this must be fixed using the \"gazelle:resolve\" directive",
+			"Import %q from %q resolved to multiple targets (%s) - this must be fixed using the \"aspect:resolve\" directive",
 			impStm.ImportPath, impStm.SourcePath, targetListFromResults(matches))
 	}
 
