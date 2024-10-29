@@ -144,10 +144,11 @@ func toQueryLanguage(fileName string, queries NamedQueries) treeutils.LanguageGr
 }
 
 func runRawQueries(fileName string, sourceCode []byte, queries NamedQueries, queryResults chan *QueryProcessorResult) error {
+	sourceCodeStr := string(sourceCode)
 	for key, _ := range queries {
 		queryResults <- &QueryProcessorResult{
 			Key:    key,
-			Result: string(sourceCode),
+			Result: sourceCodeStr,
 		}
 	}
 	return nil
@@ -161,7 +162,7 @@ func runRegexQueries(fileName string, sourceCode []byte, queries NamedQueries, q
 		eg.Go(func() error {
 			queryResults <- &QueryProcessorResult{
 				Key:    key,
-				Result: runRegexQuery(string(sourceCode), q.Params.(RegexQueryParams)),
+				Result: runRegexQuery(sourceCode, q.Params.(RegexQueryParams)),
 			}
 			return nil
 		})
@@ -170,8 +171,8 @@ func runRegexQueries(fileName string, sourceCode []byte, queries NamedQueries, q
 	return eg.Wait()
 }
 
-func runRegexQuery(sourceCode string, re *regexp.Regexp) QueryMatches {
-	reMatches := re.FindAllStringSubmatch(sourceCode, -1)
+func runRegexQuery(sourceCode []byte, re *regexp.Regexp) QueryMatches {
+	reMatches := re.FindAllSubmatch(sourceCode, -1)
 	if reMatches == nil {
 		return NewQueryMatches(nil)
 	}
@@ -182,7 +183,7 @@ func runRegexQuery(sourceCode string, re *regexp.Regexp) QueryMatches {
 		captures := make(QueryCapture)
 		for i, name := range re.SubexpNames() {
 			if i > 0 && i <= len(reMatch) {
-				captures[name] = reMatch[i]
+				captures[name] = string(reMatch[i])
 			}
 		}
 
