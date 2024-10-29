@@ -137,15 +137,10 @@ func newRegexQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple,
 		return nil, err
 	}
 
-	re, err := common.ParseRegex(expression.GoString())
-	if err != nil {
-		return nil, err
-	}
-
 	return plugin.QueryDefinition{
 		Filter:    readQueryFilters(filterValue),
 		Processor: plugin.RegexQueryProcessor,
-		Params:    re,
+		Params:    common.ParseRegex(expression.GoString()),
 	}, nil
 }
 

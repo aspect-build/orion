@@ -11,6 +11,7 @@ go_library(
     importpath = "github.com/aspect-build/silo/cli/core/gazelle/common/treesitter",
     visibility = ["//visibility:public"],
     deps = [
+        "//cli/core/gazelle/common",
         "//cli/core/gazelle/common/treesitter/grammars/json",
         "//cli/core/gazelle/common/treesitter/grammars/kotlin",
         "//cli/core/gazelle/common/treesitter/grammars/starlark",
