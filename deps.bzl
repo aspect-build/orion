@@ -162,6 +162,7 @@ def go_dependencies():
             "//cli/core:patches/bazelbuild_bazel-gazelle_aspect-cli.patch",  # keep
             "//cli/core:patches/bazelbuild_bazel-gazelle_aspect-walk-subdir.patch",  # keep
             "//cli/core:patches/bazelbuild_bazel-gazelle_aspect-gitignore.patch",  # keep
+            "//cli/core:patches/bazelbuild_bazel-gazelle_aspect-fs-direntry.patch",  # keep
         ],
         sum = "h1:vum3LuMgI3mXRjfNFpyFf0PWaqi/B6BpkpugAJaIIzk=",
         # Ensure this version always matches the version of @bazel_gazelle set in fetch.bzl.
