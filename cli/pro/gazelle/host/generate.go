@@ -74,7 +74,7 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 			if err != nil {
 				msg := fmt.Sprintf("Querying source file %q: %v", path.Join(args.Rel, sourceFile), err)
 				fmt.Printf("%s\n", msg)
-				BazelLog.Errorf(msg)
+				BazelLog.Error(msg)
 				return nil
 			}
 
@@ -293,7 +293,7 @@ func runSourceQueries(queries plugin.NamedQueries, baseDir, f string) (plugin.Qu
 			if err := (*processor)(f, sourceCode, queries, queryResultsChan); err != nil {
 				msg := fmt.Sprintf("Error running queries for %q: %v", f, err)
 				fmt.Printf("%s\n", msg)
-				BazelLog.Errorf(msg)
+				BazelLog.Error(msg)
 			}
 		}()
 	}
