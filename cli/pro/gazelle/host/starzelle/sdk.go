@@ -280,8 +280,8 @@ func newImport(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwa
 
 	if id.GoString() == "" || provider.GoString() == "" {
 		msg := "Import id and provider cannot be empty\n"
-		fmt.Printf(msg)
-		BazelLog.Fatalf(msg)
+		fmt.Print(msg)
+		BazelLog.Fatal(msg)
 	}
 
 	return plugin.TargetImport{
