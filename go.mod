@@ -57,6 +57,7 @@ require (
 	github.com/bazelbuild/rules_python/gazelle v0.0.0-20240701102336-084b877c98b5
 	github.com/charmbracelet/huh v0.5.2
 	github.com/hay-kot/scaffold v0.3.0
+	github.com/klauspost/compress v1.17.9
 	github.com/reviewdog/reviewdog v0.17.4
 	github.com/sourcegraph/go-diff v0.7.0
 	gotest.tools/v3 v3.5.1
