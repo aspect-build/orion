@@ -17,6 +17,7 @@ import (
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
 	"github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
 	"github.com/bmatcuk/doublestar/v4"
+	"github.com/itchyny/gojq"
 	"go.starlark.net/starlark"
 )
 
@@ -163,6 +164,17 @@ func newRawQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, k
 	}, nil
 }
 
+// TODO: move to common?
+func parseJsonQuery(query string) (plugin.JsonQueryParams, error) {
+	// TODO: cache
+
+	q, err := gojq.Parse(query)
+	if err != nil {
+		return nil, err
+	}
+	return q, nil
+}
+
 func newJsonQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	var queryValue starlark.String
 	var filterValue starlark.Value
@@ -178,10 +190,15 @@ func newJsonQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, 
 		return nil, err
 	}
 
+	query, err := parseJsonQuery(queryValue.GoString())
+	if err != nil {
+		return nil, err
+	}
+
 	return plugin.QueryDefinition{
 		Filter:    readQueryFilters(filterValue),
 		Processor: plugin.JsonQueryProcessor,
-		Params:    queryValue.GoString(),
+		Params:    query,
 	}, nil
 }
 
