@@ -2,6 +2,7 @@ package plugin
 
 import (
 	"encoding/json"
+	"log"
 	"regexp"
 
 	treeutils "github.com/aspect-build/silo/cli/core/gazelle/common/treesitter"
@@ -16,21 +17,25 @@ import (
 // A set of queries keyed by name.
 type NamedQueries map[string]QueryDefinition
 
-// A function to execute a set of queries on the content of a source file.
-// A processor may execute queries in parallel or using shared/cached resources for
-// the given file and content.
-type QueryProcessor = func(fileName string, fileContent []byte, queries NamedQueries, queryResults chan *QueryProcessorResult) error
-
 // Intermediate object to hold a query key+result in a single struct.
 type QueryProcessorResult struct {
 	Result interface{}
 	Key    string
 }
 
+type QueryType = string
+
+const (
+	QueryTypeAst   QueryType = "ast"
+	QueryTypeRegex           = "regex"
+	QueryTypeJson            = "json"
+	QueryTypeRaw             = "raw"
+)
+
 // A query to run on source files
 type QueryDefinition struct {
 	Filter    []string
-	Processor QueryProcessor
+	QueryType QueryType
 	Params    interface{}
 }
 
@@ -72,14 +77,6 @@ func NewQueryMatches(matches []QueryMatch) QueryMatches {
 	return QueryMatches{m: matches}
 }
 
-// Builtin query processors.
-var (
-	RawQueryProcessor   QueryProcessor = runRawQueries
-	ASTQueryProcessor                  = runPluginTreeQueries
-	JsonQueryProcessor                 = runJsonQueries
-	RegexQueryProcessor                = runRegexQueries
-)
-
 type AstQueryParams struct {
 	Grammar treesitter.LanguageGrammar
 	Query   string
@@ -88,6 +85,22 @@ type AstQueryParams struct {
 type RegexQueryParams = *regexp.Regexp
 
 type JsonQueryParams = *gojq.Query
+
+func RunQueries(queryType QueryType, fileName string, sourceCode []byte, queries NamedQueries, queryResults chan *QueryProcessorResult) error {
+	switch queryType {
+	case QueryTypeAst:
+		return runPluginTreeQueries(fileName, sourceCode, queries, queryResults)
+	case QueryTypeRegex:
+		return runRegexQueries(fileName, sourceCode, queries, queryResults)
+	case QueryTypeJson:
+		return runJsonQueries(fileName, sourceCode, queries, queryResults)
+	case QueryTypeRaw:
+		return runRawQueries(fileName, sourceCode, queries, queryResults)
+	default:
+		log.Panicf("Unknown query type: %v", queryType)
+		return nil
+	}
+}
 
 func runPluginTreeQueries(fileName string, sourceCode []byte, queries NamedQueries, queryResults chan *QueryProcessorResult) error {
 	ast, err := treeutils.ParseSourceCode(toQueryLanguage(fileName, queries), fileName, sourceCode)
@@ -104,30 +117,24 @@ func runPluginTreeQueries(fileName string, sourceCode []byte, queries NamedQueri
 		}
 	}
 
-	eg := errgroup.Group{}
-	eg.SetLimit(10)
-
+	// TODO: look into running queries in parallel on the same AST
 	for key, query := range queries {
-		eg.Go(func() error {
-			resultCh := ast.Query(query.Params.(AstQueryParams).Query)
+		resultCh := ast.Query(query.Params.(AstQueryParams).Query)
 
-			// TODO: delay collection from channel until first read?
-			// Then it must be cached for later reads...
-			match := make([]QueryMatch, 0, 1)
-			for r := range resultCh {
-				match = append(match, NewQueryMatch(r.Captures(), nil))
-			}
+		// TODO: delay collection from channel until first read?
+		// Then it must be cached for later reads...
+		match := make([]QueryMatch, 0, 1)
+		for r := range resultCh {
+			match = append(match, NewQueryMatch(r.Captures(), nil))
+		}
 
-			queryResults <- &QueryProcessorResult{
-				Key:    key,
-				Result: NewQueryMatches(match),
-			}
-
-			return nil
-		})
+		queryResults <- &QueryProcessorResult{
+			Key:    key,
+			Result: NewQueryMatches(match),
+		}
 	}
 
-	return eg.Wait()
+	return nil
 }
 
 func toQueryLanguage(fileName string, queries NamedQueries) treeutils.LanguageGrammar {
@@ -203,23 +210,21 @@ func runJsonQueries(fileName string, sourceCode []byte, queries NamedQueries, qu
 	eg := errgroup.Group{}
 	eg.SetLimit(10)
 
+	// TODO: parallelize, see https://github.com/itchyny/gojq/issues/236
+	// for issue + potential workaround (patch).
 	for key, q := range queries {
-		eg.Go(func() error {
-			r, err := runJsonQuery(doc, q.Params.(JsonQueryParams))
-			if err != nil {
-				return err
-			}
+		r, err := runJsonQuery(doc, q.Params.(JsonQueryParams))
+		if err != nil {
+			return err
+		}
 
-			queryResults <- &QueryProcessorResult{
-				Key:    key,
-				Result: r,
-			}
-
-			return nil
-		})
+		queryResults <- &QueryProcessorResult{
+			Key:    key,
+			Result: r,
+		}
 	}
 
-	return eg.Wait()
+	return nil
 }
 
 func runJsonQuery(doc interface{}, q *gojq.Query) (interface{}, error) {

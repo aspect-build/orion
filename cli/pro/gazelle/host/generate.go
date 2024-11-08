@@ -273,24 +273,24 @@ func runSourceQueries(queries plugin.NamedQueries, baseDir, f string) (plugin.Qu
 	}
 
 	// Split queries by type to invoke in batches
-	queriesByType := make(map[*plugin.QueryProcessor]plugin.NamedQueries)
+	queriesByType := make(map[plugin.QueryType]plugin.NamedQueries)
 	for key, query := range queries {
-		if queriesByType[&query.Processor] == nil {
-			queriesByType[&query.Processor] = make(plugin.NamedQueries)
+		if queriesByType[query.QueryType] == nil {
+			queriesByType[query.QueryType] = make(plugin.NamedQueries)
 		}
-		queriesByType[&query.Processor][key] = query
+		queriesByType[query.QueryType][key] = query
 	}
 
 	queryResultsChan := make(chan *plugin.QueryProcessorResult)
 	wg := sync.WaitGroup{}
 
-	for processor, queries := range queriesByType {
+	for queryType, queries := range queriesByType {
 		wg.Add(1)
 
 		go func() {
 			defer wg.Done()
 
-			if err := (*processor)(f, sourceCode, queries, queryResultsChan); err != nil {
+			if err := plugin.RunQueries(queryType, f, sourceCode, queries, queryResultsChan); err != nil {
 				msg := fmt.Sprintf("Error running queries for %q: %v", f, err)
 				fmt.Printf("%s\n", msg)
 				BazelLog.Error(msg)
