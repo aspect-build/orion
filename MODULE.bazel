@@ -1,0 +1,7 @@
+"Bazel dependencies"
+
+module(
+    name = "orion",
+    version = "0.0.0",
+    bazel_compatibility = [">=7.0.0"],
+)
