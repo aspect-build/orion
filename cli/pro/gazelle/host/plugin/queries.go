@@ -87,7 +87,7 @@ type AstQueryParams struct {
 
 type RegexQueryParams = *regexp.Regexp
 
-type JsonQueryParams = string
+type JsonQueryParams = *gojq.Query
 
 func runPluginTreeQueries(fileName string, sourceCode []byte, queries NamedQueries, queryResults chan *QueryProcessorResult) error {
 	ast, err := treeutils.ParseSourceCode(toQueryLanguage(fileName, queries), fileName, sourceCode)
@@ -222,12 +222,7 @@ func runJsonQueries(fileName string, sourceCode []byte, queries NamedQueries, qu
 	return eg.Wait()
 }
 
-func runJsonQuery(doc interface{}, query string) (interface{}, error) {
-	q, err := gojq.Parse(query)
-	if err != nil {
-		return nil, err
-	}
-
+func runJsonQuery(doc interface{}, q *gojq.Query) (interface{}, error) {
 	matches := make([]interface{}, 0)
 
 	iter := q.Run(doc)
