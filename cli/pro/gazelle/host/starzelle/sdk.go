@@ -115,7 +115,7 @@ func newAstQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, k
 
 	return plugin.QueryDefinition{
 		Filter:    readQueryFilters(filterValue),
-		Processor: plugin.ASTQueryProcessor,
+		QueryType: plugin.QueryTypeAst,
 		Params: plugin.AstQueryParams{
 			Grammar: treesitter.LanguageGrammar(grammarValue.GoString()),
 			Query:   query.GoString(),
@@ -140,7 +140,7 @@ func newRegexQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple,
 
 	return plugin.QueryDefinition{
 		Filter:    readQueryFilters(filterValue),
-		Processor: plugin.RegexQueryProcessor,
+		QueryType: plugin.QueryTypeRegex,
 		Params:    common.ParseRegex(expression.GoString()),
 	}, nil
 }
@@ -160,7 +160,7 @@ func newRawQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, k
 
 	return plugin.QueryDefinition{
 		Filter:    readQueryFilters(filterValue),
-		Processor: plugin.RawQueryProcessor,
+		QueryType: plugin.QueryTypeRaw,
 	}, nil
 }
 
@@ -197,7 +197,7 @@ func newJsonQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, 
 
 	return plugin.QueryDefinition{
 		Filter:    readQueryFilters(filterValue),
-		Processor: plugin.JsonQueryProcessor,
+		QueryType: plugin.QueryTypeJson,
 		Params:    query,
 	}, nil
 }
