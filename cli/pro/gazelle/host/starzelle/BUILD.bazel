@@ -16,7 +16,6 @@ go_library(
         "//cli/core/pkg/logger",
         "//cli/pro/gazelle/host/plugin",
         "@com_github_bmatcuk_doublestar_v4//:doublestar",
-        "@com_github_itchyny_gojq//:gojq",
         "@net_starlark_go//starlark",
     ],
 )
