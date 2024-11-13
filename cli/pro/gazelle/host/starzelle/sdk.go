@@ -11,7 +11,6 @@ import (
 	"log"
 	"reflect"
 
-	common "github.com/aspect-build/silo/cli/core/gazelle/common"
 	starUtils "github.com/aspect-build/silo/cli/core/gazelle/common/starlark/utils"
 	"github.com/aspect-build/silo/cli/core/gazelle/common/treesitter"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
@@ -140,7 +139,7 @@ func newRegexQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple,
 	return plugin.QueryDefinition{
 		Filter:    readQueryFilters(filterValue),
 		QueryType: plugin.QueryTypeRegex,
-		Params:    common.ParseRegex(expression.GoString()),
+		Params:    expression.GoString(),
 	}, nil
 }
 
@@ -178,15 +177,10 @@ func newJsonQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, 
 		return nil, err
 	}
 
-	query, err := common.ParseJsonQuery(queryValue.GoString())
-	if err != nil {
-		return nil, err
-	}
-
 	return plugin.QueryDefinition{
 		Filter:    readQueryFilters(filterValue),
 		QueryType: plugin.QueryTypeJson,
-		Params:    query,
+		Params:    queryValue.GoString(),
 	}, nil
 }
 

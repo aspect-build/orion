@@ -1,6 +1,9 @@
 package gazelle
 
 import (
+	"crypto"
+	"encoding/gob"
+	"encoding/hex"
 	"fmt"
 	"math"
 	"os"
@@ -9,6 +12,7 @@ import (
 	"sync"
 
 	gazelle "github.com/aspect-build/silo/cli/core/gazelle/common"
+	"github.com/aspect-build/silo/cli/core/gazelle/common/cache"
 	starlark "github.com/aspect-build/silo/cli/core/gazelle/common/starlark"
 	node "github.com/aspect-build/silo/cli/core/gazelle/js/node"
 	parser "github.com/aspect-build/silo/cli/core/gazelle/js/parser"
@@ -16,6 +20,7 @@ import (
 	proto "github.com/aspect-build/silo/cli/core/gazelle/js/proto"
 	"github.com/aspect-build/silo/cli/core/gazelle/js/typescript"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
+	"github.com/bazelbuild/bazel-gazelle/config"
 	"github.com/bazelbuild/bazel-gazelle/label"
 	"github.com/bazelbuild/bazel-gazelle/language"
 	"github.com/bazelbuild/bazel-gazelle/resolve"
@@ -622,7 +627,7 @@ func (ts *typeScriptLang) parseFiles(cfg *JsGazelleConfig, args language.Generat
 			defer wg.Done()
 
 			for sourcePath := range sourcePathChannel {
-				resultsChannel <- ts.collectImports(cfg, args.Config.RepoRoot, sourcePath)
+				resultsChannel <- ts.collectImports(cfg, args.Config, args.Config.RepoRoot, sourcePath)
 			}
 		}()
 	}
@@ -646,8 +651,8 @@ func (ts *typeScriptLang) parseFiles(cfg *JsGazelleConfig, args language.Generat
 	return resultsChannel
 }
 
-func (ts *typeScriptLang) collectImports(cfg *JsGazelleConfig, rootDir, sourcePath string) parseResult {
-	parseResults, errs := parseSourceFile(rootDir, sourcePath)
+func (ts *typeScriptLang) collectImports(cfg *JsGazelleConfig, config *config.Config, rootDir, sourcePath string) parseResult {
+	parseResults, errs := parseSourceFile(config, rootDir, sourcePath)
 
 	result := parseResult{
 		SourcePath: sourcePath,
@@ -682,7 +687,7 @@ func (ts *typeScriptLang) collectImports(cfg *JsGazelleConfig, rootDir, sourcePa
 }
 
 // Parse the passed file for import statements.
-func parseSourceFile(rootDir, filePath string) (parser.ParseResult, []error) {
+func parseSourceFile(config *config.Config, rootDir, filePath string) (parser.ParseResult, []error) {
 	BazelLog.Tracef("ParseImports(%s): %s", LanguageName, filePath)
 
 	content, err := os.ReadFile(path.Join(rootDir, filePath))
@@ -690,7 +695,35 @@ func parseSourceFile(rootDir, filePath string) (parser.ParseResult, []error) {
 		return parser.ParseResult{}, []error{err}
 	}
 
-	return parser.ParseSource(filePath, content)
+	parserCache := cache.Get[parser.ParseResult](config)
+	parserCacheKey, parsingCacheable := computeCacheKey(content)
+	if parserCache != nil && parsingCacheable {
+		if cachedResults, found := parserCache.Load(parserCacheKey); found {
+			return cachedResults.(parser.ParseResult), nil
+		}
+	}
+
+	r, errs := parser.ParseSource(filePath, content)
+	if parserCache != nil && parsingCacheable && len(errs) == 0 {
+		parserCache.Store(parserCacheKey, r)
+	}
+
+	return r, errs
+}
+
+func init() {
+	// TODO: don't expose 'gob' cache serialization here
+	gob.Register(parser.ParseResult{})
+}
+
+func computeCacheKey(content []byte) (string, bool) {
+	cacheDigest := crypto.MD5.New()
+
+	if _, err := cacheDigest.Write(content); err != nil {
+		return "", false
+	}
+
+	return hex.EncodeToString(cacheDigest.Sum(nil)), true
 }
 
 func (ts *typeScriptLang) addFileLabel(importPath string, label *label.Label) {

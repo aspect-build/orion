@@ -11,6 +11,7 @@ import (
 	"github.com/itchyny/gojq"
 	"golang.org/x/sync/errgroup"
 
+	common "github.com/aspect-build/silo/cli/core/gazelle/common"
 	"github.com/aspect-build/silo/cli/core/gazelle/common/treesitter"
 )
 
@@ -57,7 +58,7 @@ type QueryResults map[string]interface{}
 
 // Multiple matches
 type QueryMatches struct {
-	m []QueryMatch
+	Matches []QueryMatch
 }
 
 // The captures of a single query match
@@ -65,16 +66,16 @@ type QueryCapture map[string]string
 
 // A single match.
 type QueryMatch struct {
-	result   interface{}
-	captures QueryCapture
+	Result   interface{}
+	Captures QueryCapture
 }
 
 func NewQueryMatch(captures QueryCapture, result interface{}) QueryMatch {
-	return QueryMatch{captures: captures, result: result}
+	return QueryMatch{Captures: captures, Result: result}
 }
 
 func NewQueryMatches(matches []QueryMatch) QueryMatches {
-	return QueryMatches{m: matches}
+	return QueryMatches{Matches: matches}
 }
 
 type AstQueryParams struct {
@@ -82,9 +83,9 @@ type AstQueryParams struct {
 	Query   string
 }
 
-type RegexQueryParams = *regexp.Regexp
+type RegexQueryParams = string
 
-type JsonQueryParams = *gojq.Code
+type JsonQueryParams = string
 
 func RunQueries(queryType QueryType, fileName string, sourceCode []byte, queries NamedQueries, queryResults chan *QueryProcessorResult) error {
 	switch queryType {
@@ -169,7 +170,7 @@ func runRegexQueries(fileName string, sourceCode []byte, queries NamedQueries, q
 		eg.Go(func() error {
 			queryResults <- &QueryProcessorResult{
 				Key:    key,
-				Result: runRegexQuery(sourceCode, q.Params.(RegexQueryParams)),
+				Result: runRegexQuery(sourceCode, common.ParseRegex(q.Params.(RegexQueryParams))),
 			}
 			return nil
 		})
@@ -227,7 +228,12 @@ func runJsonQueries(fileName string, sourceCode []byte, queries NamedQueries, qu
 	return nil
 }
 
-func runJsonQuery(doc interface{}, q *gojq.Code) (interface{}, error) {
+func runJsonQuery(doc interface{}, query string) (interface{}, error) {
+	q, err := common.ParseJsonQuery(query)
+	if err != nil {
+		return nil, err
+	}
+
 	matches := make([]interface{}, 0)
 
 	iter := q.Run(doc)

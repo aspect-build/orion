@@ -1,6 +1,9 @@
 package gazelle
 
 import (
+	"crypto"
+	"encoding/gob"
+	"encoding/hex"
 	"fmt"
 	"os"
 	"path"
@@ -8,8 +11,9 @@ import (
 	"sync"
 
 	common "github.com/aspect-build/silo/cli/core/gazelle/common"
+	"github.com/aspect-build/silo/cli/core/gazelle/common/cache"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
-	plugin "github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
+	"github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
 	gazelleLabel "github.com/bazelbuild/bazel-gazelle/label"
 	gazelleLanguage "github.com/bazelbuild/bazel-gazelle/language"
 	gazelleRule "github.com/bazelbuild/bazel-gazelle/rule"
@@ -35,6 +39,8 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 	BazelLog.Tracef("GenerateRules(%s): %s", GazelleLanguageName, args.Rel)
 
 	cfg := args.Config.Exts[GazelleLanguageName].(*BUILDConfig)
+
+	queryCache := cache.Get[plugin.QueryResults](args.Config)
 
 	// TODO: normally would...
 	//   1. collect "source files"
@@ -70,7 +76,7 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 		}
 
 		eg.Go(func() error {
-			queryResults, err := runSourceQueries(queries, args.Dir, sourceFile)
+			queryResults, err := host.runSourceQueries(queryCache, queries, args.Dir, sourceFile)
 			if err != nil {
 				msg := fmt.Sprintf("Querying source file %q: %v", path.Join(args.Rel, sourceFile), err)
 				fmt.Printf("%s\n", msg)
@@ -265,11 +271,40 @@ func convertPluginAttribute(args gazelleLanguage.GenerateArgs, val interface{}) 
 	return val, nil
 }
 
-func runSourceQueries(queries plugin.NamedQueries, baseDir, f string) (plugin.QueryResults, error) {
+func init() {
+	// Ensure types used in cache key computation are known to the gob encoder
+	gob.Register(plugin.NamedQueries{})
+	gob.Register(plugin.QueryDefinition{})
+	gob.Register(plugin.QueryType(""))
+	gob.Register(plugin.AstQueryParams{})
+	gob.Register(plugin.RegexQueryParams(""))
+	gob.Register(plugin.JsonQueryParams(""))
+}
+
+func computeQueriesCacheKey(sourceCode []byte, queries plugin.NamedQueries) (string, bool) {
+	cacheDigest := crypto.MD5.New()
+	cacheDigest.Write(sourceCode)
+
+	e := gob.NewEncoder(cacheDigest)
+	if err := e.Encode(queries); err != nil {
+		return "", false
+	}
+
+	return hex.EncodeToString(cacheDigest.Sum(nil)), true
+}
+
+func (host *GazelleHost) runSourceQueries(queryCache cache.Cache, queries plugin.NamedQueries, baseDir, f string) (plugin.QueryResults, error) {
 	// Read the file content
 	sourceCode, err := os.ReadFile(path.Join(baseDir, f))
 	if err != nil {
 		return nil, err
+	}
+
+	queryCacheKey, queryingCacheable := computeQueriesCacheKey(sourceCode, queries)
+	if queryCache != nil && queryingCacheable {
+		if cachedResults, found := queryCache.Load(queryCacheKey); found {
+			return cachedResults.(plugin.QueryResults), nil
+		}
 	}
 
 	// Split queries by type to invoke in batches
@@ -307,6 +342,10 @@ func runSourceQueries(queries plugin.NamedQueries, baseDir, f string) (plugin.Qu
 	queryResults := make(plugin.QueryResults)
 	for result := range queryResultsChan {
 		queryResults[result.Key] = result.Result
+	}
+
+	if queryCache != nil && queryingCacheable {
+		queryCache.Store(queryCacheKey, queryResults)
 	}
 
 	return queryResults, nil
