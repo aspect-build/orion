@@ -1,6 +1,7 @@
 package plugin
 
 import (
+	"encoding/gob"
 	"strings"
 
 	"github.com/bmatcuk/doublestar/v4"
@@ -251,4 +252,14 @@ type DeclareTargetsResult struct {
 type TargetSource struct {
 	Path         string
 	QueryResults QueryResults
+}
+
+func init() {
+	// TODO: don't expose 'gob' cache serialization here
+	gob.Register(QueryResults{})
+	gob.Register(QueryMatches{})
+	gob.Register(QueryMatch{})
+	gob.Register([]QueryMatch{})
+	gob.Register(QueryCapture{})
+	gob.Register(QueryProcessorResult{})
 }

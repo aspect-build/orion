@@ -43,9 +43,9 @@ var _ starlark.HasAttrs = (*QueryMatch)(nil)
 func (q *QueryMatch) Attr(name string) (starlark.Value, error) {
 	switch name {
 	case "result":
-		return starUtils.Write(q.result), nil
+		return starUtils.Write(q.Result), nil
 	case "captures":
-		return &q.captures, nil
+		return &q.Captures, nil
 	default:
 		return nil, starlark.NoSuchAttrError(name)
 	}
@@ -55,7 +55,7 @@ func (q *QueryMatch) AttrNames() []string {
 }
 
 func (q *QueryMatch) String() string {
-	return fmt.Sprintf("QueryMatch(%v, captures: %v)", q.result, q.captures)
+	return fmt.Sprintf("QueryMatch(%v, captures: %v)", q.Result, q.Captures)
 }
 func (q *QueryMatch) Type() string {
 	return "QueryMatch"
@@ -96,11 +96,11 @@ var _ starlark.Iterable = (*QueryMatches)(nil)
 var _ starlark.Indexable = (*QueryMatches)(nil)
 
 func (q QueryMatches) Index(i int) starlark.Value {
-	return &q.m[i]
+	return &q.Matches[i]
 }
 
 func (q QueryMatches) Len() int {
-	return len(q.m)
+	return len(q.Matches)
 }
 
 func (q QueryMatches) Freeze() {}
@@ -110,11 +110,11 @@ func (q QueryMatches) Hash() (uint32, error) {
 }
 
 func (q QueryMatches) Iterate() starlark.Iterator {
-	return &queryMatchIterator{m: q.m, cursor: 0}
+	return &queryMatchIterator{m: q.Matches, cursor: 0}
 }
 
 func (q QueryMatches) String() string {
-	return fmt.Sprintf("QueryMatches(%v)", q.m)
+	return fmt.Sprintf("QueryMatches(%v)", q.Matches)
 }
 
 func (q QueryMatches) Truth() starlark.Bool {
@@ -176,7 +176,7 @@ func (nq NamedQueries) Get(k starlark.Value) (v starlark.Value, found bool, err 
 	r, found := nq[key]
 
 	if !found {
-		return nil, false, fmt.Errorf("no query named %q, queries: %v", key, nq)
+		return nil, false, fmt.Errorf("no query named %q, queries: %v", key, maps.Keys(nq))
 	}
 
 	// Pure primitive query results
@@ -203,7 +203,7 @@ func (qr QueryResults) Get(k starlark.Value) (v starlark.Value, found bool, err 
 	r, found := qr[key]
 
 	if !found {
-		return nil, false, fmt.Errorf("no query result named %q, queries: %v", key, qr)
+		return nil, false, fmt.Errorf("no query result named %q, queries %v", key, maps.Keys(qr))
 	}
 
 	// Pure primitive query results
