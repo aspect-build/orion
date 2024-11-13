@@ -164,9 +164,9 @@ def go_dependencies():
             "//cli/core:patches/bazelbuild_bazel-gazelle_aspect-gitignore.patch",  # keep
             "//cli/core:patches/bazelbuild_bazel-gazelle_aspect-fs-direntry.patch",  # keep
         ],
-        sum = "h1:vum3LuMgI3mXRjfNFpyFf0PWaqi/B6BpkpugAJaIIzk=",
+        sum = "h1:SAYys3KRG5i3KTgQAvO423bLT1rQMSgqEKReMkM/CW0=",
         # Ensure this version always matches the version of @bazel_gazelle set in fetch.bzl.
-        version = "v0.39.2-0.20241028094305-da0ad1847d05",
+        version = "v0.40.0",
     )
     go_repository(
         name = "com_github_bazelbuild_bazelisk",
@@ -562,8 +562,8 @@ def go_dependencies():
         name = "com_github_fsnotify_fsnotify",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/fsnotify/fsnotify",
-        sum = "h1:8JEhPFa5W2WU7YfeZzPNqzMP6Lwt7L2715Ggo0nosvA=",
-        version = "v1.7.0",
+        sum = "h1:dAwr6QBTBZIkG8roQaJjGof0pp0EeF+tNV7YBP3F/8M=",
+        version = "v1.8.0",
     )
     go_repository(
         name = "com_github_ghodss_yaml",
