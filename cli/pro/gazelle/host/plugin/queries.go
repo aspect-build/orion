@@ -84,7 +84,7 @@ type AstQueryParams struct {
 
 type RegexQueryParams = *regexp.Regexp
 
-type JsonQueryParams = *gojq.Query
+type JsonQueryParams = *gojq.Code
 
 func RunQueries(queryType QueryType, fileName string, sourceCode []byte, queries NamedQueries, queryResults chan *QueryProcessorResult) error {
 	switch queryType {
@@ -227,7 +227,7 @@ func runJsonQueries(fileName string, sourceCode []byte, queries NamedQueries, qu
 	return nil
 }
 
-func runJsonQuery(doc interface{}, q *gojq.Query) (interface{}, error) {
+func runJsonQuery(doc interface{}, q *gojq.Code) (interface{}, error) {
 	matches := make([]interface{}, 0)
 
 	iter := q.Run(doc)
