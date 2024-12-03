@@ -111,12 +111,14 @@ func newAstQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, k
 		return nil, err
 	}
 
+	grammar := treesitter.LanguageGrammar(grammarValue.GoString())
+
 	return plugin.QueryDefinition{
 		Filter:    readQueryFilters(filterValue),
 		QueryType: plugin.QueryTypeAst,
 		Params: plugin.AstQueryParams{
-			Grammar: treesitter.LanguageGrammar(grammarValue.GoString()),
-			Query:   query.GoString(),
+			Grammar: grammar,
+			Query:   treesitter.GetQuery(grammar, query.GoString()),
 		},
 	}, nil
 }

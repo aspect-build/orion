@@ -80,7 +80,7 @@ func NewQueryMatches(matches []QueryMatch) QueryMatches {
 
 type AstQueryParams struct {
 	Grammar treesitter.LanguageGrammar
-	Query   string
+	Query   treesitter.TreeQuery
 }
 
 type RegexQueryParams = string

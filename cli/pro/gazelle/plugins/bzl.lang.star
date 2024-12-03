@@ -17,6 +17,7 @@ def prepare(_):
         ],
         queries = {
             "loads": aspect.AstQuery(
+                grammar = "starlark",
                 query = """(module
                     (expression_statement
                         (call 

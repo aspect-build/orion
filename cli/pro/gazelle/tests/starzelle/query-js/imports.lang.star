@@ -11,6 +11,7 @@ def prepare(_):
         ],
         queries = {
             "imports": aspect.AstQuery(
+                grammar = "typescript",
                 filter = "**/*.js",
                 query = "(import_statement (string (string_fragment) @imp))",
             ),
