@@ -49,6 +49,7 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 	//   3. parse "source files"
 	//   4. persist source file imports + symbols
 
+	// Stage 1:
 	// Collect source files grouped by plugins consuming them.
 	// Recurse if subdirectories will not generate their own BUILD files
 	sourceFilesByPlugin, sourceFilePlugins := host.collectSourceFilesByPlugin(cfg, args)
@@ -56,6 +57,9 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 	// Run queries on source files and collect results
 	eg := errgroup.Group{}
 	eg.SetLimit(100)
+
+	// Stage 2:
+	// Parse and query source files and collect results
 
 	sourceFileQueryResults := make(map[string]plugin.QueryResults)
 	sourceFileQueryResultsLock := sync.Mutex{}
@@ -95,11 +99,9 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 		BazelLog.Errorf("Collect plugin sources error: %v", err)
 	}
 
-	pluginTargetActions := make(map[plugin.PluginId][]plugin.TargetAction)
-	pluginTargetsLock := sync.Mutex{}
-
-	// Loop over all plugins
-	for pluginId, prep := range cfg.pluginPrepareResults {
+	// Group the TargetSource's for each plugin.
+	pluginTargetSources := make(map[plugin.PluginId][]plugin.TargetSource)
+	for pluginId, _ := range cfg.pluginPrepareResults {
 		pluginSrcs := sourceFilesByPlugin[pluginId]
 
 		queryPrefix := fmt.Sprintf("%s|", pluginId)
@@ -120,12 +122,32 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 			})
 		}
 
-		eg.Go(func() error {
-			// Analyze the source file metadata for this plugin.
-			host.analyzePluginTargetSources(pluginId, prep, targetSources)
+		pluginTargetSources[pluginId] = targetSources
+	}
 
+	// Stage 3:
+	// Analyze each plugin source file.
+	for pluginId, prep := range cfg.pluginPrepareResults {
+		if targetSources := pluginTargetSources[pluginId]; len(targetSources) > 0 {
+			eg.Go(func() error {
+				host.analyzePluginTargetSources(pluginId, prep, targetSources)
+				return nil
+			})
+		}
+	}
+
+	if err := eg.Wait(); err != nil {
+		BazelLog.Errorf("Plugin source analysis error: %v", err)
+	}
+
+	// Stage 4:
+	// Generate target actions for each plugin
+	pluginTargetActions := make(map[plugin.PluginId][]plugin.TargetAction)
+	pluginTargetsLock := sync.Mutex{}
+	for pluginId, prep := range cfg.pluginPrepareResults {
+		eg.Go(func() error {
 			// Use the collected sources and analysis to generate rules
-			actions := host.generateTargets(pluginId, prep, targetSources)
+			actions := host.generateTargets(pluginId, prep, pluginTargetSources[pluginId])
 
 			// Lock for the assignment into the cross-thread pluginTargets
 			pluginTargetsLock.Lock()
@@ -140,6 +162,8 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 		BazelLog.Errorf("Unknown GenerateRules(%s) error: %v", GazelleLanguageName, err)
 	}
 
+	// Stage 5:
+	// Apply plugin actions
 	return host.convertPlugActionsToGenerateResult(pluginTargetActions, args)
 }
 
