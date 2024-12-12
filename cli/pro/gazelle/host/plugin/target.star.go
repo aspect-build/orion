@@ -121,6 +121,8 @@ func readTargetAttributeValue(v starlark.Value) interface{} {
 		return readTargetImport(v)
 	case Label:
 		return readLabel(v)
+	case TargetSource:
+		return v.Path
 	}
 
 	return starUtils.ReadRecurse(v, readTargetAttributeValue)
