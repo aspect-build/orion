@@ -12,9 +12,7 @@ aspect.register_rule_kind(BZL_LIBRARY, {
 
 def prepare(_):
     return aspect.PrepareResult(
-        sources = [
-            aspect.SourceExtensions(".bzl"),
-        ],
+        sources = aspect.SourceExtensions(".bzl"),
         queries = {
             "loads": aspect.AstQuery(
                 grammar = "starlark",
