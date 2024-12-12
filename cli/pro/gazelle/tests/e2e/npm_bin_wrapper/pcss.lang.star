@@ -25,8 +25,7 @@ def declare(ctx):
         kind = "postcss",
         attrs = {
             "config": aspect.Label(name = "postcss_config"),
-            # TODO: allow passing source files directly
-            "srcs": [s.path for s in ctx.sources if s.path.endswith(".css")],
+            "srcs": [s for s in ctx.sources if s.path.endswith(".css")],
         },
     )
 

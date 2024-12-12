@@ -114,7 +114,7 @@ def declare_targets(ctx):
 
         if len(file.query_results["has_main"]) > 0:
             bins.append({
-                "src": file.path,
+                "src": file,
                 "imports": imports,
                 "package": aspect.Symbol(
                     id = pkg,
@@ -122,7 +122,7 @@ def declare_targets(ctx):
                 ) if pkg else None,
             })
         else:
-            lib["srcs"].append(file.path)
+            lib["srcs"].append(file)
             lib["imports"].extend(imports)
             if pkg:
                 lib["packages"].append(aspect.Symbol(
@@ -145,7 +145,7 @@ def declare_targets(ctx):
         ctx.targets.remove(lib_name)
 
     for bin in bins:
-        no_ext = bin["src"].removesuffix(path.ext(bin["src"]))
+        no_ext = bin["src"].path.removesuffix(path.ext(bin["src"].path))
 
         ctx.targets.add(
             name = no_ext.lower() + "_bin",
