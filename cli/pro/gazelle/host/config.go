@@ -68,16 +68,23 @@ func (p *BUILDConfig) appendDirectiveValue(key, value string) {
 }
 
 func (c *BUILDConfig) IsPluginEnabled(pluginId plugin.PluginId) bool {
-	val, exists := c.directiveRawValues[pluginId]
-	if exists {
+	if val, exists := c.getRawValue(string(pluginId), true); exists {
 		return val[len(val)-1] == "enabled"
 	}
+	return true
+}
 
-	if c.parent == nil {
-		return true
+func (c *BUILDConfig) getRawValue(key string, inherit bool) ([]string, bool) {
+	value, exists := c.directiveRawValues[key]
+	if exists {
+		return value, true
 	}
 
-	return c.parent.IsPluginEnabled(pluginId)
+	if inherit && c.parent != nil {
+		return c.parent.getRawValue(key, true)
+	}
+
+	return nil, false
 }
 
 func (c *BUILDConfig) GetResolution(imprt string) *label.Label {
