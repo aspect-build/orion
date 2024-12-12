@@ -112,7 +112,7 @@ func configToPrepareContext(p plugin.Plugin, cfg *BUILDConfig) plugin.PrepareCon
 	for k, p := range p.Properties() {
 		pValue := p.Default
 
-		if v, found := cfg.directiveRawValues[p.Name]; found {
+		if v, found := cfg.getRawValue(p.Name, true); found {
 			parsedValue, parseErr := parsePropertyValue(p, v)
 			if parseErr != nil {
 				BazelLog.Warnf("Failed to parse property %q: %v", p.Name, parseErr)
