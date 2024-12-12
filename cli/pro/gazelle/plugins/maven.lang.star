@@ -7,9 +7,7 @@ DEFAULT_JAVA_MAVEN_INSTALL_FILE = "maven_install.json"
 def prepare(ctx):
     return aspect.PrepareResult(
         # All source files to be processed
-        sources = [
-            aspect.SourceExtensions(ctx.properties[JAVA_MAVEN_INSTALL_FILE]),
-        ],
+        sources = aspect.SourceFiles(ctx.properties[JAVA_MAVEN_INSTALL_FILE]),
         queries = {
             "imports": aspect.JsonQuery(
                 filter = DEFAULT_JAVA_MAVEN_INSTALL_FILE,

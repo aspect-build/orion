@@ -210,7 +210,7 @@ func newSourceFiles(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple
 
 func newPrepareResult(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	var queriesValue *starlark.Dict
-	var sourcesValue *starlark.List
+	var sourcesValue starlark.Value
 
 	err := starlark.UnpackArgs(
 		"PrepareResult",
@@ -243,7 +243,11 @@ func newPrepareResult(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tup
 
 	sources := []plugin.SourceFilter{}
 	if sourcesValue != nil {
-		sources = starUtils.ReadList(sourcesValue, readSourceFilter)
+		if sourcesListValue, isList := sourcesValue.(*starlark.List); isList {
+			sources = starUtils.ReadList(sourcesListValue, readSourceFilter)
+		} else {
+			sources = []plugin.SourceFilter{readSourceFilter(sourcesValue)}
+		}
 	}
 
 	return plugin.PrepareResult{

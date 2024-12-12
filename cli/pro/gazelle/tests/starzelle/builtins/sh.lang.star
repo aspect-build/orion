@@ -1,8 +1,6 @@
 def prepare(_):
     return aspect.PrepareResult(
-        sources = [
-            aspect.SourceExtensions(".sh"),
-        ],
+        sources = aspect.SourceExtensions(".sh"),
     )
 
 def declare_targets(ctx):

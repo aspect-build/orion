@@ -1,8 +1,6 @@
 def prepare(_):
     return aspect.PrepareResult(
-        sources = [
-            aspect.SourceGlobs("**/*.txt"),
-        ],
+        sources = aspect.SourceGlobs("**/*.txt"),
     )
 
 def declare_targets(ctx):

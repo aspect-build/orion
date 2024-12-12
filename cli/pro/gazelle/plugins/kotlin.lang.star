@@ -24,9 +24,7 @@ aspect.register_rule_kind(KT_JVM_BINARY, {
 def prepare(_):
     return aspect.PrepareResult(
         # All source files to be processed
-        sources = [
-            aspect.SourceExtensions(".kt", ".kts"),
-        ],
+        sources = aspect.SourceExtensions(".kt", ".kts"),
         queries = {
             "imports": aspect.AstQuery(
                 grammar = "kotlin",

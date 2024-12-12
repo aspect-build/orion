@@ -7,7 +7,8 @@ aspect.register_rule_kind("x_lib", {
 def prepare(_):
     return aspect.PrepareResult(
         sources = [
-            aspect.SourceExtensions(".js", ".json"),
+            aspect.SourceExtensions(".js"),
+            aspect.SourceExtensions(".json"),
         ],
         queries = {
             "imports": aspect.AstQuery(
