@@ -338,14 +338,15 @@ func newLabel(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwar
 }
 
 func newProperty(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
-	var propType, propDefault starlark.String
+	var propType starlark.String
+	var propDefault starlark.Value = starlark.None
 
 	err := starlark.UnpackArgs(
 		"Property",
 		args,
 		kwargs,
 		"type", &propType,
-		"default", &propDefault,
+		"default?", &propDefault,
 	)
 	if err != nil {
 		return nil, err
@@ -353,7 +354,7 @@ func newProperty(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, k
 
 	return plugin.Property{
 		PropertyType: propType.GoString(),
-		Default:      propDefault.GoString(),
+		Default:      starUtils.Read(propDefault),
 	}, nil
 }
 

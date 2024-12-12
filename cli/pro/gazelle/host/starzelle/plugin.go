@@ -176,7 +176,9 @@ func readProperty(k string, v starlark.Value) plugin.Property {
 	p, isProp := v.(plugin.Property)
 
 	if !isProp {
-		BazelLog.Fatalf("Property %v is not a Property", k)
+		msg := fmt.Sprintf("Property %s value %v is not a Property", k, v)
+		fmt.Println(msg)
+		BazelLog.Fatalf(msg)
 	}
 
 	if p.Name != "" && p.Name != k {
