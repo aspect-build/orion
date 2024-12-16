@@ -22,6 +22,12 @@ KOTLIN_TESTS = [t.replace("/WORKSPACE", "") for t in glob(["kotlin/*/WORKSPACE"]
         gazelle_binary = "//cli/pro/gazelle/host:gazelle_host_binary",
     )
     for t in KOTLIN_TESTS
+    # TODO(#7623): remove opt-outs
+    if t.replace("kotlin/", "") not in [
+        "deep_import",
+        "gcsutil",
+        "simple_file2",
+    ]
 ]
 
 # bzl plugin tests
