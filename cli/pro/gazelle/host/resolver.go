@@ -2,7 +2,6 @@ package gazelle
 
 import (
 	"fmt"
-	"os"
 	"strings"
 	"time"
 
@@ -83,8 +82,9 @@ func (re *GazelleHost) Resolve(c *config.Config, ix *resolve.RuleIndex, rc *repo
 	for attr, imports := range attrImports {
 		importLabels, err := re.resolveImports(c, ix, pluginId, imports, from)
 		if err != nil {
-			BazelLog.Fatalf("Resolution Error: %v", err)
-			os.Exit(1)
+			msg := fmt.Sprintf("Resolution Error: %v", err)
+			fmt.Println(msg)
+			BazelLog.Fatalf(msg)
 		}
 
 		if !importLabels.Empty() {
@@ -192,8 +192,8 @@ func (host *GazelleHost) resolveImport(
 		// TODO: resolution conflicts must be solved by plugins
 		if len(filteredMatches) > 1 {
 			return Resolution_Error, nil, fmt.Errorf(
-				"Import %q from %q resolved to multiple targets (%s) - this must be fixed using the \"aspect:resolve\" directive",
-				impt.Id, impt.From, targetListFromResults(matches))
+				"Import %q from %q (%s) resolved to multiple targets (%s) - this must be fixed using the \"aspect:resolve\" directive",
+				impt.Id, impt.From, pluginId, targetListFromResults(matches))
 		}
 
 		// The matches were self imports, no dependency is needed
