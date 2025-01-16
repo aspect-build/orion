@@ -56,10 +56,12 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.36.3
 	github.com/bazelbuild/rules_python/gazelle v0.0.0-20240701102336-084b877c98b5
 	github.com/charmbracelet/huh v0.5.2
+	github.com/creack/pty v1.1.24
 	github.com/hay-kot/scaffold v0.3.0
 	github.com/klauspost/compress v1.17.9
 	github.com/reviewdog/reviewdog v0.17.4
 	github.com/sourcegraph/go-diff v0.7.0
+	golang.org/x/term v0.25.0
 	gotest.tools/v3 v3.5.1
 )
 
@@ -137,7 +139,6 @@ require (
 	go.opentelemetry.io/otel/trace v1.24.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
-	golang.org/x/term v0.25.0 // indirect
 	golang.org/x/text v0.19.0 // indirect
 	golang.org/x/tools/go/vcs v0.1.0-deprecated // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
