@@ -3,10 +3,6 @@ filegroup(
     srcs = glob(["**/*.foo"]),
 )
 
-sh_test(
-    name = "shells-test",
-)
-
 filegroup(
     name = "other2",
     srcs = glob(["**/*.foo"]),

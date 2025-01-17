@@ -5,20 +5,7 @@ copy_to_bin(
     srcs = ["a.txt"],
 )
 
-sh_library(
-    name = "shells",
-    srcs = ["x.sh"],
-)
-
-sh_binary(
-    name = "shells-bin",
-    srcs = ["x.sh"],
-)
-
 filegroup(
     name = "all-files",
-    srcs = [
-        "a.txt",
-        "x.sh",
-    ],
+    srcs = ["a.txt"],
 )

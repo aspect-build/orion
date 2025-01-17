@@ -2,7 +2,7 @@ load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 
 filegroup(
     name = "x",
-    srcs = ["x.sh"],
+    srcs = ["x.txt"],
 )
 
 copy_to_bin(
@@ -11,19 +11,6 @@ copy_to_bin(
         "a.txt",
         ":x",
     ],
-)
-
-sh_library(
-    name = "shells",
-    srcs = [
-        ":ctb",
-    ],
-)
-
-sh_binary(
-    name = "shells-bin",
-    srcs = [":shells"],
-    deps = [":shells"],
 )
 
 filegroup(

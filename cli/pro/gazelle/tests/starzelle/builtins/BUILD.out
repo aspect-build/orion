@@ -3,6 +3,5 @@ filegroup(
     srcs = [
         "copy-txt.lang.star",
         "filegroup.lang.star",
-        "sh.lang.star",
     ],
 )

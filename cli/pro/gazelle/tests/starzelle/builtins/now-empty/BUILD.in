@@ -4,21 +4,9 @@ copy_to_bin(
     name = "ctb",
 )
 
-sh_library(
-    name = "shells",
-)
-
-sh_binary(
-    name = "shells-bin",
-)
-
 filegroup(
     name = "other1",
     srcs = glob(["**/*.foo"]),
-)
-
-sh_test(
-    name = "shells-test",
 )
 
 filegroup(
