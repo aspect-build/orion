@@ -13,16 +13,5 @@ filegroup(
     srcs = [
         "a.txt",
         "b.txt",
-        "x.sh",
     ],
-)
-
-sh_library(
-    name = "shells",
-    srcs = ["x.sh"],
-)
-
-sh_binary(
-    name = "shells-bin",
-    srcs = ["x.sh"],
 )

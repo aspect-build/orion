@@ -7,30 +7,6 @@ import (
 var builtinKinds = []plugin.RuleKind{
 	// Native
 	plugin.RuleKind{
-		Name: "sh_binary",
-		KindInfo: plugin.KindInfo{
-			NonEmptyAttrs:  []string{"srcs"},
-			MergeableAttrs: []string{"srcs"},
-			ResolveAttrs:   []string{"deps"},
-		},
-	},
-	plugin.RuleKind{
-		Name: "sh_library",
-		KindInfo: plugin.KindInfo{
-			NonEmptyAttrs:  []string{"srcs"},
-			MergeableAttrs: []string{"srcs"},
-			ResolveAttrs:   []string{"deps"},
-		},
-	},
-	plugin.RuleKind{
-		Name: "sh_test",
-		KindInfo: plugin.KindInfo{
-			NonEmptyAttrs:  []string{"srcs"},
-			MergeableAttrs: []string{"srcs"},
-			ResolveAttrs:   []string{"deps"},
-		},
-	},
-	plugin.RuleKind{
 		Name: "filegroup",
 		KindInfo: plugin.KindInfo{
 			NonEmptyAttrs:  []string{"srcs"},

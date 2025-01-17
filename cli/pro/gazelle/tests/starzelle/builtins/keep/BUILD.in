@@ -7,20 +7,6 @@ copy_to_bin(
     ],
 )
 
-sh_library(
-    name = "shells",
-    srcs = [
-        "kept.sh", # keep
-    ],
-)
-
-sh_binary(
-    name = "shells-bin",
-    srcs = [
-        "kept.sh", # keep
-    ],
-)
-
 filegroup(
     name = "all-files",
     srcs = [
