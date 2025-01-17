@@ -186,6 +186,28 @@ func newJsonQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, 
 	}, nil
 }
 
+func newYamlQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
+	var queryValue starlark.String
+	var filterValue starlark.Value
+
+	err := starlark.UnpackArgs(
+		"YamlQuery",
+		args,
+		kwargs,
+		"query?", &queryValue,
+		"filter??", &filterValue,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return plugin.QueryDefinition{
+		Filter:    readQueryFilters(filterValue),
+		QueryType: plugin.QueryTypeYaml,
+		Params:    queryValue.GoString(),
+	}, nil
+}
+
 func newSourceExtensions(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	return plugin.SourceExtensionsFilter{
 		Extensions: starUtils.ReadStringTuple(args),
@@ -371,6 +393,7 @@ var aspectModule = starUtils.CreateModule(
 		"RegexQuery":                   newRegexQuery,
 		"RawQuery":                     newRawQuery,
 		"JsonQuery":                    newJsonQuery,
+		"YamlQuery":                    newYamlQuery,
 		"PrepareResult":                newPrepareResult,
 		"Import":                       newImport,
 		"Symbol":                       newSymbol,

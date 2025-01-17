@@ -21,6 +21,7 @@ go_library(
         "@com_github_bmatcuk_doublestar_v4//:doublestar",
         "@com_github_emirpasic_gods//utils",
         "@com_github_itchyny_gojq//:gojq",
+        "@com_github_mikefarah_yq_v4//pkg/yqlib",
         "@net_starlark_go//starlark",
         "@org_golang_x_sync//errgroup",
     ],
