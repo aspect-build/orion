@@ -21,6 +21,7 @@ go_library(
         "//cli/core/gazelle/common/git",
         "//cli/core/pkg/logger",
         "//cli/pro/gazelle/host/plugin",
+        "//cli/pro/gazelle/host/queries",
         "//cli/pro/gazelle/host/starzelle",
         "@bazel_gazelle//config:go_default_library",
         "@bazel_gazelle//label:go_default_library",
