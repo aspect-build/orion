@@ -14,6 +14,7 @@ import (
 	"github.com/aspect-build/silo/cli/core/gazelle/common/cache"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
 	"github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
+	queryRunner "github.com/aspect-build/silo/cli/pro/gazelle/host/queries"
 	gazelleLabel "github.com/bazelbuild/bazel-gazelle/label"
 	gazelleLanguage "github.com/bazelbuild/bazel-gazelle/language"
 	gazelleRule "github.com/bazelbuild/bazel-gazelle/rule"
@@ -349,7 +350,7 @@ func (host *GazelleHost) runSourceQueries(queryCache cache.Cache, queries plugin
 		go func() {
 			defer wg.Done()
 
-			if err := plugin.RunQueries(queryType, f, sourceCode, queries, queryResultsChan); err != nil {
+			if err := queryRunner.RunQueries(queryType, f, sourceCode, queries, queryResultsChan); err != nil {
 				msg := fmt.Sprintf("Error running queries for %q: %v", f, err)
 				fmt.Printf("%s\n", msg)
 				BazelLog.Error(msg)
