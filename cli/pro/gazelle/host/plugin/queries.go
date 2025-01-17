@@ -1,6 +1,7 @@
 package plugin
 
 import (
+	"bytes"
 	"encoding/json"
 	"log"
 	"regexp"
@@ -9,6 +10,7 @@ import (
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
 	"github.com/bmatcuk/doublestar/v4"
 	"github.com/itchyny/gojq"
+	"github.com/mikefarah/yq/v4/pkg/yqlib"
 	"golang.org/x/sync/errgroup"
 
 	common "github.com/aspect-build/silo/cli/core/gazelle/common"
@@ -30,6 +32,7 @@ const (
 	QueryTypeAst   QueryType = "ast"
 	QueryTypeRegex           = "regex"
 	QueryTypeJson            = "json"
+	QueryTypeYaml            = "yaml"
 	QueryTypeRaw             = "raw"
 )
 
@@ -87,6 +90,8 @@ type RegexQueryParams = string
 
 type JsonQueryParams = string
 
+type YamlQueryParams = string
+
 func RunQueries(queryType QueryType, fileName string, sourceCode []byte, queries NamedQueries, queryResults chan *QueryProcessorResult) error {
 	switch queryType {
 	case QueryTypeAst:
@@ -95,6 +100,8 @@ func RunQueries(queryType QueryType, fileName string, sourceCode []byte, queries
 		return runRegexQueries(fileName, sourceCode, queries, queryResults)
 	case QueryTypeJson:
 		return runJsonQueries(fileName, sourceCode, queries, queryResults)
+	case QueryTypeYaml:
+		return runYamlQueries(fileName, sourceCode, queries, queryResults)
 	case QueryTypeRaw:
 		return runRawQueries(fileName, sourceCode, queries, queryResults)
 	default:
@@ -255,4 +262,75 @@ func runJsonQuery(doc interface{}, query string) (interface{}, error) {
 	}
 
 	return matches, nil
+}
+
+func runYamlQueries(fileName string, sourceCode []byte, queries NamedQueries, queryResults chan *QueryProcessorResult) error {
+	decoder := yqlib.NewYamlDecoder(yqlib.ConfiguredYamlPreferences)
+	err := decoder.Init(bytes.NewReader(sourceCode))
+	if err != nil {
+		return err
+	}
+	node, err := decoder.Decode()
+	if err != nil {
+		return err
+	}
+
+	// TODO(jbedard): parallelize
+	for key, q := range queries {
+		r, err := runYamlQuery(node, q.Params.(JsonQueryParams))
+		if err != nil {
+			return err
+		}
+
+		queryResults <- &QueryProcessorResult{
+			Key:    key,
+			Result: r,
+		}
+	}
+
+	return nil
+}
+
+func runYamlQuery(node *yqlib.CandidateNode, query string) (interface{}, error) {
+	var evaluator = yqlib.NewAllAtOnceEvaluator()
+	results, err := evaluator.EvaluateNodes(query, node)
+	if err != nil {
+		return nil, err
+	}
+
+	matches := make([]interface{}, 0, results.Len())
+	for e := results.Front(); e != nil; e = e.Next() {
+		value := convertYqNodeToValue(e.Value.(*yqlib.CandidateNode))
+		matches = append(matches, value)
+	}
+
+	return matches, nil
+}
+
+func convertYqNodeToValue(node *yqlib.CandidateNode) interface{} {
+	switch node.Kind {
+	case yqlib.MappingNode:
+		m := make(map[string]interface{})
+		for i := 0; i < len(node.Content); i += 2 {
+			key := convertYqNodeToValue(node.Content[i])
+			value := convertYqNodeToValue(node.Content[i+1])
+			m[key.(string)] = value
+		}
+		return m
+	case yqlib.SequenceNode:
+		s := make([]interface{}, 0, len(node.Content))
+		for _, n := range node.Content {
+			s = append(s, convertYqNodeToValue(n))
+		}
+		return s
+	case yqlib.ScalarNode:
+		val, err := node.GetValueRep()
+		if err != nil {
+			return node.Value
+		}
+		return val
+	default:
+		BazelLog.Fatalf("Unknown yq node kind: %v", node.Kind)
+		return nil
+	}
 }
