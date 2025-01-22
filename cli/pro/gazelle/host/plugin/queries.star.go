@@ -203,7 +203,11 @@ func (qr QueryResults) Get(k starlark.Value) (v starlark.Value, found bool, err 
 	r, found := qr[key]
 
 	if !found {
-		return nil, false, fmt.Errorf("no query result named %q, queries %v", key, maps.Keys(qr))
+		keys := []string{}
+		for k := range qr {
+			keys = append(keys, k)
+		}
+		return nil, false, fmt.Errorf("no query result named %q, queries: %v", key, keys)
 	}
 
 	// Pure primitive query results
