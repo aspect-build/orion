@@ -11,7 +11,7 @@ def prepare(ctx):
         queries = {
             "imports": aspect.JsonQuery(
                 filter = DEFAULT_JAVA_MAVEN_INSTALL_FILE,
-                query = """.dependency_tree.dependencies[] | select(.packages) | {packages,coord}""",
+                query = """select(.dependency_tree) | .dependency_tree.dependencies?[] | select(.packages) | {packages,coord}""",
             ),
         },
     )
