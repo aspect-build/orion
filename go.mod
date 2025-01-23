@@ -43,7 +43,7 @@ require (
 	github.com/twmb/murmur3 v1.1.8
 	github.com/yargevad/filepathx v1.0.0
 	go.starlark.net v0.0.0-20240725214946-42030a7cedce
-	golang.org/x/exp v0.0.0-20241009180824-f66d83c29e7c
+	golang.org/x/exp v0.0.0-20250106191152-7588d65b2ba8
 	golang.org/x/sync v0.10.0
 	google.golang.org/genproto v0.0.0-20240528184218-531527333157
 	google.golang.org/grpc v1.64.1
@@ -62,7 +62,7 @@ require (
 	github.com/mikefarah/yq/v4 v4.45.1
 	github.com/reviewdog/reviewdog v0.17.4
 	github.com/sourcegraph/go-diff v0.7.0
-	golang.org/x/term v0.27.0
+	golang.org/x/term v0.28.0
 	gopkg.in/op/go-logging.v1 v1.0.0-20160211212156-b2cb9fa56473
 	gotest.tools/v3 v3.5.1
 )
@@ -199,12 +199,12 @@ require (
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/xanzy/go-gitlab v0.105.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	golang.org/x/crypto v0.31.0 // indirect
-	golang.org/x/mod v0.21.0 // indirect
-	golang.org/x/net v0.33.0 // indirect
-	golang.org/x/oauth2 v0.21.0 // indirect
-	golang.org/x/sys v0.28.0 // indirect
-	golang.org/x/time v0.5.0 // indirect
+	golang.org/x/crypto v0.32.0 // indirect
+	golang.org/x/mod v0.22.0 // indirect
+	golang.org/x/net v0.34.0 // indirect
+	golang.org/x/oauth2 v0.25.0 // indirect
+	golang.org/x/sys v0.29.0 // indirect
+	golang.org/x/time v0.9.0 // indirect
 	google.golang.org/api v0.183.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20240604185151-ef581f913117 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240528184218-531527333157 // indirect
