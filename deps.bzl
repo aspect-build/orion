@@ -178,9 +178,9 @@ def go_dependencies():
             "//cli/core:patches/bazelbuild_bazel-gazelle_aspect-gitignore.patch",  # keep
             "//cli/core:patches/bazelbuild_bazel-gazelle_aspect-fs-direntry.patch",  # keep
         ],
-        sum = "h1:SAYys3KRG5i3KTgQAvO423bLT1rQMSgqEKReMkM/CW0=",
+        sum = "h1:blh57YCxe3QNFbzRtEuLxaak+f5KYSQynznGnUNDRc4=",
         # Ensure this version always matches the version of @bazel_gazelle set in fetch.bzl.
-        version = "v0.40.0",
+        version = "v0.41.0",
     )
     go_repository(
         name = "com_github_bazelbuild_bazelisk",
