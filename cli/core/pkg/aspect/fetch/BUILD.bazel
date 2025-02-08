@@ -6,6 +6,7 @@ go_library(
     importpath = "github.com/aspect-build/silo/cli/core/pkg/aspect/fetch",
     visibility = ["//visibility:public"],
     deps = [
+        "//cli/core/pkg/aspect/root/flags",
         "//cli/core/pkg/bazel",
         "//cli/core/pkg/ioutils",
         "@com_github_spf13_cobra//:cobra",
