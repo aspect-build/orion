@@ -1,17 +1,12 @@
 load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@deps-test//my:rules.bzl", "x_lib")
-
-# aspect:js_files viteconfig vitest.config.mjs
+load("//bazel:defs.bzl", "vitest_test")
 
 ts_project(
-    name = "crossresolve-js",
-    srcs = ["main.ts"],
-    deps = [
-        ":a",
-        ":b",
-        "//sub:a",
-    ],
+    name = "tests-but-no-config_tests",
+    testonly = True,
+    srcs = ["sub.spec.ts"],
 )
 
 x_lib(name = "a")
@@ -19,4 +14,9 @@ x_lib(name = "a")
 js_library(
     name = "b",
     srcs = ["file-served-by-js_library.js"],
+)
+
+vitest_test(
+    name = "vitest",
+    data = [":tests-but-no-config_tests"],
 )
