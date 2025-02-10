@@ -238,8 +238,9 @@ func (ts *GazelleHost) CrossResolve(c *config.Config, ix *resolve.RuleIndex, imp
 		return nil
 	}
 
-	// Search for results within this gazelle plugin
-	return ix.FindRulesByImportWithConfig(c, imp, GazelleLanguageName)
+	// Search for results within this gazelle language, without further invoking CrossResolve
+	// via FindRulesByImportWithConfig.
+	return ix.FindRulesByImport(imp, GazelleLanguageName)
 }
 
 // targetListFromResults returns a string with the human-readable list of
