@@ -56,6 +56,20 @@ def go_dependencies():
         version = "v0.4.0",
     )
     go_repository(
+        name = "com_github_alecthomas_template",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/alecthomas/template",
+        sum = "h1:JYp7IbQjafoB+tBA3gMyHYHrpOtNuDiK/uB5uXxq5wM=",
+        version = "v0.0.0-20190718012654-fb15b899a751",
+    )
+    go_repository(
+        name = "com_github_alecthomas_units",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/alecthomas/units",
+        sum = "h1:UQZhZ2O0vMHr2cI+DC1Mbh0TJxzA3RcLoMsFw+aXw7E=",
+        version = "v0.0.0-20190924025748-f65c72e2690d",
+    )
+    go_repository(
         name = "com_github_alphadose_haxmap",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/alphadose/haxmap",
@@ -258,6 +272,13 @@ def go_dependencies():
         version = "v0.4.0",
     )
     go_repository(
+        name = "com_github_buildkite_go_buildkite_v4",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/buildkite/go-buildkite/v4",
+        sum = "h1:n1f3EAe8/64ju9QjSWJYMjD8++mn1pOLK/tZscD5DKo=",
+        version = "v4.1.0",
+    )
+    go_repository(
         name = "com_github_buildkite_terminal",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/buildkite/terminal",
@@ -291,6 +312,13 @@ def go_dependencies():
         importpath = "github.com/catppuccin/go",
         sum = "h1:ktBeIrIP42b/8FGiScP9sgrWOss3lw0Z5SktRoithGA=",
         version = "v0.2.0",
+    )
+    go_repository(
+        name = "com_github_cenkalti_backoff",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/cenkalti/backoff",
+        sum = "h1:yxlp0s+Sge9UsKEK0Bsvjiopb9XRk+vxylmZ9eGBfm8=",
+        version = "v1.1.1-0.20171020064038-309aa717adbf",
     )
     go_repository(
         name = "com_github_census_instrumentation_opencensus_proto",
@@ -2730,6 +2758,13 @@ def go_dependencies():
         importpath = "dmitri.shuralyov.com/gpu/mtl",
         sum = "h1:VpgP7xuJadIUuKccphEpTJnWhS2jkQyMt6Y7pJCD7fY=",
         version = "v0.0.0-20190408044501-666a987793e9",
+    )
+    go_repository(
+        name = "in_gopkg_alecthomas_kingpin_v2",
+        build_file_proto_mode = "disable_global",
+        importpath = "gopkg.in/alecthomas/kingpin.v2",
+        sum = "h1:jMFz6MfLP0/4fUyZle81rXUoxOBFi19VUFKVDOQfozc=",
+        version = "v2.2.6",
     )
     go_repository(
         name = "in_gopkg_check_v1",
