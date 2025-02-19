@@ -25,7 +25,6 @@ go_library(
         "//cli/core/pkg/aspect/configure/internal/wspace",
         "//cli/core/pkg/aspecterrors",
         "//cli/core/pkg/bazel",
-        "//cli/core/pkg/hints",
         "//cli/core/pkg/ioutils",
         "//cli/core/pkg/logger",
         "@bazel_gazelle//config:go_default_library",
