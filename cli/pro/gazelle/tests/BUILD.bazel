@@ -27,6 +27,10 @@ KOTLIN_TESTS = [t.replace("/WORKSPACE", "") for t in glob(["kotlin/*/WORKSPACE"]
         "deep_import",
         "gcsutil",
         "simple_file2",
+
+        # TODO: starzelle bzlmod support
+        "simple_module",
+        "simple_module_repo_name",
     ]
 ]
 
