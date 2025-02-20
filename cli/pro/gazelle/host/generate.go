@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"sort"
 	"strings"
 	"sync"
 
@@ -310,9 +311,20 @@ func computeQueriesCacheKey(sourceCode []byte, queries plugin.NamedQueries) (str
 	cacheDigest := crypto.MD5.New()
 	cacheDigest.Write(sourceCode)
 
+	keys := make([]string, 0, len(queries))
+	for key := range queries {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+
 	e := gob.NewEncoder(cacheDigest)
-	if err := e.Encode(queries); err != nil {
-		return "", false
+	for _, key := range keys {
+		if err := e.Encode(key); err != nil {
+			return "", false
+		}
+		if err := e.Encode(queries[key]); err != nil {
+			return "", false
+		}
 	}
 
 	return hex.EncodeToString(cacheDigest.Sum(nil)), true
