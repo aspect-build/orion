@@ -11,6 +11,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/aspect-build/silo/cli/core/buildinfo"
 	common "github.com/aspect-build/silo/cli/core/gazelle/common"
 	"github.com/aspect-build/silo/cli/core/gazelle/common/cache"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
@@ -310,6 +311,13 @@ func init() {
 func computeQueriesCacheKey(sourceCode []byte, queries plugin.NamedQueries) (string, bool) {
 	cacheDigest := crypto.MD5.New()
 	cacheDigest.Write(sourceCode)
+
+	if buildinfo.IsStamped() {
+		if _, err := cacheDigest.Write([]byte(buildinfo.GitCommit)); err != nil {
+			BazelLog.Errorf("Failed to write GitCommit to cache digest: %v", err)
+			return "", false
+		}
+	}
 
 	keys := make([]string, 0, len(queries))
 	for key := range queries {
