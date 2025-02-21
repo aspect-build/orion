@@ -12,7 +12,6 @@ import (
 	"reflect"
 
 	starUtils "github.com/aspect-build/silo/cli/core/gazelle/common/starlark/utils"
-	"github.com/aspect-build/silo/cli/core/gazelle/common/treesitter"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
 	"github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
 	"github.com/bmatcuk/doublestar/v4"
@@ -111,14 +110,12 @@ func newAstQuery(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, k
 		return nil, err
 	}
 
-	grammar := treesitter.LanguageGrammar(grammarValue.GoString())
-
 	return plugin.QueryDefinition{
 		Filter:    readQueryFilters(filterValue),
 		QueryType: plugin.QueryTypeAst,
 		Params: plugin.AstQueryParams{
-			Grammar: grammar,
-			Query:   treesitter.GetQuery(grammar, query.GoString()),
+			Grammar: grammarValue.GoString(),
+			Query:   query.GoString(),
 		},
 	}, nil
 }

@@ -11,7 +11,6 @@ go_library(
     deps = [
         "//cli/core/gazelle/common/starlark",
         "//cli/core/gazelle/common/starlark/utils",
-        "//cli/core/gazelle/common/treesitter",
         "//cli/core/pkg/logger",
         "//cli/pro/gazelle/host/plugin",
         "@com_github_bmatcuk_doublestar_v4//:doublestar",

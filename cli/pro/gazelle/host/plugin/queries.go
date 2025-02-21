@@ -2,8 +2,6 @@ package plugin
 
 import (
 	"github.com/bmatcuk/doublestar/v4"
-
-	"github.com/aspect-build/silo/cli/core/gazelle/common/treesitter"
 )
 
 // A set of queries keyed by name.
@@ -71,8 +69,8 @@ func NewQueryMatches(matches []QueryMatch) QueryMatches {
 }
 
 type AstQueryParams struct {
-	Grammar treesitter.LanguageGrammar
-	Query   treesitter.TreeQuery
+	Grammar string
+	Query   string
 }
 
 type RegexQueryParams = string
