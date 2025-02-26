@@ -226,6 +226,8 @@ def go_dependencies():
         build_file_generation = "on",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bazelbuild/rules_python/gazelle",
+        patch_args = ["-p2"],  # keep
+        patches = ["//cli/core/patches:rules_python-fcf7221c1e079307ff13d32239b7782d2f1dc48c.patch"],
         sum = "h1:OpDDYqUhemfIN9aBoTbJznXzI5pJijMiiNqaUcUKyu0=",
         version = "v0.0.0-20240701102336-084b877c98b5",
     )
