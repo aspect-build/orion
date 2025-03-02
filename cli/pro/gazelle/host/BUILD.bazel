@@ -20,6 +20,7 @@ go_library(
         "//cli/core/gazelle/common",
         "//cli/core/gazelle/common/cache",
         "//cli/core/gazelle/common/git",
+        "//cli/core/pkg/bazel/workspace",
         "//cli/core/pkg/logger",
         "//cli/pro/gazelle/host/plugin",
         "//cli/pro/gazelle/host/queries",

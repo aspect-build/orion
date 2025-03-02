@@ -13,6 +13,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/aspect-build/silo/cli/core/pkg/bazel/workspace"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
 	plugin "github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
 	starzelle "github.com/aspect-build/silo/cli/pro/gazelle/host/starzelle"
@@ -46,12 +47,7 @@ type GazelleHost struct {
 var _ gazelleLanguage.Language = (*GazelleHost)(nil)
 var _ plugin.PluginHost = (*GazelleHost)(nil)
 
-// This is the entrypoint for the gazelle extension initialization.
-func NewLanguage() gazelleLanguage.Language {
-	return NewHost()
-}
-
-func NewHost() *GazelleHost {
+func NewLanguage(plugins ...string) gazelleLanguage.Language {
 	l := &GazelleHost{
 		plugins:         make(map[string]plugin.Plugin),
 		kinds:           make(map[string]plugin.RuleKind),
@@ -64,9 +60,30 @@ func NewHost() *GazelleHost {
 		l.kinds[k.Name] = k
 	}
 
+	l.loadStarzellePlugins(plugins)
 	l.loadEnvStarzellePlugins()
 
 	return l
+}
+
+func (h *GazelleHost) loadStarzellePlugins(configurePlugins []string) *GazelleHost {
+	wd, cwdErr := os.Getwd()
+	if cwdErr != nil {
+		BazelLog.Fatalf("Failed to find CWD: %v", cwdErr)
+		return nil
+	}
+
+	// Load starzelle plugins configured in the aspect-cli config.yaml
+	wr, wrErr := workspace.DefaultFinder.Find(wd)
+	if wrErr != nil {
+		BazelLog.Fatalf("Failed to find bazel workspace: %v", wrErr)
+		return nil
+	}
+	for _, plugin := range configurePlugins {
+		h.LoadPlugin(wr, plugin)
+	}
+
+	return h
 }
 
 func (h *GazelleHost) loadEnvStarzellePlugins() {
