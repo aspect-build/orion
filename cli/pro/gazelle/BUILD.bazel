@@ -1,0 +1,23 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "configure_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/aspect-build/silo/cli/pro/gazelle",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//cli/core/buildinfo",
+        "//cli/core/pkg/aspect/configure",
+        "//cli/core/pkg/aspecterrors",
+        "//cli/core/pkg/ioutils",
+        "//cli/pro/gazelle/host",
+        "@bazel_gazelle//language:go_default_library",
+        "@in_gopkg_yaml_v3//:yaml_v3",
+    ],
+)
+
+go_binary(
+    name = "bin",
+    embed = [":configure_lib"],
+    visibility = ["//visibility:public"],
+)
