@@ -5,8 +5,10 @@ import (
 	"encoding/gob"
 	"encoding/hex"
 	"fmt"
+	"maps"
 	"os"
 	"path"
+	"slices"
 	"sort"
 	"strings"
 	"sync"
@@ -53,9 +55,11 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 	//   4. persist source file imports + symbols
 
 	// Stage 1:
-	// Collect source files grouped by plugins consuming them.
-	// Recurse if subdirectories will not generate their own BUILD files
-	sourceFilesByPlugin, sourceFilePlugins := host.collectSourceFilesByPlugin(cfg, args)
+	// Collect source files indexed for multiple purposes such as:
+	//  - iterating over all source files per plugin
+	//  - iterating over plugins per source file
+	//  - iterating over source files by plugin file group
+	pluginSourceFiles, sourceFilePlugins, pluginSourceGroupFiles := host.collectSourceFilesByPlugin(cfg, args)
 
 	// Run queries on source files and collect results
 	eg := errgroup.Group{}
@@ -102,15 +106,15 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 		BazelLog.Errorf("Collect plugin sources error: %v", err)
 	}
 
-	// Group the TargetSource's for each plugin.
-	pluginTargetSources := make(map[plugin.PluginId][]plugin.TargetSource)
+	// Build the TargetSource for each file for each plugin.
+	pluginTargetSources := make(map[plugin.PluginId]map[string]plugin.TargetSource)
 	for pluginId, _ := range cfg.pluginPrepareResults {
-		pluginSrcs := sourceFilesByPlugin[pluginId]
+		pluginSrcs := pluginSourceFiles[pluginId]
 
 		queryPrefix := fmt.Sprintf("%s|", pluginId)
 
 		// Collect the query results for this plugin's source files
-		targetSources := make([]plugin.TargetSource, 0, len(pluginSrcs))
+		targetSources := make(map[string]plugin.TargetSource)
 		for _, f := range pluginSrcs {
 			queryResults := make(plugin.QueryResults)
 			for queryId, results := range sourceFileQueryResults[f] {
@@ -119,10 +123,10 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 				}
 			}
 
-			targetSources = append(targetSources, plugin.TargetSource{
+			targetSources[f] = plugin.TargetSource{
 				Path:         f,
 				QueryResults: queryResults,
-			})
+			}
 		}
 
 		pluginTargetSources[pluginId] = targetSources
@@ -149,8 +153,26 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 	pluginTargetsLock := sync.Mutex{}
 	for pluginId, prep := range cfg.pluginPrepareResults {
 		eg.Go(func() error {
+			// Group the TargetSource's into the source groups for the plugin.
+			pluginTargetGroups := plugin.TargetSources{}
+
+			for groupId, _ := range prep.Sources {
+				files := pluginSourceGroupFiles[pluginId][groupId]
+
+				// Add the TargetSource for each file in the group, even if empty.
+				pluginTargetGroups[groupId] = make([]plugin.TargetSource, 0, len(files))
+				for _, f := range files {
+					pluginTargetGroups[groupId] = append(pluginTargetGroups[groupId], pluginTargetSources[pluginId][f])
+				}
+			}
+
+			// If no default group exists create one with all sources.
+			if _, hasDefaultGroup := pluginTargetGroups[plugin.DeclareTargetsContextDefaultGroup]; !hasDefaultGroup {
+				pluginTargetGroups[plugin.DeclareTargetsContextDefaultGroup] = slices.Collect(maps.Values(pluginTargetSources[pluginId]))
+			}
+
 			// Use the collected sources and analysis to generate rules
-			actions := host.generateTargets(pluginId, prep, pluginTargetSources[pluginId])
+			actions := host.generateTargets(pluginId, prep, pluginTargetGroups)
 
 			// Lock for the assignment into the cross-thread pluginTargets
 			pluginTargetsLock.Lock()
@@ -397,33 +419,47 @@ func (host *GazelleHost) runSourceQueries(queryCache cache.Cache, queries plugin
 }
 
 // Collect source files managed by this BUILD and batch them by plugins interested in them.
-func (host *GazelleHost) collectSourceFilesByPlugin(cfg *BUILDConfig, args gazelleLanguage.GenerateArgs) (map[plugin.PluginId][]string, map[string][]plugin.PluginId) {
-	sourceFilesByPlugin := make(map[plugin.PluginId][]string)
+func (host *GazelleHost) collectSourceFilesByPlugin(cfg *BUILDConfig, args gazelleLanguage.GenerateArgs) (map[plugin.PluginId][]string, map[string][]plugin.PluginId, map[plugin.PluginId]map[string][]string) {
+	pluginSourceFiles := make(map[plugin.PluginId][]string)
 	sourceFilePlugins := make(map[string][]plugin.PluginId)
+	pluginSourceGroupFiles := make(map[plugin.PluginId]map[string][]string)
 
 	// Collect source files managed by this BUILD for each plugin.
 	common.GazelleWalkDir(args, func(f string) error {
 		for pluginId, p := range cfg.pluginPrepareResults {
-			for _, s := range p.Sources {
-				if s.Match(f) {
-					if sourceFilesByPlugin[pluginId] == nil {
-						sourceFilesByPlugin[pluginId] = make([]string, 0, 1)
+			foundGroup := false
+
+			// Collect the groups this file belongs to for this plugin.
+			for groupId, groupSrcFilters := range p.Sources {
+				for _, srcFilter := range groupSrcFilters {
+					if srcFilter.Match(f) {
+						foundGroup = true
+
+						if pluginSourceGroupFiles[pluginId] == nil {
+							pluginSourceGroupFiles[pluginId] = make(map[string][]string)
+						}
+
+						pluginSourceGroupFiles[pluginId][groupId] = append(pluginSourceGroupFiles[pluginId][groupId], f)
+						break
 					}
-					sourceFilesByPlugin[pluginId] = append(sourceFilesByPlugin[pluginId], f)
-					sourceFilePlugins[f] = append(sourceFilePlugins[f], pluginId)
-					break
 				}
+			}
+
+			// If the file matched any groups, add it to the file+plugin maps.
+			if foundGroup {
+				pluginSourceFiles[pluginId] = append(pluginSourceFiles[pluginId], f)
+				sourceFilePlugins[f] = append(sourceFilePlugins[f], pluginId)
 			}
 		}
 
 		return nil
 	})
 
-	return sourceFilesByPlugin, sourceFilePlugins
+	return pluginSourceFiles, sourceFilePlugins, pluginSourceGroupFiles
 }
 
 // Let plugins analyze sources and declare their outputs
-func (host *GazelleHost) analyzePluginTargetSources(pluginId plugin.PluginId, prep pluginConfig, sources []plugin.TargetSource) {
+func (host *GazelleHost) analyzePluginTargetSources(pluginId plugin.PluginId, prep pluginConfig, sources map[string]plugin.TargetSource) {
 	eg := errgroup.Group{}
 	eg.SetLimit(100)
 
@@ -446,10 +482,10 @@ func (host *GazelleHost) analyzePluginTargetSources(pluginId plugin.PluginId, pr
 }
 
 // Let plugins declare any targets they want to generate for the target sources.
-func (host *GazelleHost) generateTargets(pluginId plugin.PluginId, prep pluginConfig, targetSources []plugin.TargetSource) []plugin.TargetAction {
+func (host *GazelleHost) generateTargets(pluginId plugin.PluginId, prep pluginConfig, sources plugin.TargetSources) []plugin.TargetAction {
 	ctx := plugin.NewDeclareTargetsContext(
 		prep.PrepareContext,
-		targetSources,
+		sources,
 		plugin.NewDeclareTargetActions(),
 		host.database,
 	)

@@ -7,6 +7,8 @@ package plugin
 
 import (
 	"fmt"
+	"maps"
+	"slices"
 
 	starUtils "github.com/aspect-build/silo/cli/core/gazelle/common/starlark/utils"
 	"go.starlark.net/starlark"
@@ -72,18 +74,15 @@ func (ctx PrepareContext) AttrNames() []string {
 
 // ---------------- DeclareTargetsContext
 
+const DeclareTargetsContextDefaultGroup = "default"
+
 var _ starlark.Value = (*DeclareTargetsContext)(nil)
 var _ starlark.HasAttrs = (*DeclareTargetsContext)(nil)
 
 func (ctx DeclareTargetsContext) Attr(name string) (starlark.Value, error) {
 	switch name {
 	case "sources":
-		// TODO: don't copy every time
-		srcs := make([]starlark.Value, 0, len(ctx.Sources))
-		for _, v := range ctx.Sources {
-			srcs = append(srcs, v)
-		}
-		return starlark.NewList(srcs), nil
+		return &declareTargetsContextSources{ctx.Sources}, nil
 	case "targets":
 		return ctx.Targets.(*declareTargetActionsImpl), nil
 	case "add_symbol":
@@ -99,6 +98,94 @@ func (ctx DeclareTargetsContext) AttrNames() []string {
 	return []string{"repo_name", "rel", "properties", "sources", "targets"}
 }
 func (ctx DeclareTargetsContext) Type() string { return "DeclareTargetsContext" }
+
+// ---------------- emptyFalsySequence
+
+type emptyFalsySequence struct{}
+
+var _ starlark.Sequence = (*emptyFalsySequence)(nil)
+
+func (e *emptyFalsySequence) String() string {
+	return fmt.Sprintf("EmptySequence{}")
+}
+func (e *emptyFalsySequence) Type() string         { return "emptyFalsySequence" }
+func (e *emptyFalsySequence) Freeze()              {}
+func (e *emptyFalsySequence) Truth() starlark.Bool { return starlark.False }
+func (e *emptyFalsySequence) Hash() (uint32, error) {
+	return 0, fmt.Errorf("unhashable: %s", e.Type())
+}
+func (e *emptyFalsySequence) Len() int {
+	return 0
+}
+func (e *emptyFalsySequence) Index(i int) starlark.Value {
+	return nil
+}
+func (e *emptyFalsySequence) Iterate() starlark.Iterator {
+	return nil
+}
+
+// ---------------- declareTargetsContextSources
+
+func castTargetSourceToValue(x TargetSource) starlark.Value {
+	return x
+}
+
+type declareTargetsContextSources struct {
+	srcs TargetSources
+}
+
+var _ starlark.Value = (*declareTargetsContextSources)(nil)
+
+func (c *declareTargetsContextSources) String() string {
+	return fmt.Sprintf("DeclareTargetsContext.Sources{%v}", c.srcs)
+}
+func (c *declareTargetsContextSources) Type() string { return "DeclareTargetsContext.Sources" }
+func (c *declareTargetsContextSources) Freeze()      {}
+func (c *declareTargetsContextSources) Truth() starlark.Bool {
+	// Treat empty sources as falsy
+	for _, groupSrcs := range c.srcs {
+		if len(groupSrcs) > 0 {
+			return starlark.True
+		}
+	}
+	return starlark.False
+}
+func (c *declareTargetsContextSources) Hash() (uint32, error) {
+	return 0, fmt.Errorf("unhashable: %s", c.Type())
+}
+
+// Can fetch sources by group name
+var _ starlark.HasAttrs = (*declareTargetsContextSources)(nil)
+
+func (c *declareTargetsContextSources) Attr(name string) (starlark.Value, error) {
+	if groupSrcs, ok := c.srcs[name]; ok {
+		if len(groupSrcs) == 0 {
+			return &emptyFalsySequence{}, nil
+		}
+		return starUtils.MappedSequence(groupSrcs, castTargetSourceToValue), nil
+	}
+
+	return nil, fmt.Errorf("no source group: %q, known groups: %v", name, c.AttrNames())
+}
+func (c *declareTargetsContextSources) AttrNames() []string {
+	// TODO: exclude plugin.DeclareTargetsContextDefaultGroup
+	return slices.Collect(maps.Keys(c.srcs))
+}
+
+// Can iterate over all sources in sequence
+var _ starlark.Iterable = (*declareTargetsContextSources)(nil)
+var _ starlark.Sequence = (*declareTargetsContextSources)(nil)
+var _ starlark.Indexable = (*declareTargetsContextSources)(nil)
+
+func (c *declareTargetsContextSources) Len() int {
+	return len(c.srcs[DeclareTargetsContextDefaultGroup])
+}
+func (c *declareTargetsContextSources) Index(i int) starlark.Value {
+	return castTargetSourceToValue(c.srcs[DeclareTargetsContextDefaultGroup][i])
+}
+func (c *declareTargetsContextSources) Iterate() starlark.Iterator {
+	return starUtils.MappedIterator(c.srcs[DeclareTargetsContextDefaultGroup], castTargetSourceToValue)
+}
 
 // ---------------- declareTargetActionsImpl
 

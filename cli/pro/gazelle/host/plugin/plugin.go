@@ -113,7 +113,7 @@ type PrepareContext struct {
 //			},
 //	 }
 type PrepareResult struct {
-	Sources []SourceFilter
+	Sources map[string][]SourceFilter
 	Queries NamedQueries
 }
 
@@ -188,13 +188,15 @@ func NewAnalyzeContext(prep PrepareContext, source *TargetSource, database *Data
 	}
 }
 
+type TargetSources = map[string][]TargetSource
+
 // The context for an extension to generate targets.
 //
 // Queries results are mapped by file extension, each containing a map of
 // query name to result.
 type DeclareTargetsContext struct {
 	PrepareContext
-	Sources  []TargetSource
+	Sources  TargetSources
 	Targets  DeclareTargetActions
 	database *Database
 }
@@ -203,7 +205,7 @@ func (d DeclareTargetsContext) AddSymbol(label Label, symbol Symbol) {
 	d.database.AddSymbol(label, symbol)
 }
 
-func NewDeclareTargetsContext(prep PrepareContext, sources []TargetSource, targets DeclareTargetActions, database *Database) DeclareTargetsContext {
+func NewDeclareTargetsContext(prep PrepareContext, sources TargetSources, targets DeclareTargetActions, database *Database) DeclareTargetsContext {
 	return DeclareTargetsContext{
 		PrepareContext: prep,
 		Sources:        sources,

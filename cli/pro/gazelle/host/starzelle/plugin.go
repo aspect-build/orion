@@ -18,7 +18,7 @@ import (
 var proxyStateKey = "$starzelleState$"
 
 var EmptyPrepareResult = plugin.PrepareResult{
-	Sources: make([]plugin.SourceFilter, 0),
+	Sources: make(map[string][]plugin.SourceFilter),
 	Queries: plugin.NamedQueries{},
 }
 

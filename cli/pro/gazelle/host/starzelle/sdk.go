@@ -260,12 +260,15 @@ func newPrepareResult(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tup
 		}
 	}
 
-	sources := []plugin.SourceFilter{}
+	var sources map[string][]plugin.SourceFilter
 	if sourcesValue != nil {
-		if sourcesListValue, isList := sourcesValue.(*starlark.List); isList {
-			sources = starUtils.ReadList(sourcesListValue, readSourceFilter)
+		// Allow source values as a flat list or a map of lists
+		if sourceDict, isDict := (sourcesValue).(*starlark.Dict); isDict {
+			sources = starUtils.ReadMap(sourceDict, readSourceFilterEntry)
 		} else {
-			sources = []plugin.SourceFilter{readSourceFilter(sourcesValue)}
+			sources = map[string][]plugin.SourceFilter{
+				plugin.DeclareTargetsContextDefaultGroup: readSourceFilterEntry(plugin.DeclareTargetsContextDefaultGroup, sourcesValue),
+			}
 		}
 	}
 
@@ -273,6 +276,14 @@ func newPrepareResult(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tup
 		Sources: sources,
 		Queries: queries,
 	}, nil
+}
+
+func readSourceFilterEntry(k string, v starlark.Value) []plugin.SourceFilter {
+	if list, isList := v.(*starlark.List); isList {
+		return starUtils.ReadList(list, readSourceFilter)
+	} else {
+		return []plugin.SourceFilter{readSourceFilter(v)}
+	}
 }
 
 func readSourceFilter(v starlark.Value) plugin.SourceFilter {
