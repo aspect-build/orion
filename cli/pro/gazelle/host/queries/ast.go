@@ -11,6 +11,7 @@ func runPluginTreeQueries(fileName string, sourceCode []byte, queries plugin.Nam
 	if err != nil {
 		return err
 	}
+	defer ast.Close()
 
 	// Parse errors. Only log them due to many false positives.
 	// TODO: what false positives? See js plugin where this is from
