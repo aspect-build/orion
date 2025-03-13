@@ -40,7 +40,7 @@ func main() {
 
 	fmt.Printf("Mode: %s\n", mode)
 	fmt.Printf("Dirs: %v\n", dirs)
-	err := c.Run(mode, dirs)
+	err := c.Run(mode, []string{}, dirs)
 
 	// Handle command errors
 	if err != nil {
