@@ -18,7 +18,7 @@ import (
 	"go.starlark.net/starlark"
 )
 
-func addPlugin(t *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
+func registerConfigureExtension(t *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	var pluginId starlark.String
 	var properties *starlark.Dict
 	var prepare, analyze, declare *starlark.Function
@@ -37,7 +37,8 @@ func addPlugin(t *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwa
 		return nil, err
 	}
 
-	t.Local(proxyStateKey).(*starzelleState).AddPlugin(
+	t.Local(proxyStateKey).(*starzelleState).addPlugin(
+		t,
 		pluginId,
 		properties,
 		prepare,
@@ -48,7 +49,7 @@ func addPlugin(t *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwa
 	return starlark.None, nil
 }
 
-func addKind(t *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
+func registerRuleKind(t *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwargs []starlark.Tuple) (starlark.Value, error) {
 	var kind starlark.String
 	var attributes *starlark.Dict
 
@@ -63,7 +64,7 @@ func addKind(t *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, kwarg
 		return nil, err
 	}
 
-	t.Local(proxyStateKey).(*starzelleState).AddKind(kind, attributes)
+	t.Local(proxyStateKey).(*starzelleState).addKind(t, kind, attributes)
 	return starlark.None, nil
 }
 
@@ -395,8 +396,8 @@ func newProperty(_ *starlark.Thread, b *starlark.Builtin, args starlark.Tuple, k
 var aspectModule = starUtils.CreateModule(
 	"aspect",
 	map[string]starUtils.ModuleFunction{
-		"register_configure_extension": addPlugin,
-		"register_rule_kind":           addKind,
+		"register_configure_extension": registerConfigureExtension,
+		"register_rule_kind":           registerRuleKind,
 		"AstQuery":                     newAstQuery,
 		"RegexQuery":                   newRegexQuery,
 		"RawQuery":                     newRawQuery,

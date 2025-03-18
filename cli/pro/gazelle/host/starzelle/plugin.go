@@ -6,7 +6,6 @@ package starzelle
 
 import (
 	"fmt"
-	"path"
 
 	starEval "github.com/aspect-build/silo/cli/core/gazelle/common/starlark"
 	starUtils "github.com/aspect-build/silo/cli/core/gazelle/common/starlark/utils"
@@ -43,7 +42,7 @@ func LoadProxy(host plugin.PluginHost, pluginDir, pluginPath string) error {
 		"aspect": aspectModule,
 	}
 
-	_, err := starEval.Eval(path.Join(pluginDir, pluginPath), libs, evalState)
+	_, err := starEval.Eval(pluginDir, pluginPath, libs, evalState)
 	if err != nil {
 		return err
 	}
@@ -51,11 +50,11 @@ func LoadProxy(host plugin.PluginHost, pluginDir, pluginPath string) error {
 	return nil
 }
 
-func (s *starzelleState) AddKind(name starlark.String, attributes *starlark.Dict) {
+func (s *starzelleState) addKind(_ *starlark.Thread, name starlark.String, attributes *starlark.Dict) {
 	s.host.AddKind(readRuleKind(name, attributes))
 }
 
-func (s *starzelleState) AddPlugin(pluginId starlark.String, properties *starlark.Dict, prepare, analyze, declare *starlark.Function) {
+func (s *starzelleState) addPlugin(t *starlark.Thread, pluginId starlark.String, properties *starlark.Dict, prepare, analyze, declare *starlark.Function) {
 	var pluginProperties map[string]plugin.Property
 
 	if properties != nil {
@@ -63,6 +62,7 @@ func (s *starzelleState) AddPlugin(pluginId starlark.String, properties *starlar
 	}
 
 	s.host.AddPlugin(starzellePluginProxy{
+		t:          t,
 		name:       pluginId.GoString(),
 		pluginPath: s.pluginPath,
 		properties: pluginProperties,
@@ -81,6 +81,9 @@ type starzellePluginProxy struct {
 	pluginPath                string
 	properties                map[string]plugin.Property
 	prepare, analyze, declare *starlark.Function
+
+	// The thread this plugin is running in.
+	t *starlark.Thread
 }
 
 func (p starzellePluginProxy) Name() string {
@@ -96,7 +99,7 @@ func (p starzellePluginProxy) Prepare(ctx plugin.PrepareContext) plugin.PrepareR
 		return EmptyPrepareResult
 	}
 
-	v, err := starEval.Call(p.prepare, starlark.Tuple{ctx}, starUtils.EmptyKwArgs)
+	v, err := starlark.Call(p.t, p.prepare, starlark.Tuple{ctx}, starUtils.EmptyKwArgs)
 	if err != nil {
 		errStr := starUtils.ErrorStr(fmt.Sprintf("Failed to invoke %s:Prepare()", p.name), err)
 		BazelLog.Error(errStr)
@@ -127,7 +130,7 @@ func (p starzellePluginProxy) Analyze(ctx plugin.AnalyzeContext) error {
 	if p.analyze == nil {
 		return nil
 	}
-	_, err := starEval.Call(p.analyze, starlark.Tuple{&ctx}, starUtils.EmptyKwArgs)
+	_, err := starlark.Call(p.t, p.analyze, starlark.Tuple{&ctx}, starUtils.EmptyKwArgs)
 	if err != nil {
 		errStr := starUtils.ErrorStr(fmt.Sprintf("Failed to invoke %s:Analyze()", p.name), err)
 		BazelLog.Error(errStr)
@@ -142,7 +145,7 @@ func (p starzellePluginProxy) DeclareTargets(ctx plugin.DeclareTargetsContext) p
 		return EmptyDeclareTargetsResult
 	}
 
-	_, err := starEval.Call(p.declare, starlark.Tuple{ctx}, starUtils.EmptyKwArgs)
+	_, err := starlark.Call(p.t, p.declare, starlark.Tuple{ctx}, starUtils.EmptyKwArgs)
 	if err != nil {
 		errStr := starUtils.ErrorStr(fmt.Sprintf("Failed to invoke %s:DeclareTargets()", p.name), err)
 		BazelLog.Error(errStr)
