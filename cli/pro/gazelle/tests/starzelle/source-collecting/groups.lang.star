@@ -12,7 +12,7 @@ def declare_list(ctx):
             name = "the-dict-js",
             kind = "filegroup",
             attrs = {
-                "srcs": [s.path for s in ctx.sources.js],
+                "srcs": ctx.sources.js,
             },
         )
 
@@ -21,7 +21,7 @@ def declare_list(ctx):
             name = "the-dict-txt",
             kind = "filegroup",
             attrs = {
-                "srcs": [s.path for s in ctx.sources.txt],
+                "srcs": ctx.sources.txt,
             },
         )
 

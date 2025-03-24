@@ -188,7 +188,8 @@ func NewAnalyzeContext(prep PrepareContext, source *TargetSource, database *Data
 	}
 }
 
-type TargetSources = map[string][]TargetSource
+type TargetSources map[string]TargetSourceList
+type TargetSourceList []TargetSource
 
 // The context for an extension to generate targets.
 //

@@ -13,7 +13,7 @@ def declare_list(ctx):
         name = "the-list",
         kind = "filegroup",
         attrs = {
-            "srcs": [s.path for s in ctx.sources],
+            "srcs": ctx.sources,
         },
     )
 

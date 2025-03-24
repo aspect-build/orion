@@ -82,7 +82,7 @@ var _ starlark.HasAttrs = (*DeclareTargetsContext)(nil)
 func (ctx DeclareTargetsContext) Attr(name string) (starlark.Value, error) {
 	switch name {
 	case "sources":
-		return &declareTargetsContextSources{ctx.Sources}, nil
+		return ctx.Sources, nil
 	case "targets":
 		return ctx.Targets.(*declareTargetActionsImpl), nil
 	case "add_symbol":
@@ -99,92 +99,104 @@ func (ctx DeclareTargetsContext) AttrNames() []string {
 }
 func (ctx DeclareTargetsContext) Type() string { return "DeclareTargetsContext" }
 
-// ---------------- emptyFalsySequence
+// ---------------- TargetSourceList
+var _ starlark.Value = (*TargetSourceList)(nil)
 
-type emptyFalsySequence struct{}
-
-var _ starlark.Sequence = (*emptyFalsySequence)(nil)
-
-func (e *emptyFalsySequence) String() string {
-	return fmt.Sprintf("EmptySequence{}")
+func (t TargetSourceList) Freeze() {
 }
-func (e *emptyFalsySequence) Type() string         { return "emptyFalsySequence" }
-func (e *emptyFalsySequence) Freeze()              {}
-func (e *emptyFalsySequence) Truth() starlark.Bool { return starlark.False }
-func (e *emptyFalsySequence) Hash() (uint32, error) {
-	return 0, fmt.Errorf("unhashable: %s", e.Type())
+func (t TargetSourceList) Hash() (uint32, error) {
+	return 0, fmt.Errorf("unhashable: %s", t.Type())
 }
-func (e *emptyFalsySequence) Len() int {
-	return 0
+func (t TargetSourceList) String() string {
+	return fmt.Sprintf("TargetSourceList(%v)", len(t))
 }
-func (e *emptyFalsySequence) Index(i int) starlark.Value {
-	return nil
+func (t TargetSourceList) Truth() starlark.Bool {
+	return t.Len() > 0
 }
-func (e *emptyFalsySequence) Iterate() starlark.Iterator {
-	return nil
+func (t TargetSourceList) Type() string {
+	return "TargetSourceList"
 }
 
-// ---------------- declareTargetsContextSources
+var _ starlark.Sequence = (*TargetSourceList)(nil)
 
-func castTargetSourceToValue(x TargetSource) starlark.Value {
-	return x
+func (t TargetSourceList) Iterate() starlark.Iterator {
+	return &targetSourceListIterator{t: t}
+}
+func (t TargetSourceList) Len() int {
+	return len(t)
 }
 
-type declareTargetsContextSources struct {
-	srcs TargetSources
+type targetSourceListIterator struct {
+	t TargetSourceList
+	i int
 }
 
-var _ starlark.Value = (*declareTargetsContextSources)(nil)
-
-func (c *declareTargetsContextSources) String() string {
-	return fmt.Sprintf("DeclareTargetsContext.Sources{%v}", c.srcs)
+func (t *targetSourceListIterator) Done() {}
+func (t *targetSourceListIterator) Next(p *starlark.Value) bool {
+	if t.i >= len(t.t) {
+		return false
+	}
+	*p = t.t[t.i]
+	t.i++
+	return true
 }
-func (c *declareTargetsContextSources) Type() string { return "DeclareTargetsContext.Sources" }
-func (c *declareTargetsContextSources) Freeze()      {}
-func (c *declareTargetsContextSources) Truth() starlark.Bool {
+
+var _ starlark.Iterator = (*targetSourceListIterator)(nil)
+
+var _ starlark.Indexable = (*TargetSourceList)(nil)
+
+func (t TargetSourceList) Index(i int) starlark.Value {
+	return t[i]
+}
+
+// ---------------- TargetSources
+var _ starlark.Value = (*TargetSources)(nil)
+
+func (c TargetSources) String() string {
+	return fmt.Sprintf("DeclareTargetsContext.Sources{%v}", maps.Keys(c))
+}
+func (c TargetSources) Type() string { return "DeclareTargetsContext.Sources" }
+func (c TargetSources) Freeze()      {}
+func (c TargetSources) Truth() starlark.Bool {
 	// Treat empty sources as falsy
-	for _, groupSrcs := range c.srcs {
+	for _, groupSrcs := range c {
 		if len(groupSrcs) > 0 {
 			return starlark.True
 		}
 	}
 	return starlark.False
 }
-func (c *declareTargetsContextSources) Hash() (uint32, error) {
+func (c TargetSources) Hash() (uint32, error) {
 	return 0, fmt.Errorf("unhashable: %s", c.Type())
 }
 
 // Can fetch sources by group name
-var _ starlark.HasAttrs = (*declareTargetsContextSources)(nil)
+var _ starlark.HasAttrs = (*TargetSources)(nil)
 
-func (c *declareTargetsContextSources) Attr(name string) (starlark.Value, error) {
-	if groupSrcs, ok := c.srcs[name]; ok {
-		if len(groupSrcs) == 0 {
-			return &emptyFalsySequence{}, nil
-		}
-		return starUtils.MappedSequence(groupSrcs, castTargetSourceToValue), nil
+func (c TargetSources) Attr(name string) (starlark.Value, error) {
+	if groupSrcs, ok := c[name]; ok {
+		return groupSrcs, nil
 	}
 
 	return nil, fmt.Errorf("no source group: %q, known groups: %v", name, c.AttrNames())
 }
-func (c *declareTargetsContextSources) AttrNames() []string {
+func (c TargetSources) AttrNames() []string {
 	// TODO: exclude plugin.DeclareTargetsContextDefaultGroup
-	return slices.Collect(maps.Keys(c.srcs))
+	return slices.Collect(maps.Keys(c))
 }
 
-// Can iterate over all sources in sequence
-var _ starlark.Iterable = (*declareTargetsContextSources)(nil)
-var _ starlark.Sequence = (*declareTargetsContextSources)(nil)
-var _ starlark.Indexable = (*declareTargetsContextSources)(nil)
+// Iterator/array operations delegate to the default group
+var _ starlark.Sequence = (*TargetSources)(nil)
+var _ starlark.Indexable = (*TargetSources)(nil)
 
-func (c *declareTargetsContextSources) Len() int {
-	return len(c.srcs[DeclareTargetsContextDefaultGroup])
+func (ts TargetSources) Len() int {
+	return ts[DeclareTargetsContextDefaultGroup].Len()
 }
-func (c *declareTargetsContextSources) Index(i int) starlark.Value {
-	return castTargetSourceToValue(c.srcs[DeclareTargetsContextDefaultGroup][i])
+func (ts TargetSources) Index(i int) starlark.Value {
+	return ts[DeclareTargetsContextDefaultGroup].Index(i)
 }
-func (c *declareTargetsContextSources) Iterate() starlark.Iterator {
-	return starUtils.MappedIterator(c.srcs[DeclareTargetsContextDefaultGroup], castTargetSourceToValue)
+func (ts TargetSources) Iterate() starlark.Iterator {
+	return ts[DeclareTargetsContextDefaultGroup].Iterate()
 }
 
 // ---------------- declareTargetActionsImpl
