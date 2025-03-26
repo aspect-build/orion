@@ -5,7 +5,6 @@ import (
 	"strconv"
 	"sync"
 
-	common "github.com/aspect-build/silo/cli/core/gazelle/common"
 	"github.com/aspect-build/silo/cli/core/gazelle/common/git"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
 	"github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
@@ -20,7 +19,6 @@ func (c *GazelleHost) KnownDirectives() []string {
 	if c.gazelleDirectives == nil {
 		c.gazelleDirectives = []string{
 			// Core builtin directives
-			common.Directive_GenerationMode,
 			git.Directive_GitIgnore,
 		}
 
@@ -60,12 +58,6 @@ func (configurer *GazelleHost) Configure(c *config.Config, rel string, f *rule.F
 		for _, d := range f.Directives {
 			config.appendDirectiveValue(d.Key, d.Value)
 		}
-	}
-
-	// Generating new BUILDs may disabled.
-	if !common.ReadWalkConfig(c, rel, f) {
-		BazelLog.Tracef("Configure(%s) BUILD creation disabled: %q", GazelleLanguageName, rel)
-		return
 	}
 
 	eg := errgroup.Group{}
@@ -156,6 +148,7 @@ func onlyValue(p plugin.Property, value []string) string {
 }
 
 func (c *GazelleHost) RegisterFlags(fs *flag.FlagSet, cmd string, cfg *config.Config) {
+	git.SetupGitConfig(cfg)
 }
 
 func (c *GazelleHost) CheckFlags(fs *flag.FlagSet, cfg *config.Config) error {

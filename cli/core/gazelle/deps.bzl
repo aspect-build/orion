@@ -6,12 +6,13 @@ load("//cli/core/gazelle/common/treesitter/grammars:grammars.bzl", _fetch_gramma
 def fetch_gazelle():
     http_archive(
         name = "bazel_gazelle",
-        sha256 = "5d80e62a70314f39cc764c1c3eaa800c5936c9f1ea91625006227ce4d20cd086",
+        sha256 = "fa1a981ae546684dbb7e7f428bafe0180530af09eace265094e03f4383fc0de4",
+        strip_prefix = "bazel-gazelle-186298911d38850b47b198e8d933a93125ce7043",
         # Ensure this version always matches the go.mod version.
         #
         # :notice: Care should be taken when upgrading gazelle since we have vendored & modified parts of gazelle
         # in the CLI configure command (cli/core/pkg/aspect/configure).
-        urls = ["https://github.com/bazel-contrib/bazel-gazelle/releases/download/v0.42.0/bazel-gazelle-v0.42.0.tar.gz"],
+        urls = ["https://github.com/bazel-contrib/bazel-gazelle/archive/186298911d38850b47b198e8d933a93125ce7043.tar.gz"],
         patch_args = ["-p1"],
         patches = [
             "//cli/core:patches/bazelbuild_bazel-gazelle_aspect-cli.patch",
