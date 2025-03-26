@@ -262,7 +262,6 @@ func init() {
 	gob.Register(QueryResults{})
 	gob.Register(QueryMatches{})
 	gob.Register(QueryMatch{})
-	gob.Register([]QueryMatch{})
 	gob.Register(QueryCapture{})
 	gob.Register(QueryProcessorResult{})
 }

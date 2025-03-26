@@ -28,10 +28,10 @@ func runRegexQueries(sourceCode []byte, queries plugin.NamedQueries, queryResult
 func runRegexQuery(sourceCode []byte, re *regexp.Regexp) plugin.QueryMatches {
 	reMatches := re.FindAllSubmatch(sourceCode, -1)
 	if reMatches == nil {
-		return plugin.NewQueryMatches(nil)
+		return nil
 	}
 
-	matches := make([]plugin.QueryMatch, 0, 1)
+	matches := plugin.QueryMatches(nil)
 
 	for _, reMatch := range reMatches {
 		captures := make(plugin.QueryCapture)
@@ -44,5 +44,5 @@ func runRegexQuery(sourceCode []byte, re *regexp.Regexp) plugin.QueryMatches {
 		matches = append(matches, plugin.NewQueryMatch(captures, reMatch[0]))
 	}
 
-	return plugin.NewQueryMatches(matches)
+	return matches
 }

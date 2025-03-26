@@ -30,14 +30,14 @@ func runPluginTreeQueries(fileName string, sourceCode []byte, queries plugin.Nam
 
 		// TODO: delay collection from channel until first read?
 		// Then it must be cached for later reads...
-		match := make([]plugin.QueryMatch, 0, 1)
+		matches := plugin.QueryMatches(nil)
 		for r := range resultCh {
-			match = append(match, plugin.NewQueryMatch(r.Captures(), nil))
+			matches = append(matches, plugin.NewQueryMatch(r.Captures(), nil))
 		}
 
 		queryResults <- &plugin.QueryProcessorResult{
 			Key:    key,
-			Result: plugin.NewQueryMatches(match),
+			Result: matches,
 		}
 	}
 

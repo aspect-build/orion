@@ -47,9 +47,7 @@ func (q QueryDefinition) Match(f string) bool {
 type QueryResults map[string]interface{}
 
 // Multiple matches
-type QueryMatches struct {
-	Matches []QueryMatch
-}
+type QueryMatches []QueryMatch
 
 // The captures of a single query match
 type QueryCapture map[string]string
@@ -62,10 +60,6 @@ type QueryMatch struct {
 
 func NewQueryMatch(captures QueryCapture, result interface{}) QueryMatch {
 	return QueryMatch{Captures: captures, Result: result}
-}
-
-func NewQueryMatches(matches []QueryMatch) QueryMatches {
-	return QueryMatches{Matches: matches}
 }
 
 type AstQueryParams struct {
