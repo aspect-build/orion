@@ -227,6 +227,7 @@ def go_dependencies():
         patch_args = ["-p2"],  # keep
         patches = [
             "//cli/core/patches:rules_python-unfork-tree-sitter.patch",
+            "//cli/core/patches:rules_python-update_only.patch",
         ],
         sum = "h1:TGtsj8b1oWzWPGA2S7Ym3FCgqtqfTfP3zsb24AdL9vs=",
         version = "v0.0.0-20250222074919-2ad200249585",
