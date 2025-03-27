@@ -18,6 +18,7 @@ import (
 	plugin "github.com/aspect-build/silo/cli/pro/gazelle/host/plugin"
 	starzelle "github.com/aspect-build/silo/cli/pro/gazelle/host/starzelle"
 	"github.com/bazelbuild/bazel-gazelle/config"
+	"github.com/bazelbuild/bazel-gazelle/label"
 	gazelleLanguage "github.com/bazelbuild/bazel-gazelle/language"
 	"github.com/bazelbuild/bazel-gazelle/rule"
 	"github.com/emirpasic/gods/sets/treeset"
@@ -45,6 +46,7 @@ type GazelleHost struct {
 }
 
 var _ gazelleLanguage.Language = (*GazelleHost)(nil)
+var _ gazelleLanguage.ModuleAwareLanguage = (*GazelleHost)(nil)
 var _ plugin.PluginHost = (*GazelleHost)(nil)
 
 func NewLanguage(plugins ...string) gazelleLanguage.Language {
@@ -200,24 +202,46 @@ func toKeyTrueMap(keys []string) map[string]bool {
 }
 
 func (h *GazelleHost) Loads() []rule.LoadInfo {
+	panic("ApparentLoads should be called instead")
+}
+
+func (h *GazelleHost) ApparentLoads(moduleToApparentName func(string) string) []rule.LoadInfo {
 	if h.gazelleLoadInfo == nil {
 		h.gazelleLoadInfo = make([]rule.LoadInfo, 0, len(h.kinds))
 
 		loads := make(map[string]*rule.LoadInfo)
 
 		for name, r := range h.kinds {
-			from := r.From
-
-			if from != "" {
-				if loads[from] == nil {
-					loads[from] = &rule.LoadInfo{
-						Name:    from,
-						Symbols: make([]string, 0, 1),
-						After:   make([]string, 0),
-					}
-				}
-				loads[from].Symbols = append(loads[from].Symbols, name)
+			if r.From == "" {
+				continue
 			}
+
+			from, err := label.Parse(r.From)
+			if err != nil {
+				BazelLog.Errorf("Failed to parse label %q: %v", r.From, err)
+				fmt.Printf("Invalid rule 'From' label %q: %v", r.From, err)
+				continue
+			}
+
+			// Map external repo names to apparent names
+			if from.Repo != "" {
+				apparentName := moduleToApparentName(from.Repo)
+				if apparentName != "" {
+					from.Repo = apparentName
+				}
+			}
+
+			fromStr := from.String()
+
+			if loads[fromStr] == nil {
+				loads[fromStr] = &rule.LoadInfo{
+					Name:    fromStr,
+					Symbols: make([]string, 0, 1),
+					After:   make([]string, 0),
+				}
+			}
+
+			loads[fromStr].Symbols = append(loads[fromStr].Symbols, name)
 		}
 
 		for _, load := range loads {
