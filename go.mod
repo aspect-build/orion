@@ -53,7 +53,7 @@ require (
 
 require (
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.36.3
-	github.com/bazelbuild/rules_python/gazelle v0.0.0-20240701102336-084b877c98b5
+	github.com/bazelbuild/rules_python/gazelle v0.0.0-20250222074919-2ad200249585
 	github.com/charmbracelet/huh v0.6.0
 	github.com/creack/pty v1.1.24
 	github.com/hay-kot/scaffold v0.6.2-0.20250317013600-8a6092d5e4ff
@@ -98,6 +98,7 @@ require (
 	github.com/cyphar/filepath-securejoin v0.4.1 // indirect
 	github.com/dimchansky/utfbom v1.1.1 // indirect
 	github.com/dlclark/regexp2 v1.11.5 // indirect
+	github.com/dougthor42/go-tree-sitter v0.0.0-20241210060307-2737e1d0de6b // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/elliotchance/orderedmap v1.7.1 // indirect
 	github.com/erikgeiser/coninput v0.0.0-20211004153227-1c3628e74d0f // indirect
