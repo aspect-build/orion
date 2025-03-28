@@ -37,6 +37,7 @@ bazel_dep(name = "aspect_bazel_lib", version = "2.10.0")
 bazel_dep(name = "aspect_rules_js", version = "2.1.2")
 
 include("//bazel/include:proto.MODULE.bazel")
+include("//bazel/include:python.MODULE.bazel")
 EOMODULE
 
 # WORKSPACE file
@@ -68,18 +69,6 @@ go_register_nogo(
 
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
 gazelle_dependencies()
-
-http_archive(
-    name = "rules_python",
-    sha256 = "778aaeab3e6cfd56d681c89f5c10d7ad6bf8d2f1a72de9de55b23081b2d31618",
-    strip_prefix = "rules_python-0.34.0",
-    url = "https://github.com/bazelbuild/rules_python/releases/download/0.34.0/rules_python-0.34.0.tar.gz",
-    patch_args = ["-p1"],
-    patches = ["//cli/core/patches:rules_python-bzlmod.patch"],
-)
-# Needed to compile the gazelle extension
-load("@rules_python//gazelle:deps.bzl", "python_stdlib_list_deps")
-python_stdlib_list_deps()
 EOWORKSPACE
 
 # None of the generated files should have changed existing files.
