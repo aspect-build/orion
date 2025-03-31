@@ -16,7 +16,6 @@ go_library(
     importpath = "github.com/aspect-build/silo/cli/pro/gazelle/host",
     visibility = ["//visibility:public"],
     deps = [
-        "//cli/core/buildinfo",
         "//cli/core/gazelle/common",
         "//cli/core/gazelle/common/cache",
         "//cli/core/gazelle/common/git",

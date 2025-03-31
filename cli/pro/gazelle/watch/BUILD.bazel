@@ -1,0 +1,15 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "watch",
+    srcs = ["cache.go"],
+    importpath = "github.com/aspect-build/silo/cli/pro/gazelle/watch",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//cli/core/buildinfo",
+        "//cli/core/gazelle/common/cache",
+        "//cli/core/pkg/logger",
+        "//cli/pro/pkg/watch",
+        "@bazel_gazelle//config:go_default_library",
+    ],
+)

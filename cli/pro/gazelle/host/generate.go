@@ -13,7 +13,6 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/aspect-build/silo/cli/core/buildinfo"
 	common "github.com/aspect-build/silo/cli/core/gazelle/common"
 	"github.com/aspect-build/silo/cli/core/gazelle/common/cache"
 	BazelLog "github.com/aspect-build/silo/cli/core/pkg/logger"
@@ -45,7 +44,7 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 
 	cfg := args.Config.Exts[GazelleLanguageName].(*BUILDConfig)
 
-	queryCache := cache.Get[plugin.QueryResults](args.Config)
+	queryCache := cache.Get(args.Config)
 
 	// TODO: normally would...
 	//   1. collect "source files"
@@ -87,9 +86,10 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 		}
 
 		eg.Go(func() error {
-			queryResults, err := host.runSourceQueries(queryCache, queries, args.Dir, sourceFile)
+			p := path.Join(args.Rel, sourceFile)
+			queryResults, err := host.runSourceQueries(queryCache, queries, args.Config.RepoRoot, p)
 			if err != nil {
-				msg := fmt.Sprintf("Querying source file %q: %v", path.Join(args.Rel, sourceFile), err)
+				msg := fmt.Sprintf("Querying source file %q: %v", p, err)
 				fmt.Printf("%s\n", msg)
 				BazelLog.Error(msg)
 				return nil
@@ -330,16 +330,8 @@ func init() {
 	gob.Register(plugin.JsonQueryParams(""))
 }
 
-func computeQueriesCacheKey(sourceCode []byte, queries plugin.NamedQueries) (string, bool) {
+func computeQueriesCacheKey(queries plugin.NamedQueries) string {
 	cacheDigest := crypto.MD5.New()
-	cacheDigest.Write(sourceCode)
-
-	if buildinfo.IsStamped() {
-		if _, err := cacheDigest.Write([]byte(buildinfo.GitCommit)); err != nil {
-			BazelLog.Errorf("Failed to write GitCommit to cache digest: %v", err)
-			return "", false
-		}
-	}
 
 	keys := make([]string, 0, len(queries))
 	for key := range queries {
@@ -350,30 +342,33 @@ func computeQueriesCacheKey(sourceCode []byte, queries plugin.NamedQueries) (str
 	e := gob.NewEncoder(cacheDigest)
 	for _, key := range keys {
 		if err := e.Encode(key); err != nil {
-			return "", false
+			BazelLog.Fatalf("Failed to encode query key %q: %v", key, err)
 		}
 		if err := e.Encode(queries[key]); err != nil {
-			return "", false
+			BazelLog.Fatalf("Failed to encode query value %q: %v", queries[key], err)
 		}
 	}
 
-	return hex.EncodeToString(cacheDigest.Sum(nil)), true
+	return hex.EncodeToString(cacheDigest.Sum(nil))
 }
 
 func (host *GazelleHost) runSourceQueries(queryCache cache.Cache, queries plugin.NamedQueries, baseDir, f string) (plugin.QueryResults, error) {
-	// Read the file content
-	sourceCode, err := os.ReadFile(path.Join(baseDir, f))
-	if err != nil {
-		return nil, err
+	queriesHash := computeQueriesCacheKey(queries)
+
+	var qr plugin.QueryResults
+
+	r, _, err := queryCache.LoadOrStoreFile(baseDir, f, queriesHash, func(p string, sourceCode []byte) (any, error) {
+		return host.runSourceCodeQueries(queries, sourceCode, f)
+	})
+
+	if r != nil {
+		qr = r.(plugin.QueryResults)
 	}
 
-	queryCacheKey, queryingCacheable := computeQueriesCacheKey(sourceCode, queries)
-	if queryCache != nil && queryingCacheable {
-		if cachedResults, found := queryCache.Load(queryCacheKey); found {
-			return cachedResults.(plugin.QueryResults), nil
-		}
-	}
+	return qr, err
+}
 
+func (host *GazelleHost) runSourceCodeQueries(queries plugin.NamedQueries, sourceCode []byte, f string) (plugin.QueryResults, error) {
 	// Split queries by type to invoke in batches
 	queriesByType := make(map[plugin.QueryType]plugin.NamedQueries)
 	for key, query := range queries {
@@ -409,10 +404,6 @@ func (host *GazelleHost) runSourceQueries(queryCache cache.Cache, queries plugin
 	queryResults := make(plugin.QueryResults)
 	for result := range queryResultsChan {
 		queryResults[result.Key] = result.Result
-	}
-
-	if queryCache != nil && queryingCacheable {
-		queryCache.Store(queryCacheKey, queryResults)
 	}
 
 	return queryResults, nil
