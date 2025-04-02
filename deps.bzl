@@ -210,8 +210,8 @@ def go_dependencies():
         name = "com_github_bazelbuild_buildtools",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bazelbuild/buildtools",
-        sum = "h1:FGzENZi+SX9I7h9xvMtRA3rel8hCEfyzSixteBgn7MU=",
-        version = "v0.0.0-20240918101019-be1c24cc9a44",
+        sum = "h1:IEd6eE1VADgrYwafzjlx+Zf0qsjGztL1pqWqW2/2Tfo=",
+        version = "v0.0.0-20250326091033-f79c8eafbddd",
     )
     go_repository(
         name = "com_github_bazelbuild_rules_go",
@@ -2934,8 +2934,8 @@ def go_dependencies():
         name = "net_starlark_go",
         build_file_proto_mode = "disable_global",
         importpath = "go.starlark.net",
-        sum = "h1:YyGqCjZtGZJ+mRPaenEiB87afEO2MFRzLiJNZ0Z0bPw=",
-        version = "v0.0.0-20240725214946-42030a7cedce",
+        sum = "h1:Wf00k2WTLCW/L1/+gA1gxfTcU4yI+nK4YRTjumYezD8=",
+        version = "v0.0.0-20250318223901-d9371fef63fe",
     )
     go_repository(
         name = "org_bazil_fuse",

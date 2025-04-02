@@ -8,7 +8,7 @@ require (
 	github.com/bazel-contrib/rules_jvm v0.27.0
 	github.com/bazelbuild/bazel-gazelle v0.42.1-0.20250322095255-186298911d38 // NOTE: keep in sync with deps.bzl
 	github.com/bazelbuild/bazelisk v1.17.0
-	github.com/bazelbuild/buildtools v0.0.0-20240918101019-be1c24cc9a44
+	github.com/bazelbuild/buildtools v0.0.0-20250326091033-f79c8eafbddd
 	github.com/bazelbuild/rules_go v0.52.0 // NOTE: keep in sync with fetch.bzl
 	github.com/bluekeyes/go-gitdiff v0.7.3
 	github.com/bmatcuk/doublestar/v4 v4.8.1
@@ -41,7 +41,7 @@ require (
 	github.com/spf13/viper v1.19.0
 	github.com/tejzpr/ordered-concurrently/v3 v3.0.1
 	github.com/twmb/murmur3 v1.1.8
-	go.starlark.net v0.0.0-20240725214946-42030a7cedce
+	go.starlark.net v0.0.0-20250318223901-d9371fef63fe
 	golang.org/x/exp v0.0.0-20250106191152-7588d65b2ba8
 	golang.org/x/sync v0.12.0
 	google.golang.org/genproto v0.0.0-20240528184218-531527333157
