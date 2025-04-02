@@ -61,8 +61,15 @@ func (s *starzelleState) addPlugin(t *starlark.Thread, pluginId starlark.String,
 		pluginProperties = starUtils.ReadMap(properties, readProperty)
 	}
 
+	// A thread is created for each plugin to run in.
+	pluginThread := &starlark.Thread{
+		Name:  fmt.Sprintf("%s-%s", t.Name, pluginId.GoString()),
+		Load:  t.Load,
+		Print: t.Print,
+	}
+
 	s.host.AddPlugin(starzellePluginProxy{
-		t:          t,
+		t:          pluginThread,
 		name:       pluginId.GoString(),
 		pluginPath: s.pluginPath,
 		properties: pluginProperties,
