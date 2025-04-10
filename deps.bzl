@@ -203,8 +203,8 @@ def go_dependencies():
         importpath = "github.com/bazelbuild/bazelisk",
         patch_args = ["-p1"],  # keep
         patches = ["//cli/core:patches/bazelisk-two_segment_forks.patch"],  # keep
-        sum = "h1:TDt+a1PYrnBF9on3WRJUisXXFhCMrhcNo8OebyS5Q34=",
-        version = "v1.17.0",
+        sum = "h1:sMoyCM+x6tsc8CI0INJW1+izZgn3RlY8P++hg0Hdbek=",
+        version = "v1.25.0",
     )
     go_repository(
         name = "com_github_bazelbuild_buildtools",
@@ -791,6 +791,13 @@ def go_dependencies():
         importpath = "github.com/godbus/dbus/v5",
         sum = "h1:9349emZab16e7zQvpmsbtjc18ykshndd8y2PG3sgJbA=",
         version = "v5.0.4",
+    )
+    go_repository(
+        name = "com_github_gofrs_flock",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/gofrs/flock",
+        sum = "h1:MTLVXXHf8ekldpJk3AKicLij9MdwOWkZ+a/jHHZby9E=",
+        version = "v0.12.1",
     )
     go_repository(
         name = "com_github_gogo_protobuf",

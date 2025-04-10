@@ -7,7 +7,7 @@ require (
 	github.com/alphadose/haxmap v1.4.0
 	github.com/bazel-contrib/rules_jvm v0.27.0
 	github.com/bazelbuild/bazel-gazelle v0.42.1-0.20250322095255-186298911d38 // NOTE: keep in sync with deps.bzl
-	github.com/bazelbuild/bazelisk v1.17.0
+	github.com/bazelbuild/bazelisk v1.25.0 // NOTE: keep vendored code in sync
 	github.com/bazelbuild/buildtools v0.0.0-20250326091033-f79c8eafbddd
 	github.com/bazelbuild/rules_go v0.52.0 // NOTE: keep in sync with fetch.bzl
 	github.com/bluekeyes/go-gitdiff v0.7.3
@@ -110,6 +110,7 @@ require (
 	github.com/go-sprout/sprout v1.0.0 // indirect
 	github.com/goccy/go-json v0.10.4 // indirect
 	github.com/goccy/go-yaml v1.13.3 // indirect
+	github.com/gofrs/flock v0.12.1 // indirect
 	github.com/gorilla/css v1.0.1 // indirect
 	github.com/haya14busa/go-checkstyle v0.0.0-20170303121022-5e9d09f51fa1 // indirect
 	github.com/haya14busa/go-sarif v0.0.0-20210102043135-e2c5fed2fa3d // indirect
