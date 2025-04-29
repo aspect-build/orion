@@ -13,14 +13,15 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
+func init() {
+	git.SetupGitIgnore()
+}
+
 var _ config.Configurer = (*GazelleHost)(nil)
 
 func (c *GazelleHost) KnownDirectives() []string {
 	if c.gazelleDirectives == nil {
-		c.gazelleDirectives = []string{
-			// Core builtin directives
-			git.Directive_GitIgnore,
-		}
+		c.gazelleDirectives = []string{}
 
 		// TODO: verify no collisions with other plugins/globals
 
@@ -40,9 +41,6 @@ func (c *GazelleHost) KnownDirectives() []string {
 
 func (configurer *GazelleHost) Configure(c *config.Config, rel string, f *rule.File) {
 	BazelLog.Tracef("Configure(%s): %s", GazelleLanguageName, rel)
-
-	// Collect gitignore configuration
-	git.ReadGitConfig(c, rel, f)
 
 	// Generate hierarchical configuration.
 	if rel == "" {
@@ -148,7 +146,6 @@ func onlyValue(p plugin.Property, value []string) string {
 }
 
 func (c *GazelleHost) RegisterFlags(fs *flag.FlagSet, cmd string, cfg *config.Config) {
-	git.SetupGitConfig(cfg)
 }
 
 func (c *GazelleHost) CheckFlags(fs *flag.FlagSet, cfg *config.Config) error {

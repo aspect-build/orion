@@ -196,12 +196,12 @@ def go_dependencies():
         patches = [
             "//cli/core:patches/bazelbuild_bazel-gazelle_aspect-cli.patch",  # keep
             "//cli/core:patches/bazelbuild_bazel-gazelle_aspect-walk-subdir.patch",  # keep
-            "//cli/core:patches/bazelbuild_bazel-gazelle_aspect-gitignore.patch",  # keep
             "//cli/core:patches/bazelbuild_bazel-gazelle_aspect-fs-direntry.patch",  # keep
+            "//cli/core:patches/bazelbuild_bazel-gazelle_aspect-gitignore.patch",  # keep
         ],
-        sum = "h1:NQmf8f7+7OcecUdnAgYoPete6RzAutjEuYjNhE9LU68=",
+        sum = "h1:lpePoer9Ibj+XibWAO3PNDkNYDXOJTiF5ktLftCZPRI=",
         # Ensure this version always matches the version of @bazel_gazelle set in fetch.bzl.
-        version = "v0.43.0",
+        version = "v0.43.1-0.20250425175824-710f7cb6156a",
     )
     go_repository(
         name = "com_github_bazelbuild_bazelisk",
