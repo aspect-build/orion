@@ -6,6 +6,7 @@ x_lib(
     is = [42],
     l = "@r//p:l",
     l2 = ":local",
+    single_dep = ":b",
     str = "bar",
     strs = [
         "bar",

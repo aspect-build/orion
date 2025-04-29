@@ -76,37 +76,47 @@ func (re *GazelleHost) Resolve(c *config.Config, ix *resolve.RuleIndex, rc *repo
 	pluginId := pluginIdAttr.(plugin.PluginId)
 
 	// The import data is the imports per attribute
-	attrImports := importData.(map[string][]plugin.TargetImport)
-	attrValues := r.PrivateAttr(targetAttrValues).(map[string]interface{})
+	attrValues := importData.(map[string]*attributeValue)
 
-	for attr, imports := range attrImports {
-		importLabels, err := re.resolveImports(c, ix, pluginId, imports, from)
+	for attr, attrValue := range attrValues {
+		// The attribute is only constants (no imports) and needs no resolution.
+		if len(attrValue.imports) == 0 {
+			continue
+		}
+
+		importLabels, err := re.resolveImports(c, ix, pluginId, attrValue.imports, from)
 		if err != nil {
 			msg := fmt.Sprintf("Resolution Error: %v", err)
 			fmt.Println(msg)
 			BazelLog.Fatalf(msg)
 		}
 
-		if !importLabels.Empty() {
-			attrLabels := importLabels.Labels()
-			attrValue := make([]interface{}, 0, len(attrLabels))
+		attrLabels := importLabels.Labels()
 
-			// The resolved labels
+		// NOTE: the attribute might have additional values added via # keep which gazelle will maintain
+		// despite doing Set/DelAttr.
+
+		if attrValue.singleton {
+			switch len(attrLabels) {
+			case 0:
+				r.DelAttr(attr)
+			case 1:
+				r.SetAttr(attr, attrLabels[0].String())
+			default:
+				msg := fmt.Sprintf("Attribute %q on %s has resolved to multiple values: %v", attr, r.Name(), attrLabels)
+				fmt.Println(msg)
+				BazelLog.Fatal(msg)
+			}
+		} else {
+			value := attrValue.values
 			for _, l := range attrLabels {
-				attrValue = append(attrValue, l.String())
+				value = append(value, l.String())
 			}
-
-			// The attribute may have had some explicit values set by the plugin in addition to the imports.
-			if attrConstValue, hasAttrValue := attrValues[attr]; hasAttrValue {
-				for _, val := range attrConstValue.([]interface{}) {
-					attrValue = append(attrValue, val)
-				}
+			if len(value) > 0 {
+				r.SetAttr(attr, value)
+			} else {
+				r.DelAttr(attr)
 			}
-
-			// NOTE: the attribute might have additional values added via # keep which gazelle will maintain
-			// despite doing SetAttr.
-
-			r.SetAttr(attr, attrValue)
 		}
 	}
 

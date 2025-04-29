@@ -30,7 +30,6 @@ const (
 )
 
 const (
-	targetAttrImports    = "__target_attr_imports"
 	targetAttrValues     = "__target_attr_values"
 	targetDeclarationKey = "__target_declaration"
 	targetPluginKey      = "__target_plugin"
@@ -244,7 +243,7 @@ func (host *GazelleHost) applyPluginAction(args gazelleLanguage.GenerateArgs, pl
 		rule := convertPluginTargetDeclaration(args, pluginId, target)
 
 		result.Gen = append(result.Gen, rule)
-		result.Imports = append(result.Imports, rule.PrivateAttr(targetAttrImports))
+		result.Imports = append(result.Imports, rule.PrivateAttr(targetAttrValues))
 
 		BazelLog.Tracef("GenerateRules(%s) add target: %s %s(%q)", GazelleLanguageName, args.Rel, target.Kind, target.Name)
 	default:
@@ -252,58 +251,67 @@ func (host *GazelleHost) applyPluginAction(args gazelleLanguage.GenerateArgs, pl
 	}
 }
 
+type attributeValue struct {
+	singleton bool
+	values    []interface{}
+	imports   []plugin.TargetImport
+}
+
 func convertPluginTargetDeclaration(args gazelleLanguage.GenerateArgs, pluginId plugin.PluginId, target plugin.TargetDeclaration) *gazelleRule.Rule {
 	targetRule := gazelleRule.NewRule(target.Kind, target.Name)
 
-	ruleImports := make(map[string][]plugin.TargetImport, 0)
-	ruleAttrs := make(map[string]interface{}, 0)
+	ruleAttrs := make(map[string]*attributeValue, 0)
 
 	targetRule.SetPrivateAttr(targetPluginKey, pluginId)
 	targetRule.SetPrivateAttr(targetDeclarationKey, target)
-	targetRule.SetPrivateAttr(targetAttrImports, ruleImports)
 	targetRule.SetPrivateAttr(targetAttrValues, ruleAttrs)
 
 	for attr, val := range target.Attrs {
-		attrValue, attrImports := convertPluginAttribute(args, val)
+		attrValue, attrImports, isArray := convertPluginAttribute(args, val)
 
-		// Record imports assigned to this attribute
-		if attrImports != nil && len(attrImports) > 0 {
-			// TODO: verify 'attr' is resolveable if len(attrImports) > 0
-			ruleImports[attr] = attrImports
+		// TODO: verify 'attr' is resolveable if len(attrImports) > 0
+		ruleAttrs[attr] = &attributeValue{
+			singleton: !isArray,
+			imports:   attrImports,
+			values:    attrValue,
 		}
 
-		// Record and set values assigned to this attribute (of any type).
-		// This may be merged with imports during the resolution stage.
-		if attrValue != nil {
-			ruleAttrs[attr] = attrValue
-			targetRule.SetAttr(attr, attrValue)
+		// Update the attribute if any non-import was specified
+		if len(attrValue) > 0 {
+			if isArray {
+				// An array of values taken as-is
+				targetRule.SetAttr(attr, attrValue)
+			} else if attrValue[0] == nil {
+				// A single nil value is the same as deleting
+				targetRule.DelAttr(attr)
+			} else {
+				// Otherwise use the single value
+				targetRule.SetAttr(attr, attrValue[0])
+			}
 		}
 	}
 
 	return targetRule
 }
 
-func convertPluginAttribute(args gazelleLanguage.GenerateArgs, val interface{}) (interface{}, []plugin.TargetImport) {
+func convertPluginAttribute(args gazelleLanguage.GenerateArgs, val interface{}) ([]interface{}, []plugin.TargetImport, bool) {
 	if a, isArray := val.([]interface{}); isArray {
-		r := make([]interface{}, 0, len(a))
-		i := make([]plugin.TargetImport, 0)
+		var r []interface{}
+		var i []plugin.TargetImport
 		for _, v := range a {
-			newR, newI := convertPluginAttribute(args, v)
+			newR, newI, _ := convertPluginAttribute(args, v)
 			if newR != nil {
-				r = append(r, newR)
+				r = append(r, newR...)
 			}
 			if newI != nil {
 				i = append(i, newI...)
 			}
 		}
-		if len(r) == 0 {
-			return nil, i
-		}
-		return r, i
+		return r, i, true
 	}
 
 	if targetImport, isImport := val.(plugin.TargetImport); isImport {
-		return nil, []plugin.TargetImport{targetImport}
+		return nil, []plugin.TargetImport{targetImport}, false
 	}
 
 	// Convert plugin.Label to a gazelle Label
@@ -314,10 +322,10 @@ func convertPluginAttribute(args gazelleLanguage.GenerateArgs, val interface{}) 
 	// Normalize gazelle labels to be relative to the BUILD file
 	if l, isLabel := val.(gazelleLabel.Label); isLabel {
 		// TODO: also convert the `args.Config.RepoName` repo to relative?
-		return l.Rel("", args.Rel), nil
+		return []interface{}{l.Rel("", args.Rel)}, nil, false
 	}
 
-	return val, nil
+	return []interface{}{val}, nil, false
 }
 
 func init() {

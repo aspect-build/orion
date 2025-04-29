@@ -53,6 +53,8 @@ def declare(ctx):
                 ":value",
                 "//%s:value" % ctx.rel,
             ],
+            "single_dep": aspect.Import(id = "b", provider = "x"),
+            "single_optional_dep": aspect.Import(id = "not-found", provider = "x", optional = True),
 
             # Various label types within a plain attribute
             "types2": [
