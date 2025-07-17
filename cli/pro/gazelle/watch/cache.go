@@ -2,6 +2,7 @@ package watch
 
 import (
 	"encoding/gob"
+	"fmt"
 	"log"
 	"os"
 	"path"
@@ -40,7 +41,10 @@ var _ cache.Cache = (*watchmanCache)(nil)
 func NewWatchmanCache(c *config.Config) cache.Cache {
 	diskCachePath := os.Getenv("ASPECT_CONFIGURE_CACHE")
 	if diskCachePath == "" {
-		log.Fatalf("ASPECT_CONFIGURE_CACHE is not set for --watchman")
+		// A default path for the cache file.
+		// Try to be unique per repo to allow re-use, while using a temp dir to avoid clutter and indicate
+		// the cache is not required.
+		diskCachePath = path.Join(os.TempDir(), fmt.Sprintf("aspect-configure-%v.cache", c.RepoName))
 	}
 
 	// Start the watcher
@@ -63,7 +67,6 @@ func NewWatchmanCache(c *config.Config) cache.Cache {
 }
 
 func closeWatchmanCache(c *watchmanCache) {
-	c.w.Stop()
 	c.w.Close()
 }
 

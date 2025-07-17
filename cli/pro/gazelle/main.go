@@ -22,6 +22,8 @@ func main() {
 		_ = os.Chdir(wd)
 	}
 
+	// TODO: add --watch
+
 	mode, languages, plugins, dirs := parseArgs()
 
 	c := configure.New(ioutils.DefaultStreams)
