@@ -66,7 +66,7 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 	// Stage 2:
 	// Parse and query source files and collect results
 
-	sourceFileQueryResults := make(map[string]plugin.QueryResults)
+	sourceFileQueryResults := make(map[string]plugin.QueryResults, len(sourceFilePlugins))
 	sourceFileQueryResultsLock := sync.Mutex{}
 
 	// Parse and query source files
@@ -106,7 +106,7 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 	}
 
 	// Build the TargetSource for each file for each plugin.
-	pluginTargetSources := make(map[plugin.PluginId]map[string]plugin.TargetSource)
+	pluginTargetSources := make(map[plugin.PluginId]map[string]plugin.TargetSource, len(cfg.pluginPrepareResults))
 	for pluginId, _ := range cfg.pluginPrepareResults {
 		pluginSrcs := pluginSourceFiles[pluginId]
 
@@ -148,7 +148,7 @@ func (host *GazelleHost) GenerateRules(args gazelleLanguage.GenerateArgs) gazell
 
 	// Stage 4:
 	// Generate target actions for each plugin
-	pluginTargetActions := make(map[plugin.PluginId][]plugin.TargetAction)
+	pluginTargetActions := make(map[plugin.PluginId][]plugin.TargetAction, len(cfg.pluginPrepareResults))
 	pluginTargetsLock := sync.Mutex{}
 	for pluginId, prep := range cfg.pluginPrepareResults {
 		eg.Go(func() error {
