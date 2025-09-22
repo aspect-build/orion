@@ -1,0 +1,3 @@
+/bazel-*
+*.bazel.lock
+**/node_modules

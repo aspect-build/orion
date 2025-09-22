@@ -53,6 +53,7 @@ var NativeModules = []string{
 	"util/types",
 	"v8",
 	"vm",
+	"wasi",
 	"worker_threads",
 	"zlib",
 }
