@@ -6,10 +6,127 @@ module(
 bazel_dep(name = "aspect_bazel_lib", version = "2.0.0")
 bazel_dep(name = "aspect_rules_js", version = "2.0.0")
 
+# rules_go
+bazel_dep(name = "rules_go", version = "0.56.1", repo_name = "io_bazel_rules_go")
+
+# Gazelle
+bazel_dep(name = "gazelle", version = "0.45.0", repo_name = "bazel_gazelle")
+
+# Python
+bazel_dep(name = "rules_python", version = "1.5.3")  # must match go.mod
+bazel_dep(name = "rules_python_gazelle_plugin", version = "1.5.3")  # must match go.mod
+
+# go modules
+bazel_dep(name = "gazelle_cc", version = "0.1.0")
+
+# Go modules
+go_deps = use_extension("@bazel_gazelle//:extensions.bzl", "go_deps")
+go_deps.from_file(go_mod = "//:go.mod")
+use_repo(go_deps, "com_github_bazelbuild_bazel_gazelle", "com_github_bazelbuild_buildtools", "com_github_bmatcuk_doublestar_v4", "com_github_emirpasic_gods", "com_github_engflow_gazelle_cc", "com_github_fatih_color", "com_github_go_git_go_git_v5", "com_github_itchyny_gojq", "com_github_masterminds_semver_v3", "com_github_mikefarah_yq_v4", "com_github_msolo_jsonr", "com_github_onsi_gomega", "com_github_pmezard_go_difflib", "com_github_smacker_go_tree_sitter", "in_gopkg_op_go_logging_v1", "in_gopkg_yaml_v3", "io_opentelemetry_go_otel", "io_opentelemetry_go_otel_trace", "net_starlark_go", "org_golang_google_genproto_googleapis_api", "org_golang_x_sync", "org_golang_x_term", "org_golang_x_tools")
+
+# tree-sitter languages
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "tree-sitter-go",
+    build_file_content = """
+filegroup(
+    name = "srcs",
+    srcs = glob(["src/**/*.c", "src/**/*.h"]),
+    visibility = ["//visibility:public"],
+)
+""",
+    integrity = "sha256-M7w7RN4de4FfUv6fQuSXhsWDPZGB/Vn9aRDBnIJVkik=",
+    urls = ["https://github.com/tree-sitter/tree-sitter-go/releases/download/v0.23.4/tree-sitter-go.tar.xz"],
+)
+
+http_archive(
+    name = "tree-sitter-java",
+    build_file_content = """
+filegroup(
+    name = "srcs",
+    srcs = glob(["src/**/*.c", "src/**/*.h"]),
+    visibility = ["//visibility:public"],
+)
+""",
+    sha256 = "ed766e1045be236e50a7f99295996f6705d7506628b79af80d1fd5efb63c86a7",
+    urls = ["https://github.com/tree-sitter/tree-sitter-java/releases/download/v0.23.5/tree-sitter-java.tar.xz"],
+)
+
+http_archive(
+    name = "tree-sitter-json",
+    build_file_content = """
+filegroup(
+    name = "srcs",
+    srcs = glob(["src/**/*.c", "src/**/*.h"]),
+    visibility = ["//visibility:public"],
+)
+""",
+    sha256 = "acf6e8362457e819ed8b613f2ad9a0e1b621a77556c296f3abea58f7880a9213",
+    strip_prefix = "tree-sitter-json-0.24.8",
+    urls = ["https://github.com/tree-sitter/tree-sitter-json/archive/v0.24.8.tar.gz"],
+)
+
+http_archive(
+    name = "tree-sitter-kotlin",
+    build_file_content = """
+filegroup(
+    name = "srcs",
+    srcs = glob(["src/**/*.c", "src/**/*.h"]),
+    visibility = ["//visibility:public"],
+)
+""",
+    sha256 = "7dd60975786bf9cb4be6a5176f5ccb5fed505f9929a012da30762505b1015669",
+    strip_prefix = "tree-sitter-kotlin-0.3.8",
+    urls = ["https://github.com/fwcd/tree-sitter-kotlin/archive/0.3.8.tar.gz"],
+)
+
+http_archive(
+    name = "tree-sitter-rust",
+    build_file_content = """
+filegroup(
+    name = "srcs",
+    srcs = glob(["src/**/*.c", "src/**/*.h"]),
+    visibility = ["//visibility:public"],
+)
+""",
+    urls = ["https://github.com/tree-sitter/tree-sitter-rust/releases/download/v0.24.0/tree-sitter-rust.tar.gz"],
+)
+
+http_archive(
+    name = "tree-sitter-starlark",
+    build_file_content = """
+filegroup(
+    name = "srcs",
+    srcs = glob(["src/**/*.c", "src/**/*.h"]),
+    visibility = ["//visibility:public"],
+)
+""",
+    sha256 = "31c58a540d738a17b366f2046da298b66dfa0695bcbfa207f61fa63cfe5c03ed",
+    strip_prefix = "tree-sitter-starlark-1.3.0",
+    urls = ["https://github.com/tree-sitter-grammars/tree-sitter-starlark/archive/v1.3.0.tar.gz"],
+)
+
+http_archive(
+    name = "tree-sitter-typescript",
+    build_file_content = """
+filegroup(
+name = "typescript-srcs",
+srcs = glob(["common/**/*.h", "typescript/src/**/*.h", "typescript/src/**/*.c"]),
+visibility = ["//visibility:public"],
+)
+filegroup(
+name = "tsx-srcs",
+srcs = glob(["common/**/*.h", "tsx/src/**/*.h", "tsx/src/**/*.c"]),
+visibility = ["//visibility:public"],
+)
+""",
+    sha256 = "2c4ce711ae8d1218a3b2f899189298159d672870b5b34dff5d937bed2f3e8983",
+    strip_prefix = "tree-sitter-typescript-0.23.2",
+    urls = ["https://github.com/tree-sitter/tree-sitter-typescript/archive/v0.23.2.tar.gz"],
+)
+
+# Locally only
 include("//bazel/include:go.MODULE.bazel")
 
-include("//bazel/include:proto.MODULE.bazel")
-
 include("//bazel/include:python.MODULE.bazel")
-
-include("//cli/core/gazelle/common/treesitter/grammars:grammars.MODULE.bazel")
