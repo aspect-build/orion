@@ -1,0 +1,48 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "runner",
+    srcs = ["runner.go"],
+    importpath = "github.com/aspect-build/orion/runner",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//common/bazel",
+        "//common/ibp",
+        "//common/progress",
+        "//language/js",
+        "//runner/git",
+        "//runner/language/bzl",
+        "//runner/language/python",
+        "//runner/vendored/gazelle",
+        "@bazel_gazelle//config:go_default_library",
+        "@bazel_gazelle//language:go_default_library",
+        "@bazel_gazelle//language/go:go_default_library",
+        "@bazel_gazelle//language/proto:go_default_library",
+        "@gazelle_cc//language/cc",
+        "@io_opentelemetry_go_otel//:otel",
+        "@io_opentelemetry_go_otel//attribute",
+        "@io_opentelemetry_go_otel_trace//:trace",
+        "@org_golang_x_term//:term",
+    ],
+)
+
+go_library(
+    name = "configure_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/aspect-build/orion/",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//common/buildinfo",
+        "//common/ibp",
+        "//language/host",
+        "//runner",
+        "@bazel_gazelle//language:go_default_library",
+        "@in_gopkg_yaml_v3//:yaml_v3",
+    ],
+)
+
+go_binary(
+    name = "bin",
+    embed = [":configure_lib"],
+    visibility = ["//visibility:public"],
+)
