@@ -1,8 +1,0 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "types",
-    srcs = ["plugin.go"],
-    importpath = "github.com/aspect-build/silo/cli/core/pkg/plugin/types",
-    visibility = ["//visibility:public"],
-)

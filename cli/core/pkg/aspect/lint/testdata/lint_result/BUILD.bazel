@@ -1,5 +1,0 @@
-filegroup(
-    name = "lint_result",
-    srcs = glob(["*.txt"]),
-    visibility = ["//cli/core/pkg/aspect/lint:__pkg__"],
-)
