@@ -1,0 +1,22 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "cache",
+    srcs = [
+        "cache.go",
+        "configurer.go",
+        "disk.go",
+        "noop.go",
+        "watchman.go",
+    ],
+    importpath = "github.com/aspect-build/orion/common/cache",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//common/buildinfo",
+        "//common/logger",
+        "//common/watch",
+        "@bazel_gazelle//config:go_default_library",
+        "@bazel_gazelle//language:go_default_library",
+        "@bazel_gazelle//rule:go_default_library",
+    ],
+)
