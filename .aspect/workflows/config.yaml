@@ -1,0 +1,16 @@
+workspaces:
+  .:
+    icon: oil_drum
+    label: Orion
+tasks:
+  - checkout:
+      update_strategy: rebase
+  - warming:
+  - lint:
+  - format:
+  - buildifier:
+  - gazelle:
+  - test:
+notifications:
+  github:
+  slack: {}
