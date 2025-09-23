@@ -1,0 +1,15 @@
+module(
+    name = "aspect_orion",
+    compatibility_level = 0,
+)
+
+bazel_dep(name = "aspect_bazel_lib", version = "2.0.0")
+bazel_dep(name = "aspect_rules_js", version = "2.0.0")
+
+include("//bazel/include:go.MODULE.bazel")
+
+include("//bazel/include:proto.MODULE.bazel")
+
+include("//bazel/include:python.MODULE.bazel")
+
+include("//cli/core/gazelle/common/treesitter/grammars:grammars.MODULE.bazel")
