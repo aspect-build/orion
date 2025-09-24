@@ -1,0 +1,16 @@
+# See CONTRIBUTING.md for instructions.
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  # Lint for starlark code
+  - repo: https://github.com/keith/pre-commit-buildifier
+    rev: 8.0.3
+    hooks:
+      - id: buildifier-lint
+  - repo: local
+    hooks:
+      - id: format
+        name: Format
+        language: system
+        entry: bazel run //:format
+        files: .*

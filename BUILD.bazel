@@ -1,5 +1,6 @@
-load("@bazel_gazelle//:def.bzl", "DEFAULT_LANGUAGES", "gazelle", "gazelle_binary")
+load("@bazel_gazelle//:def.bzl", "gazelle", "gazelle_binary")
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("@buildifier_prebuilt//:rules.bzl", "buildifier")
 
 # gazelle:lang go
 # gazelle:build_file_name BUILD.bazel
@@ -37,4 +38,23 @@ bzl_library(
     srcs = ["gazelle.bzl"],
     visibility = ["//visibility:public"],
     deps = ["@bazel_gazelle//:def"],
+)
+
+alias(
+    name = "format",
+    actual = "//tools/format",
+)
+
+buildifier(
+    name = "buildifier",
+    exclude_patterns = ["./.git/*"],
+    lint_mode = "fix",
+    mode = "fix",
+)
+
+buildifier(
+    name = "buildifier.check",
+    exclude_patterns = ["./.git/*"],
+    lint_mode = "warn",
+    mode = "diff",
 )

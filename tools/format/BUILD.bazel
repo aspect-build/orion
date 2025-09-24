@@ -1,0 +1,12 @@
+load("@aspect_rules_lint//format:defs.bzl", "format_multirun")
+
+package(default_visibility = ["//visibility:public"])
+
+format_multirun(
+    name = "format",
+    go = "@go_sdk//:bin/gofmt",
+    shell = "@aspect_rules_lint//format:shfmt",
+    starlark = "@buildifier_prebuilt//:buildifier",
+    terraform = "@aspect_rules_lint//format:terraform",
+    yaml = "@aspect_rules_lint//format:yamlfmt",
+)
