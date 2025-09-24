@@ -1,13 +1,42 @@
-# Prebuilt Gazelle
+# Aspect Gazelle - BUILD generation
 
-[Gazelle](https://github.com/bazelbuild/bazel-gazelle) is a tool for generating BUILD files for Bazel or compatible build systems.
+## Gazelle Languages
 
-## Why fork?
+### JavaScript
 
-We forked bazel-gazelle to add a watch mode, and a couple other improvements.
-This repo also contains several language extensions we wrote, and which share common utility code.
+See [language/js](./language/js).
 
-## Why prebuild?
+### Starlark Extensions
+
+The [language/host](./language/host) package provides a Gazelle `Language` implementation enabling the use Starlark extensions for BUILD generation.
+
+## Gazelle Enhancements
+
+Orion provides a variety of enhancements to Gazelle.
+
+The [Orion runner](./runner) enables these enhancements automatically, otherwise manual setup (including patching Gazelle) is required.
+
+### Gitignore
+
+Support for `.gitignore` when generating BUILD files, enabled by the `# gazelle:gitignore enabled|disabled` directive.
+
+### Caching
+
+File based caching of any file analysis by Gazelle language implementations.
+
+Basic caching can be enabled by setting the `ASPECT_CONFIGURE_CACHE` environment variable to a path (e.g. `~/.cache/orion.cache`) for loading+persisting the cache between Gazelle runs.
+
+Further functionality includes [watchman](https://facebook.github.io/watchman/) and other utilities for Gazelle language implementations.
+
+See the [common/cache](./common/cache)
+
+### `--watch` mode
+
+The [Orion runner](./runner) supports a `--watch` mode that uses [watchman](https://facebook.github.io/watchman/) to monitor the filesystem for changes and regenerate BUILD files as needed. This automatically enables the watchman based caching provided by the [common/cache](./common/cache) package.
+
+## Prebuild
+
+### Why prebuild?
 
 Gazelle is commonly built from source on developer's machines, using a Go toolchain.
 However this doesn't always work well.
@@ -24,7 +53,7 @@ For example see this issue, where the Python extension depends on a C library ca
 
 https://github.com/bazel-contrib/rules_python/issues/1913
 
-## Install
+### Install
 
 1. Configure Bazel to fetch the binary you need from our GitHub release. There are a few ways:
   - We recommend using [rules_multitool](https://github.com/theoremlp/rules_multitool) for this; see the release notes on the release you choose.
