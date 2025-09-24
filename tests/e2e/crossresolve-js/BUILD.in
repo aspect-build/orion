@@ -1,2 +1,2 @@
 
-# aspect:js_files viteconfig vitest.config.mjs
+# gazelle:js_files viteconfig vitest.config.mjs

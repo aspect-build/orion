@@ -1,6 +1,6 @@
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 
-# aspect:js_files **/*.{ts,js}
+# gazelle:js_files **/*.{ts,js}
 
 ts_project(
     name = "dts-ts-js",

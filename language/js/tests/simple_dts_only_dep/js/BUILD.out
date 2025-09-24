@@ -1,6 +1,6 @@
 load("@aspect_rules_js//js:defs.bzl", "js_library")
 
-# aspect:js_files *.js
+# gazelle:js_files *.js
 
 js_library(
     name = "js",

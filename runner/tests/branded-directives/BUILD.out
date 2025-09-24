@@ -1,0 +1,9 @@
+load("//:defs.bzl", "ts_my_project")
+
+# aspect:generation_mode update_only
+# aspect:map_kind ts_project ts_my_project //:defs.bzl
+
+ts_my_project(
+    name = "branded-directives",
+    srcs = ["sub/x.ts"],
+)

@@ -1,7 +1,6 @@
 load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 
 # gazelle:generation_mode update_only
-# gazelle:gitignore enabled
 
 # Generated .ts
 genrule(
@@ -25,9 +24,7 @@ ts_project(
         "subdir/index.ts",
         "subdir/nested/generated.ts",
         "subdir/nested/index.ts",
-        "subdir/not.nested-ig.ts",
-        "subdir2/direct-ig.ts",
+        "subdir/x.ts",
         "subdir2/modules.ts",
-        "subdir2/not.nested-ig.ts",
     ],
 )

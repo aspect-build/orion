@@ -12,7 +12,6 @@ ts_project(
     srcs = [
         "generated.ts",
         "index.ts",
-        "nested/star-ig.ts",
         "r2.ts",
     ],
     deps = ["//:ignore_config_files"],

@@ -1,1 +1,1 @@
-# aspect:js_files **/*.{js,ts}
+# gazelle:js_files **/*.{js,ts}

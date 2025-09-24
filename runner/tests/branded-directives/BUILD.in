@@ -1,0 +1,2 @@
+# aspect:generation_mode update_only
+# aspect:map_kind ts_project ts_my_project //:defs.bzl

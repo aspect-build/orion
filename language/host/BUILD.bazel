@@ -42,7 +42,6 @@ gazelle_binary(
     testonly = True,
     languages = [
         ":host",
-        "//runner/git/testing",
     ],
     visibility = ["//:__subpackages__"],
 )

@@ -1,0 +1,24 @@
+load("@bazel_gazelle//:def.bzl", "gazelle_binary")
+load("//:gazelle.bzl", "gazelle_generation_test")
+
+# Disable the gazelle extensions
+# gazelle:exclude .
+
+gazelle_binary(
+    name = "gazelle_bin",
+    testonly = True,
+    languages = [
+        "//language/js",
+        "//runner/git/testing",
+    ],
+    visibility = ["//visibility:private"],
+)
+
+[
+    gazelle_generation_test(
+        name = "%s_test" % t,
+        dir = t,
+        gazelle_binary = ":gazelle_bin",
+    )
+    for t in [t.replace("/WORKSPACE", "") for t in glob(["*/WORKSPACE"])]
+]
