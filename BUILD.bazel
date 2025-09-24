@@ -14,9 +14,7 @@ load("@buildifier_prebuilt//:rules.bzl", "buildifier")
 
 # Use the gazelle bazel modules instead of go.mod modules
 # gazelle:resolve_regexp go github.com/bazelbuild/bazel-gazelle/(.*) @bazel_gazelle//$1:go_default_library
-# gazelle:resolve_regexp go github.com/bazel-contrib/rules_python/gazelle/(.*) @rules_python_gazelle_plugin//$1
 # gazelle:resolve_regexp go github.com/bazelbuild/rules_go/(.*) @io_bazel_rules_go//$1
-# gazelle:resolve_regexp go github.com/EngFlow/gazelle_cc/(.*) @gazelle_cc//$1
 
 # gazelle:resolve go github.com/bazelbuild/buildtools/build @com_github_bazelbuild_buildtools//build:go_default_library
 

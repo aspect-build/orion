@@ -1,6 +1,6 @@
+load("@aspect_orion//:gazelle.bzl", "gazelle_generation_test")
 load("@bazel_gazelle//:def.bzl", "gazelle_binary")
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
-load("//:gazelle.bzl", "gazelle_generation_test")
 
 # gazelle:exclude tests/
 go_library(

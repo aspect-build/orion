@@ -14,8 +14,8 @@ go_library(
     importpath = "github.com/aspect-build/orion/runner/vendored/gazelle",
     visibility = ["//visibility:public"],
     deps = [
-        "//common/cache",
-        "//runner/vendored/gazelle/internal/wspace",
+        "//vendored/gazelle/internal/wspace",
+        "@aspect_orion//common/cache",
         "@bazel_gazelle//config:go_default_library",
         "@bazel_gazelle//flag:go_default_library",
         "@bazel_gazelle//label:go_default_library",

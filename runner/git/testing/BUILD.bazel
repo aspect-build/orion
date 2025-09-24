@@ -7,7 +7,7 @@ go_library(
     importpath = "github.com/aspect-build/orion/runner/git/testing",
     visibility = ["//visibility:public"],
     deps = [
-        "//runner/git",
+        "//git",
         "@bazel_gazelle//config:go_default_library",
         "@bazel_gazelle//label:go_default_library",
         "@bazel_gazelle//language:go_default_library",

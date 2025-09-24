@@ -1,5 +1,5 @@
+load("@aspect_orion//:gazelle.bzl", "gazelle_generation_test")
 load("@bazel_gazelle//:def.bzl", "gazelle_binary")
-load("//:gazelle.bzl", "gazelle_generation_test")
 
 # Disable the gazelle extensions
 # gazelle:exclude .
@@ -8,8 +8,8 @@ gazelle_binary(
     name = "gazelle_bin",
     testonly = True,
     languages = [
-        "//language/js",
-        "//runner/git/testing",
+        "@aspect_orion//language/js",
+        "//git/testing",
     ],
     visibility = ["//visibility:private"],
 )
