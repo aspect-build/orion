@@ -1,5 +1,5 @@
+load("@aspect_gazelle//:gazelle.bzl", "gazelle_generation_test")
 load("@rules_go//go:def.bzl", "go_binary", "go_library")
-load("//:gazelle.bzl", "gazelle_generation_test")
 
 # Disable the gazelle extensions
 # gazelle:exclude tests/**
@@ -24,7 +24,7 @@ go_library(
     srcs = ["test.go"],
     importpath = "github.com/aspect-build/aspect-gazelle/runner/tests",
     visibility = ["//visibility:private"],
-    deps = ["//runner"],
+    deps = ["//:runner"],
 )
 
 go_binary(

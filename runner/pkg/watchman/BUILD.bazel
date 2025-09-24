@@ -9,10 +9,10 @@ go_library(
     importpath = "github.com/aspect-build/aspect-gazelle/runner/pkg/watchman",
     visibility = ["//visibility:public"],
     deps = [
-        "//common/bazel",
-        "//common/cache",
-        "//common/logger",
-        "//runner/pkg/socket",
+        "//pkg/socket",
+        "@aspect_gazelle//common/bazel",
+        "@aspect_gazelle//common/cache",
+        "@aspect_gazelle//common/logger",
         "@gazelle//config",
     ],
 )

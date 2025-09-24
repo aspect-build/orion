@@ -1,6 +1,6 @@
+load("@aspect_gazelle//:gazelle.bzl", "gazelle_generation_test")
 load("@gazelle//:def.bzl", "gazelle_binary")
 load("@rules_go//go:def.bzl", "go_library")
-load("//:gazelle.bzl", "gazelle_generation_test")
 
 # gazelle:exclude tests/
 go_library(

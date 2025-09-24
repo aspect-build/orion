@@ -1,4 +1,39 @@
+load("@gazelle//:def.bzl", "gazelle", "gazelle_binary")
 load("@rules_go//go:def.bzl", "go_library")
+
+# gazelle:lang go
+# gazelle:build_file_name BUILD.bazel
+
+# Go config
+# gazelle:go_naming_convention import
+# gazelle:go_naming_convention_external import
+
+# Use the gazelle bazel modules instead of go.mod modules
+# gazelle:resolve_regexp go github.com/bazelbuild/bazel-gazelle/(.*) @gazelle//$1
+# gazelle:resolve_regexp go github.com/bazel-contrib/rules_python/gazelle/(.*) @rules_python_gazelle_plugin//$1
+# gazelle:resolve_regexp go github.com/bazelbuild/rules_go/(.*) @rules_go//$1
+# gazelle:resolve_regexp go github.com/EngFlow/gazelle_cc/(.*) @gazelle_cc//$1
+# gazelle:resolve_regexp go github.com/aspect-build/aspect-gazelle/(common|language)/(.*) @aspect_gazelle//$1/$2
+# gazelle:resolve_regexp go github.com/aspect-build/aspect-gazelle/runner/(.*) //$1
+
+gazelle_binary(
+    name = "gazelle_bin",
+    languages = [
+        "@gazelle//language/go:go_default_library",
+    ],
+)
+
+gazelle(
+    name = "gazelle",
+    extra_args = ["-index=lazy"],
+    gazelle = ":gazelle_bin",
+)
+
+gazelle(
+    name = "gazelle.check",
+    gazelle = ":gazelle_bin",
+    mode = "diff",
+)
 
 go_library(
     name = "runner",
@@ -6,15 +41,15 @@ go_library(
     importpath = "github.com/aspect-build/aspect-gazelle/runner",
     visibility = ["//visibility:public"],
     deps = [
-        "//common/bazel",
-        "//language/js",
-        "//language/orion",
-        "//runner/language/bzl",
-        "//runner/language/python",
-        "//runner/pkg/git",
-        "//runner/pkg/ibp",
-        "//runner/progress",
-        "//runner/vendored/gazelle",
+        "//language/bzl",
+        "//language/python",
+        "//pkg/git",
+        "//pkg/ibp",
+        "//progress",
+        "//vendored/gazelle",
+        "@aspect_gazelle//common/bazel",
+        "@aspect_gazelle//language/js",
+        "@aspect_gazelle//language/orion",
         "@gazelle//config",
         "@gazelle//language",
         "@gazelle//language/go",

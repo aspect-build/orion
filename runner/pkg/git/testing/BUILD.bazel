@@ -7,7 +7,7 @@ go_library(
     importpath = "github.com/aspect-build/aspect-gazelle/runner/pkg/git/testing",
     visibility = ["//visibility:public"],
     deps = [
-        "//runner/pkg/git",
+        "//pkg/git",
         "@gazelle//config",
         "@gazelle//label",
         "@gazelle//language",

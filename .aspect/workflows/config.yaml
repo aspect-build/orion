@@ -1,4 +1,11 @@
 # See https://docs.aspect.build/workflows/configuration/tasks
+workspaces:
+  .:
+      icon: deer
+  runner:
+      tasks:
+        - buildifier:
+            without: true
 tasks:
   - buildifier:
   - gazelle:
