@@ -4,5 +4,5 @@ go_library(
     name = "wspace",
     srcs = ["finder.go"],
     importpath = "github.com/aspect-build/aspect-gazelle/runner/vendored/gazelle/internal/wspace",
-    visibility = ["//runner/vendored/gazelle:__subpackages__"],
+    visibility = ["//vendored/gazelle:__subpackages__"],
 )
