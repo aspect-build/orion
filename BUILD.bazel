@@ -1,35 +1,30 @@
-load("@bazel_gazelle//:def.bzl", "gazelle", "gazelle_binary")
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@buildifier_prebuilt//:rules.bzl", "buildifier")
+load("@gazelle//:def.bzl", "gazelle", "gazelle_binary")
 
 # gazelle:lang go
 # gazelle:build_file_name BUILD.bazel
-
-# Only update and do not create new BUILDs
-# gazelle:generation_mode update_only
 
 # Go config
 # gazelle:go_naming_convention import
 # gazelle:go_naming_convention_external import
 
 # Use the gazelle bazel modules instead of go.mod modules
-# gazelle:resolve_regexp go github.com/bazelbuild/bazel-gazelle/(.*) @bazel_gazelle//$1:go_default_library
+# gazelle:resolve_regexp go github.com/bazelbuild/bazel-gazelle/(.*) @gazelle//$1
 # gazelle:resolve_regexp go github.com/bazel-contrib/rules_python/gazelle/(.*) @rules_python_gazelle_plugin//$1
-# gazelle:resolve_regexp go github.com/bazelbuild/rules_go/(.*) @io_bazel_rules_go//$1
+# gazelle:resolve_regexp go github.com/bazelbuild/rules_go/(.*) @rules_go//$1
 # gazelle:resolve_regexp go github.com/EngFlow/gazelle_cc/(.*) @gazelle_cc//$1
-
-# gazelle:resolve go github.com/bazelbuild/buildtools/build @com_github_bazelbuild_buildtools//build:go_default_library
 
 gazelle_binary(
     name = "gazelle_bin",
     languages = [
-        "@bazel_gazelle//language/go:go_default_library",
+        "@gazelle//language/go:go_default_library",
     ],
 )
 
 gazelle(
     name = "gazelle",
-    # extra_args = ["-index=lazy"],
+    extra_args = ["-index=lazy"],
     gazelle = ":gazelle_bin",
 )
 
@@ -37,7 +32,7 @@ bzl_library(
     name = "gazelle_lib",
     srcs = ["gazelle.bzl"],
     visibility = ["//visibility:public"],
-    deps = ["@bazel_gazelle//:def"],
+    deps = ["@gazelle//:def"],
 )
 
 alias(

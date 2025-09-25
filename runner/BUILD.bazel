@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+load("@rules_go//go:def.bzl", "go_binary", "go_library")
 
 go_library(
     name = "runner",
@@ -14,10 +14,10 @@ go_library(
         "//runner/language/bzl",
         "//runner/language/python",
         "//runner/vendored/gazelle",
-        "@bazel_gazelle//config:go_default_library",
-        "@bazel_gazelle//language:go_default_library",
-        "@bazel_gazelle//language/go:go_default_library",
-        "@bazel_gazelle//language/proto:go_default_library",
+        "@gazelle//config",
+        "@gazelle//language",
+        "@gazelle//language/go",
+        "@gazelle//language/proto",
         "@gazelle_cc//language/cc",
         "@io_opentelemetry_go_otel//:otel",
         "@io_opentelemetry_go_otel//attribute",
@@ -36,7 +36,7 @@ go_library(
         "//common/buildinfo",
         "//common/ibp",
         "//language/orion",
-        "@bazel_gazelle//language:go_default_library",
+        "@gazelle//language:go_default_library",
         "@in_gopkg_yaml_v3//:yaml_v3",
     ],
 )

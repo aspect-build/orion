@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "testing",
@@ -8,11 +8,11 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//runner/git",
-        "@bazel_gazelle//config:go_default_library",
-        "@bazel_gazelle//label:go_default_library",
-        "@bazel_gazelle//language:go_default_library",
-        "@bazel_gazelle//repo:go_default_library",
-        "@bazel_gazelle//resolve:go_default_library",
-        "@bazel_gazelle//rule:go_default_library",
+        "@gazelle//config",
+        "@gazelle//label",
+        "@gazelle//language",
+        "@gazelle//repo",
+        "@gazelle//resolve",
+        "@gazelle//rule",
     ],
 )

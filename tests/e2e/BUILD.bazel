@@ -1,4 +1,4 @@
-load("@bazel_gazelle//:def.bzl", "gazelle_binary")
+load("@gazelle//:def.bzl", "gazelle_binary")
 load("//:gazelle.bzl", "gazelle_generation_test")
 
 # Disable the gazelle extensions

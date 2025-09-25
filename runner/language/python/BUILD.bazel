@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "python",
@@ -9,24 +9,24 @@ go_library(
     importpath = "github.com/aspect-build/aspect-gazelle/runner/language/python",
     visibility = ["//visibility:public"],
     deps = select({
-        "@io_bazel_rules_go//go/platform:android": [
-            "@bazel_gazelle//language:go_default_library",
+        "@rules_go//go/platform:android": [
+            "@gazelle//language",
             "@rules_python_gazelle_plugin//python",
         ],
-        "@io_bazel_rules_go//go/platform:darwin": [
-            "@bazel_gazelle//language:go_default_library",
+        "@rules_go//go/platform:darwin": [
+            "@gazelle//language",
             "@rules_python_gazelle_plugin//python",
         ],
-        "@io_bazel_rules_go//go/platform:ios": [
-            "@bazel_gazelle//language:go_default_library",
+        "@rules_go//go/platform:ios": [
+            "@gazelle//language",
             "@rules_python_gazelle_plugin//python",
         ],
-        "@io_bazel_rules_go//go/platform:linux": [
-            "@bazel_gazelle//language:go_default_library",
+        "@rules_go//go/platform:linux": [
+            "@gazelle//language",
             "@rules_python_gazelle_plugin//python",
         ],
-        "@io_bazel_rules_go//go/platform:windows": [
-            "@bazel_gazelle//language:go_default_library",
+        "@rules_go//go/platform:windows": [
+            "@gazelle//language",
         ],
         "//conditions:default": [],
     }),

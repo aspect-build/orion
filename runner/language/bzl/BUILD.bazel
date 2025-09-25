@@ -1,5 +1,5 @@
-load("@bazel_gazelle//:def.bzl", "gazelle_binary")
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@gazelle//:def.bzl", "gazelle_binary")
+load("@rules_go//go:def.bzl", "go_library")
 load("//:gazelle.bzl", "gazelle_generation_test")
 
 # gazelle:exclude tests/
@@ -9,14 +9,14 @@ go_library(
     importpath = "github.com/aspect-build/aspect-gazelle/runner/language/bzl",
     visibility = ["//visibility:public"],
     deps = [
-        "@bazel_gazelle//config:go_default_library",
-        "@bazel_gazelle//label:go_default_library",
-        "@bazel_gazelle//language:go_default_library",
-        "@bazel_gazelle//pathtools:go_default_library",
-        "@bazel_gazelle//repo:go_default_library",
-        "@bazel_gazelle//resolve:go_default_library",
-        "@bazel_gazelle//rule:go_default_library",
-        "@com_github_bazelbuild_buildtools//build:go_default_library",
+        "@com_github_bazelbuild_buildtools//build",
+        "@gazelle//config",
+        "@gazelle//label",
+        "@gazelle//language",
+        "@gazelle//pathtools",
+        "@gazelle//repo",
+        "@gazelle//resolve",
+        "@gazelle//rule",
     ],
 )
 
@@ -25,7 +25,7 @@ gazelle_binary(
     name = "gazelle_bzl_binary",
     testonly = True,
     languages = [
-        "@bazel_gazelle//language/proto:go_default_library",
+        "@gazelle//language/proto:go_default_library",
         ":bzl",
     ],
     visibility = ["//visibility:private"],

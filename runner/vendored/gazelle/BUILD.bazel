@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "gazelle",
@@ -16,16 +16,16 @@ go_library(
     deps = [
         "//common/cache",
         "//runner/vendored/gazelle/internal/wspace",
-        "@bazel_gazelle//config:go_default_library",
-        "@bazel_gazelle//flag:go_default_library",
-        "@bazel_gazelle//label:go_default_library",
-        "@bazel_gazelle//language:go_default_library",
-        "@bazel_gazelle//merger:go_default_library",
-        "@bazel_gazelle//repo:go_default_library",
-        "@bazel_gazelle//resolve:go_default_library",
-        "@bazel_gazelle//rule:go_default_library",
-        "@bazel_gazelle//walk:go_default_library",
-        "@com_github_bazelbuild_buildtools//build:go_default_library",
+        "@com_github_bazelbuild_buildtools//build",
         "@com_github_pmezard_go_difflib//difflib",
+        "@gazelle//config",
+        "@gazelle//flag",
+        "@gazelle//label",
+        "@gazelle//language",
+        "@gazelle//merger",
+        "@gazelle//repo",
+        "@gazelle//resolve",
+        "@gazelle//rule",
+        "@gazelle//walk",
     ],
 )
