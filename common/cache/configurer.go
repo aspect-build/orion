@@ -28,7 +28,7 @@ func Get(config *config.Config) Cache {
 var cacheFactory CacheFactory
 
 func init() {
-	if diskCachePath := os.Getenv("ASPECT_CONFIGURE_CACHE"); diskCachePath != "" {
+	if diskCachePath := os.Getenv("ASPECT_GAZELLE_CACHE"); diskCachePath != "" {
 		cacheFactory = func(c *config.Config) Cache {
 			return NewDiskCache(diskCachePath)
 		}

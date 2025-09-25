@@ -11,7 +11,7 @@ go_library(
         "print.go",
         "profiler.go",
     ],
-    importpath = "github.com/aspect-build/orion/runner/vendored/gazelle",
+    importpath = "github.com/aspect-build/aspect-gazelle/runner/vendored/gazelle",
     visibility = ["//visibility:public"],
     deps = [
         "//common/cache",

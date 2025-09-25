@@ -4,7 +4,7 @@ import (
 	"io"
 	"path"
 
-	BazelLog "github.com/aspect-build/orion/common/logger"
+	BazelLog "github.com/aspect-build/aspect-gazelle/common/logger"
 	"github.com/msolo/jsonr"
 )
 

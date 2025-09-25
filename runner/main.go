@@ -7,10 +7,10 @@ import (
 	"os"
 	"path"
 
-	"github.com/aspect-build/orion/common/buildinfo"
-	"github.com/aspect-build/orion/common/ibp"
-	host "github.com/aspect-build/orion/language/host"
-	"github.com/aspect-build/orion/runner"
+	"github.com/aspect-build/aspect-gazelle/common/buildinfo"
+	"github.com/aspect-build/aspect-gazelle/common/ibp"
+	host "github.com/aspect-build/aspect-gazelle/language/orion"
+	"github.com/aspect-build/aspect-gazelle/runner"
 	"github.com/bazelbuild/bazel-gazelle/language"
 	"gopkg.in/yaml.v3"
 )

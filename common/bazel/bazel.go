@@ -3,7 +3,7 @@ package bazel
 import (
 	"os"
 
-	"github.com/aspect-build/orion/common/bazel/workspace"
+	"github.com/aspect-build/aspect-gazelle/common/bazel/workspace"
 )
 
 var workingDirectory string

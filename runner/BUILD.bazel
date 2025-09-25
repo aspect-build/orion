@@ -3,7 +3,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 go_library(
     name = "runner",
     srcs = ["runner.go"],
-    importpath = "github.com/aspect-build/orion/runner",
+    importpath = "github.com/aspect-build/aspect-gazelle/runner",
     visibility = ["//visibility:public"],
     deps = [
         "//common/bazel",
@@ -29,13 +29,13 @@ go_library(
 go_library(
     name = "configure_lib",
     srcs = ["main.go"],
-    importpath = "github.com/aspect-build/orion/",
+    importpath = "github.com/aspect-build/aspect-gazelle/",
     visibility = ["//visibility:private"],
     deps = [
         ":runner",
         "//common/buildinfo",
         "//common/ibp",
-        "//language/host",
+        "//language/orion",
         "@bazel_gazelle//language:go_default_library",
         "@in_gopkg_yaml_v3//:yaml_v3",
     ],

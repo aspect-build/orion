@@ -9,7 +9,7 @@ import (
 	"go.starlark.net/starlark"
 	"go.starlark.net/syntax"
 
-	stdlib "github.com/aspect-build/orion/common/starlark/stdlib"
+	stdlib "github.com/aspect-build/aspect-gazelle/common/starlark/stdlib"
 )
 
 // The signature for a starlark module loader (see starlark.Thread.Load)

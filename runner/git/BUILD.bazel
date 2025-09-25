@@ -6,7 +6,7 @@ exports_files(["gazelle-gitignore.patch"])
 go_library(
     name = "git",
     srcs = ["gitignore.go"],
-    importpath = "github.com/aspect-build/orion/runner/git",
+    importpath = "github.com/aspect-build/aspect-gazelle/runner/git",
     visibility = ["//visibility:public"],
     deps = [
         "//common/logger",

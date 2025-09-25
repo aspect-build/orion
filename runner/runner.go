@@ -25,14 +25,14 @@ import (
 	"strings"
 
 	"github.com/EngFlow/gazelle_cc/language/cc"
-	"github.com/aspect-build/orion/common/bazel"
-	"github.com/aspect-build/orion/common/ibp"
-	"github.com/aspect-build/orion/common/progress"
-	js "github.com/aspect-build/orion/language/js"
-	"github.com/aspect-build/orion/runner/git"
-	"github.com/aspect-build/orion/runner/language/bzl"
-	"github.com/aspect-build/orion/runner/language/python"
-	vendoredGazelle "github.com/aspect-build/orion/runner/vendored/gazelle"
+	"github.com/aspect-build/aspect-gazelle/common/bazel"
+	"github.com/aspect-build/aspect-gazelle/common/ibp"
+	"github.com/aspect-build/aspect-gazelle/common/progress"
+	js "github.com/aspect-build/aspect-gazelle/language/js"
+	"github.com/aspect-build/aspect-gazelle/runner/git"
+	"github.com/aspect-build/aspect-gazelle/runner/language/bzl"
+	"github.com/aspect-build/aspect-gazelle/runner/language/python"
+	vendoredGazelle "github.com/aspect-build/aspect-gazelle/runner/vendored/gazelle"
 	"github.com/bazelbuild/bazel-gazelle/config"
 	"github.com/bazelbuild/bazel-gazelle/language"
 	golang "github.com/bazelbuild/bazel-gazelle/language/go"
@@ -74,17 +74,17 @@ const (
 // An environment variable to set the full path to the gazelle repo_config
 const GO_REPOSITORY_CONFIG_ENV = "bazel_gazelle_go_repository_config"
 
-// Setup the 'configure' support for gitignore within Gazelle.
+// Setup gitignore within Gazelle.
 func init() {
 	git.SetupGitIgnore()
 }
 
 func New() *GazelleRunner {
 	c := &GazelleRunner{
-		tracer: otel.GetTracerProvider().Tracer("aspect-configure"),
+		tracer: otel.GetTracerProvider().Tracer("aspect-gazelle"),
 	}
 
-	if os.Getenv("CONFIGURE_PROGRESS") != "" && term.IsTerminal(int(os.Stdout.Fd())) {
+	if os.Getenv("GAZELLE_PROGRESS") != "" && term.IsTerminal(int(os.Stdout.Fd())) {
 		c.AddLanguageFactory("progress", progress.NewLanguage)
 	}
 

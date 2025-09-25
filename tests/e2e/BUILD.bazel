@@ -12,7 +12,7 @@ gazelle_binary(
     testonly = True,
     languages = [
         "//language/js",
-        "//language/host",
+        "//language/orion",
     ],
     visibility = ["//visibility:private"],
 )

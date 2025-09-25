@@ -3,7 +3,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 go_library(
     name = "watch",
     srcs = ["watch.go"],
-    importpath = "github.com/aspect-build/orion/common/watch",
+    importpath = "github.com/aspect-build/aspect-gazelle/common/watch",
     visibility = ["//visibility:public"],
     deps = [
         "//common/bazel",

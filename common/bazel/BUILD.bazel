@@ -6,7 +6,7 @@ go_library(
         "bazel.go",
         "bazelignore.go",
     ],
-    importpath = "github.com/aspect-build/orion/common/bazel",
+    importpath = "github.com/aspect-build/aspect-gazelle/common/bazel",
     visibility = ["//visibility:public"],
     deps = [
         "//common/bazel/workspace",

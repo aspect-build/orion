@@ -8,8 +8,8 @@ import (
 	"path"
 	"strings"
 
-	common "github.com/aspect-build/orion/common"
-	BazelLog "github.com/aspect-build/orion/common/logger"
+	common "github.com/aspect-build/aspect-gazelle/common"
+	BazelLog "github.com/aspect-build/aspect-gazelle/common/logger"
 	"github.com/bazelbuild/bazel-gazelle/config"
 	"github.com/bazelbuild/bazel-gazelle/label"
 	"github.com/bazelbuild/bazel-gazelle/rule"

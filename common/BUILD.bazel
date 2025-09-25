@@ -10,7 +10,7 @@ go_library(
         "set.go",
         "walk.go",
     ],
-    importpath = "github.com/aspect-build/orion/common",
+    importpath = "github.com/aspect-build/aspect-gazelle/common",
     visibility = ["//visibility:public"],
     deps = [
         "//common/logger",

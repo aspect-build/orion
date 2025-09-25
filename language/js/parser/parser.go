@@ -6,9 +6,9 @@ import (
 	"regexp"
 	"strings"
 
-	Log "github.com/aspect-build/orion/common/logger"
+	Log "github.com/aspect-build/aspect-gazelle/common/logger"
 
-	treeutils "github.com/aspect-build/orion/common/treesitter"
+	treeutils "github.com/aspect-build/aspect-gazelle/common/treesitter"
 )
 
 // Parse and find imports using TreeSitter (https://tree-sitter.github.io/).

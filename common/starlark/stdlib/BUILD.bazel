@@ -3,7 +3,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 go_library(
     name = "stdlib",
     srcs = ["path.go"],
-    importpath = "github.com/aspect-build/orion/common/starlark/stdlib",
+    importpath = "github.com/aspect-build/aspect-gazelle/common/starlark/stdlib",
     visibility = ["//visibility:public"],
     deps = [
         "//common/starlark/utils",

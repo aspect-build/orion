@@ -16,7 +16,7 @@ go_library(
         "resolve.go",
         "target.go",
     ],
-    importpath = "github.com/aspect-build/orion/language/js",
+    importpath = "github.com/aspect-build/aspect-gazelle/language/js",
     visibility = ["//visibility:public"],
     deps = [
         "//common",

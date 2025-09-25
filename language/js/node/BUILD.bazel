@@ -10,7 +10,7 @@ go_library(
         "std_modules.go",
         "std_modules_list.go",
     ],
-    importpath = "github.com/aspect-build/orion/language/js/node",
+    importpath = "github.com/aspect-build/aspect-gazelle/language/js/node",
     visibility = ["//visibility:public"],
     deps = [
         "//common/logger",

@@ -68,7 +68,7 @@ nogo(
 go_library(
     name = "go",
     srcs = ["tools.go"],
-    importpath = "github.com/aspect-build/orion/bazel/go",
+    importpath = "github.com/aspect-build/aspect-gazelle/bazel/go",
     visibility = ["//visibility:public"],
     deps = [
         "@org_golang_google_genproto_googleapis_api//:api",

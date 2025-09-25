@@ -6,7 +6,7 @@ go_library(
         "client.go",
         "protocol.go",
     ],
-    importpath = "github.com/aspect-build/orion/common/ibp",
+    importpath = "github.com/aspect-build/aspect-gazelle/common/ibp",
     visibility = ["//visibility:public"],
     deps = [
         "//common/socket",

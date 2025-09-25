@@ -9,7 +9,7 @@ go_library(
         "parser_v9.go",
         "workspace.go",
     ],
-    importpath = "github.com/aspect-build/orion/language/js/pnpm",
+    importpath = "github.com/aspect-build/aspect-gazelle/language/js/pnpm",
     visibility = ["//visibility:public"],
     deps = [
         "@bazel_gazelle//label:go_default_library",

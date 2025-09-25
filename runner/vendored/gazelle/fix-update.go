@@ -32,8 +32,8 @@ import (
 
 	"github.com/bazelbuild/buildtools/build"
 
-	"github.com/aspect-build/orion/common/cache"
-	"github.com/aspect-build/orion/runner/vendored/gazelle/internal/wspace"
+	"github.com/aspect-build/aspect-gazelle/common/cache"
+	"github.com/aspect-build/aspect-gazelle/runner/vendored/gazelle/internal/wspace"
 	"github.com/bazelbuild/bazel-gazelle/config"
 	gzflag "github.com/bazelbuild/bazel-gazelle/flag"
 	"github.com/bazelbuild/bazel-gazelle/label"

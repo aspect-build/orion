@@ -8,7 +8,7 @@ import (
 	"path"
 	"strings"
 
-	BazelLog "github.com/aspect-build/orion/common/logger"
+	BazelLog "github.com/aspect-build/aspect-gazelle/common/logger"
 	"github.com/bazelbuild/bazel-gazelle/walk"
 	gitignore "github.com/go-git/go-git/v5/plumbing/format/gitignore"
 )

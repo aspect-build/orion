@@ -6,7 +6,7 @@ go_library(
         "config.go",
         "tsconfig.go",
     ],
-    importpath = "github.com/aspect-build/orion/language/js/typescript",
+    importpath = "github.com/aspect-build/aspect-gazelle/language/js/typescript",
     visibility = ["//visibility:public"],
     deps = [
         "//common/logger",

@@ -8,6 +8,6 @@ go_library(
     ],
     cgo = True,
     copts = ["-Iexternal/tree-sitter-rust"],  #keep
-    importpath = "github.com/aspect-build/orion/common/treesitter/grammars/rust",
+    importpath = "github.com/aspect-build/aspect-gazelle/common/treesitter/grammars/rust",
     visibility = ["//common/treesitter:__subpackages__"],
 )

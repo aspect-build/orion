@@ -7,7 +7,7 @@ go_library(
         "glob.go",
         "rule.go",
     ],
-    importpath = "github.com/aspect-build/orion/common/starlark",
+    importpath = "github.com/aspect-build/aspect-gazelle/common/starlark",
     visibility = ["//visibility:public"],
     deps = [
         "//common/logger",

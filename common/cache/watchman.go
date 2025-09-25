@@ -9,8 +9,8 @@ import (
 	"runtime"
 	"sync"
 
-	BazelLog "github.com/aspect-build/orion/common/logger"
-	watcher "github.com/aspect-build/orion/common/watch"
+	BazelLog "github.com/aspect-build/aspect-gazelle/common/logger"
+	watcher "github.com/aspect-build/aspect-gazelle/common/watch"
 	"github.com/bazelbuild/bazel-gazelle/config"
 )
 
@@ -36,12 +36,12 @@ type watchmanCache struct {
 var _ Cache = (*watchmanCache)(nil)
 
 func NewWatchmanCache(c *config.Config) Cache {
-	diskCachePath := os.Getenv("ASPECT_CONFIGURE_CACHE")
+	diskCachePath := os.Getenv("ASPECT_GAZELLE_CACHE")
 	if diskCachePath == "" {
 		// A default path for the cache file.
 		// Try to be unique per repo to allow re-use, while using a temp dir to avoid clutter and indicate
 		// the cache is not required.
-		diskCachePath = path.Join(os.TempDir(), fmt.Sprintf("aspect-configure-%v.cache", c.RepoName))
+		diskCachePath = path.Join(os.TempDir(), fmt.Sprintf("aspect-gazelle-%v.cache", c.RepoName))
 	}
 
 	// Start the watcher

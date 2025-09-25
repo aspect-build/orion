@@ -3,7 +3,7 @@ package starlark
 import (
 	"path"
 
-	utils "github.com/aspect-build/orion/common/starlark/utils"
+	utils "github.com/aspect-build/aspect-gazelle/common/starlark/utils"
 
 	"go.starlark.net/starlark"
 )

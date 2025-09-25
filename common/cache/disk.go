@@ -8,8 +8,8 @@ import (
 	"path"
 	"sync"
 
-	"github.com/aspect-build/orion/common/buildinfo"
-	BazelLog "github.com/aspect-build/orion/common/logger"
+	"github.com/aspect-build/aspect-gazelle/common/buildinfo"
+	BazelLog "github.com/aspect-build/aspect-gazelle/common/logger"
 )
 
 /**

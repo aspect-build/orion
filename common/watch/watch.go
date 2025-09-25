@@ -10,8 +10,8 @@ import (
 	"path"
 	"sync/atomic"
 
-	"github.com/aspect-build/orion/common/bazel"
-	"github.com/aspect-build/orion/common/socket"
+	"github.com/aspect-build/aspect-gazelle/common/bazel"
+	"github.com/aspect-build/aspect-gazelle/common/socket"
 )
 
 type ChangeSet struct {

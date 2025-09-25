@@ -1,4 +1,4 @@
-module github.com/aspect-build/orion
+module github.com/aspect-build/aspect-gazelle
 
 go 1.24.5
 

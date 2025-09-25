@@ -9,7 +9,7 @@ go_library(
         "noop.go",
         "watchman.go",
     ],
-    importpath = "github.com/aspect-build/orion/common/cache",
+    importpath = "github.com/aspect-build/aspect-gazelle/common/cache",
     visibility = ["//visibility:public"],
     deps = [
         "//common/buildinfo",

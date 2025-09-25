@@ -6,6 +6,6 @@ go_library(
         "json.go",
         "socket.go",
     ],
-    importpath = "github.com/aspect-build/orion/common/socket",
+    importpath = "github.com/aspect-build/aspect-gazelle/common/socket",
     visibility = ["//visibility:public"],
 )

@@ -1,1 +1,1 @@
-// Just to ensure generation until https://github.com/aspect-build/orion/pull/3438
+// Just to ensure generation until https://github.com/aspect-build/aspect-gazelle/pull/3438

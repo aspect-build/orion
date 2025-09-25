@@ -8,7 +8,7 @@ go_library(
         "queries.go",
         "query.go",
     ],
-    importpath = "github.com/aspect-build/orion/common/treesitter",
+    importpath = "github.com/aspect-build/aspect-gazelle/common/treesitter",
     visibility = ["//visibility:public"],
     deps = [
         "//common",

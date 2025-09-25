@@ -6,6 +6,6 @@ go_library(
         "finder.go",
         "not_found_error.go",
     ],
-    importpath = "github.com/aspect-build/orion/common/bazel/workspace",
+    importpath = "github.com/aspect-build/aspect-gazelle/common/bazel/workspace",
     visibility = ["//visibility:public"],
 )

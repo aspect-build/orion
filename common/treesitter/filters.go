@@ -1,7 +1,7 @@
 package treesitter
 
 import (
-	common "github.com/aspect-build/orion/common"
+	common "github.com/aspect-build/aspect-gazelle/common"
 	sitter "github.com/smacker/go-tree-sitter"
 )
 

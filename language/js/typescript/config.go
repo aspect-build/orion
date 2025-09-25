@@ -6,9 +6,9 @@ import (
 	"strings"
 	"sync"
 
-	BazelLog "github.com/aspect-build/orion/common/logger"
-	node "github.com/aspect-build/orion/language/js/node"
-	pnpm "github.com/aspect-build/orion/language/js/pnpm"
+	BazelLog "github.com/aspect-build/aspect-gazelle/common/logger"
+	node "github.com/aspect-build/aspect-gazelle/language/js/node"
+	pnpm "github.com/aspect-build/aspect-gazelle/language/js/pnpm"
 )
 
 type workspacePath struct {

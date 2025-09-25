@@ -1,8 +1,8 @@
 package gazelle
 
 import (
-	pnpm "github.com/aspect-build/orion/language/js/pnpm"
-	"github.com/aspect-build/orion/language/js/typescript"
+	pnpm "github.com/aspect-build/aspect-gazelle/language/js/pnpm"
+	"github.com/aspect-build/aspect-gazelle/language/js/typescript"
 	"github.com/bazelbuild/bazel-gazelle/label"
 	"github.com/bazelbuild/bazel-gazelle/language"
 )

@@ -3,7 +3,7 @@ package git_testing
 import (
 	"flag"
 
-	"github.com/aspect-build/orion/runner/git"
+	"github.com/aspect-build/aspect-gazelle/runner/git"
 	"github.com/bazelbuild/bazel-gazelle/config"
 	"github.com/bazelbuild/bazel-gazelle/label"
 	"github.com/bazelbuild/bazel-gazelle/language"

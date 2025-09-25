@@ -4,7 +4,7 @@ go_library(
     name = "testing",
     testonly = True,
     srcs = ["language.go"],
-    importpath = "github.com/aspect-build/orion/runner/git/testing",
+    importpath = "github.com/aspect-build/aspect-gazelle/runner/git/testing",
     visibility = ["//visibility:public"],
     deps = [
         "//runner/git",

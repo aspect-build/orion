@@ -8,6 +8,6 @@ go_library(
     ],
     cgo = True,
     copts = ["-Iexternal/*tree-sitter-typescript"],  #keep
-    importpath = "github.com/aspect-build/orion/common/treesitter/grammars/tsx",
+    importpath = "github.com/aspect-build/aspect-gazelle/common/treesitter/grammars/tsx",
     visibility = ["//common/treesitter:__subpackages__"],
 )

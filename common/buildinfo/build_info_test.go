@@ -19,7 +19,7 @@ package buildinfo_test
 import (
 	"testing"
 
-	"github.com/aspect-build/orion/common/buildinfo"
+	"github.com/aspect-build/aspect-gazelle/common/buildinfo"
 	. "github.com/onsi/gomega"
 )
 

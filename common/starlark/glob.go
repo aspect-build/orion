@@ -3,7 +3,7 @@ package starlark
 import (
 	"fmt"
 
-	BazelLog "github.com/aspect-build/orion/common/logger"
+	BazelLog "github.com/aspect-build/aspect-gazelle/common/logger"
 	"github.com/bazelbuild/bazel-gazelle/rule"
 	bzl "github.com/bazelbuild/buildtools/build"
 	"github.com/bmatcuk/doublestar/v4"
