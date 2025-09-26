@@ -14,7 +14,6 @@ require (
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/msolo/jsonr v0.0.0-20231023064044-62fbfc3a0313
 	github.com/onsi/gomega v1.34.1
-	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/smacker/go-tree-sitter v0.0.0-20240827094217-dd81d9e9be82
 	go.starlark.net v0.0.0-20250717191651-336a4b3a6d1d
 	golang.org/x/exp v0.0.0-20250718183923-645b1fa84792 // indirect
@@ -26,7 +25,9 @@ require (
 )
 
 require (
+	github.com/bazel-contrib/rules_jvm v0.27.0
 	github.com/mikefarah/yq/v4 v4.46.1
+	github.com/rs/zerolog v1.34.0
 	golang.org/x/term v0.33.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20250603155806-513f23925822
 	gopkg.in/op/go-logging.v1 v1.0.0-20160211212156-b2cb9fa56473
@@ -51,6 +52,7 @@ require (
 require (
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
+	github.com/google/btree v1.1.3 // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/magiconair/properties v1.8.10 // indirect

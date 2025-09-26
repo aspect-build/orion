@@ -41,6 +41,7 @@ gazelle_binary(
         "//language/bzl",
         "//language/python",
         "@aspect_gazelle//language/js",
+        "@aspect_gazelle//language/kotlin",
         "@gazelle_cc//language/cc",
         "@gazelle//language/proto",
         "@gazelle//language/go",
