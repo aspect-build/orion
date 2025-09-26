@@ -9,7 +9,7 @@ import (
 
 	common "github.com/aspect-build/aspect-gazelle/common"
 	BazelLog "github.com/aspect-build/aspect-gazelle/common/logger"
-	starlark "github.com/aspect-build/aspect-gazelle/common/starlark"
+	ruleUtils "github.com/aspect-build/aspect-gazelle/common/rule"
 	node "github.com/aspect-build/aspect-gazelle/language/js/node"
 	"github.com/bazelbuild/bazel-gazelle/config"
 	"github.com/bazelbuild/bazel-gazelle/label"
@@ -74,7 +74,7 @@ func (ts *typeScriptLang) sourceFileImports(c *config.Config, r *rule.Rule, f *r
 			BazelLog.Errorf("Failed to fetch source files %s:%s - %v", f.Pkg, r.Name(), err)
 		}
 
-		expandedSrcs, err := starlark.ExpandSrcs(sourceFiles, r.Attr("srcs"))
+		expandedSrcs, err := ruleUtils.ExpandSrcs(sourceFiles, r.Attr("srcs"))
 		if err != nil {
 			BazelLog.Debugf("Failed to expand srcs of %s:%s - %v", f.Pkg, r.Name(), err)
 			return []resolve.ImportSpec{}
@@ -154,13 +154,13 @@ func (ts *typeScriptLang) protoLibraryImports(r *rule.Rule, f *rule.File) []reso
 		dtsOutputs = append(dtsOutputs, srcBase+"_pb")
 
 		// Connect: https://github.com/aspect-build/rules_ts/blob/v3.4.0/ts/private/ts_proto_library.bzl#L72-L73
-		if starlark.AttrBool(r, "gen_connect_es") {
+		if ruleUtils.AttrBool(r, "gen_connect_es") {
 			dtsOutputs = append(dtsOutputs, srcBase+"_connect")
 		}
 
 		// Query services: https://github.com/aspect-build/rules_ts/blob/v3.4.0/ts/private/ts_proto_library.bzl#L74-L78
-		if starlark.AttrBool(r, "gen_connect_query") {
-			for _, p := range starlark.AttrMap(r, "gen_connect_query_service_mapping") {
+		if ruleUtils.AttrBool(r, "gen_connect_query") {
+			for _, p := range ruleUtils.AttrMap(r, "gen_connect_query_service_mapping") {
 				proto := p.Key.(*build.StringExpr).Value
 				protoName := strings.TrimSuffix(proto, ".proto")
 

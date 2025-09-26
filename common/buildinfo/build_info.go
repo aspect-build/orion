@@ -17,7 +17,6 @@
 package buildinfo
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -94,25 +93,4 @@ func (bi BuildInfo) Version() string {
 		versionBuilder.WriteString(NoReleaseVersion)
 	}
 	return versionBuilder.String()
-}
-
-func (bi BuildInfo) Name() string {
-	return "Aspect CLI"
-}
-
-func (bi BuildInfo) GnuName() string {
-	return "aspect"
-}
-
-func (bi BuildInfo) CommandVersion(format VersionFormat) string {
-	switch format {
-	case GNUFormat:
-		return fmt.Sprintf("%s %s", bi.GnuName(), bi.Version())
-	case ConventionalFormat:
-		// Conventional is the default case
-		fallthrough
-	default:
-		// Use the Conventional format, if not recognized
-		return fmt.Sprintf("%s version: %s", bi.Name(), bi.Version())
-	}
 }

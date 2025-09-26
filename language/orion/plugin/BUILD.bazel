@@ -15,7 +15,7 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//common",
-        "//common/starlark/utils",
+        "//language/orion/starlark/utils",
         "@com_github_bmatcuk_doublestar_v4//:doublestar",
         "@com_github_emirpasic_gods//utils",
         "@net_starlark_go//starlark",

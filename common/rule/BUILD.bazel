@@ -1,0 +1,21 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "rule",
+    srcs = [
+        "attr.go",
+        "glob.go",
+        "rules.go",
+    ],
+    importpath = "github.com/aspect-build/aspect-gazelle/common/rule",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//common/logger",
+        "@com_github_bazelbuild_buildtools//build",
+        "@com_github_bmatcuk_doublestar_v4//:doublestar",
+        "@com_github_emirpasic_gods//sets/treeset",
+        "@gazelle//label",
+        "@gazelle//language",
+        "@gazelle//rule",
+    ],
+)

@@ -8,9 +8,9 @@ import (
 	"fmt"
 
 	BazelLog "github.com/aspect-build/aspect-gazelle/common/logger"
-	starEval "github.com/aspect-build/aspect-gazelle/common/starlark"
-	starUtils "github.com/aspect-build/aspect-gazelle/common/starlark/utils"
 	"github.com/aspect-build/aspect-gazelle/language/orion/plugin"
+	starEval "github.com/aspect-build/aspect-gazelle/language/orion/starlark"
+	starUtils "github.com/aspect-build/aspect-gazelle/language/orion/starlark/utils"
 	"go.starlark.net/starlark"
 )
 

@@ -26,10 +26,9 @@ import (
 	"strings"
 	"sync"
 
-	gazelle "github.com/aspect-build/aspect-gazelle/common"
 	"github.com/aspect-build/aspect-gazelle/common/cache"
 	BazelLog "github.com/aspect-build/aspect-gazelle/common/logger"
-	starlark "github.com/aspect-build/aspect-gazelle/common/starlark"
+	ruleUtils "github.com/aspect-build/aspect-gazelle/common/rule"
 	node "github.com/aspect-build/aspect-gazelle/language/js/node"
 	parser "github.com/aspect-build/aspect-gazelle/language/js/parser"
 	pnpm "github.com/aspect-build/aspect-gazelle/language/js/pnpm"
@@ -40,6 +39,7 @@ import (
 	"github.com/bazelbuild/bazel-gazelle/language"
 	"github.com/bazelbuild/bazel-gazelle/resolve"
 	"github.com/bazelbuild/bazel-gazelle/rule"
+	bzl "github.com/bazelbuild/buildtools/build"
 	"github.com/emirpasic/gods/maps/treemap"
 	"github.com/emirpasic/gods/sets/treeset"
 )
@@ -189,13 +189,8 @@ func (ts *typeScriptLang) addSourceRules(cfg *JsGazelleConfig, args language.Gen
 	}
 
 	// Collect source files.
-	collectErr := gazelle.GazelleWalkDir(args, func(file string) error {
+	for _, file := range args.RegularFiles {
 		processPotentialSourceFile(sourceFileGroups, file)
-		return nil
-	})
-	if collectErr != nil {
-		BazelLog.Errorf("Source collection error: %v\n", collectErr)
-		return
 	}
 
 	// Collect generated files.
@@ -208,7 +203,7 @@ func (ts *typeScriptLang) addSourceRules(cfg *JsGazelleConfig, args language.Gen
 	hasPackageTarget := isPnpmPackage && (cfg.GetNpmPackageGenerationMode() == NpmPackageEnabledMode || cfg.GetNpmPackageGenerationMode() == NpmPackageReferencedMode && ts.pnpmProjects.IsReferenced(args.Rel))
 
 	// The package/directory name variable value used to render the target names.
-	packageName := gazelle.ToDefaultTargetName(args, DefaultRootTargetName)
+	packageName := toDefaultTargetName(args, DefaultRootTargetName)
 
 	// Create rules for each target group.
 	sourceRules := treemap.NewWithStringComparator()
@@ -219,8 +214,8 @@ func (ts *typeScriptLang) addSourceRules(cfg *JsGazelleConfig, args language.Gen
 		var ruleSrcs, ruleGenSrcs *treeset.Set
 
 		// If the rule has it's own custom list of sources then parse and use that list.
-		if existing := gazelle.GetFileRuleByName(args, ruleName); existing != nil && sourceRuleKinds.Contains(existing.Kind()) && starlark.IsCustomSrcs(existing.Attr("srcs")) {
-			customSrcs, err := starlark.ExpandSrcs(args.RegularFiles, existing.Attr("srcs"))
+		if existing := ruleUtils.GetFileRuleByName(args, ruleName); existing != nil && sourceRuleKinds.Contains(existing.Kind()) && isCustomSrcs(existing.Attr("srcs")) {
+			customSrcs, err := ruleUtils.ExpandSrcs(args.RegularFiles, existing.Attr("srcs"))
 			if err != nil {
 				BazelLog.Infof("Failed to expand custom srcs %s:%s - %v", args.Rel, existing.Name(), err)
 			}
@@ -242,7 +237,7 @@ func (ts *typeScriptLang) addSourceRules(cfg *JsGazelleConfig, args language.Gen
 
 		if ruleSrcs == nil || ruleSrcs.Empty() {
 			// No sources for this source group. Remove the rule if it exists.
-			gazelle.RemoveRule(args, ruleName, sourceRuleKinds, result)
+			ruleUtils.RemoveRule(args, ruleName, sourceRuleKinds, result)
 		} else {
 			// Add or edit/merge a rule for this source group.
 			srcRule, srcGenErr := ts.addProjectRule(
@@ -438,7 +433,7 @@ func (ts *typeScriptLang) addTsProtoRules(cfg *JsGazelleConfig, args language.Ge
 	// Remove any ts_proto_library() targets associated with now-empty proto_library() targets
 	for _, emptyLibrary := range emptyLibraries {
 		ruleName := cfg.RenderTsProtoLibraryName(emptyLibrary.Name())
-		gazelle.RemoveRule(args, ruleName, sourceRuleKinds, result)
+		ruleUtils.RemoveRule(args, ruleName, sourceRuleKinds, result)
 	}
 }
 
@@ -482,7 +477,7 @@ func hasTranspiledSources(sourceFiles *treeset.Set) bool {
 
 func (ts *typeScriptLang) addProjectRule(cfg *JsGazelleConfig, tsconfigRel string, tsconfig *typescript.TsConfig, args language.GenerateArgs, group *TargetGroup, targetName string, sourceFiles, genFiles, dataFiles *treeset.Set, result *language.GenerateResult) (*rule.Rule, error) {
 	// Check for name-collisions with the rule being generated.
-	colError := gazelle.CheckCollisionErrors(targetName, TsProjectKind, sourceRuleKinds, args)
+	colError := ruleUtils.CheckCollisionErrors(targetName, TsProjectKind, sourceRuleKinds, args)
 	if colError != nil {
 		return nil, fmt.Errorf("%v "+
 			"Use the '# aspect:%s' directive to change the naming convention.\n\n"+
@@ -558,7 +553,7 @@ func (ts *typeScriptLang) addProjectRule(cfg *JsGazelleConfig, tsconfigRel strin
 	}
 
 	// A rule of the same name might already exist
-	existing := gazelle.GetFileRuleByName(args, targetName)
+	existing := ruleUtils.GetFileRuleByName(args, targetName)
 
 	ruleKind := TsProjectKind
 	if !hasTranspiledSources(info.sources) {
@@ -1066,6 +1061,11 @@ func addLinkAllPackagesRule(cfg *JsGazelleConfig, args language.GenerateArgs, re
 	BazelLog.Infof("add rule '%s' '%s:%s'", npmLinkAll.Kind(), args.Rel, npmLinkAll.Name())
 }
 
+func isCustomSrcs(srcs bzl.Expr) bool {
+	_, ok := srcs.(*bzl.ListExpr)
+	return !ok
+}
+
 // If the file is ts-compatible transpiled source code that may contain imports
 func isTranspiledSourceFileType(f string) bool {
 	return isTranspiledSourceFileExt(path.Ext(f)) && !isDeclarationFileType(f)
@@ -1172,4 +1172,20 @@ func toImportSpecPath(importFrom, importPath string) string {
 	// Non-relative imports such as packages, paths depending on `rootDirs` etc.
 	// Clean any extra . / .. etc
 	return path.Clean(importPath)
+}
+
+// Return the default target name for the given language.GenerateArgs.
+// The default target name of a BUILD is the directory name. WHen within the repository
+// root which may be outside of version control the default target name is the repository name.
+func toDefaultTargetName(args language.GenerateArgs, defaultRootName string) string {
+	// The workspace root may be the version control root and non-deterministic
+	if args.Rel == "" {
+		if args.Config.RepoName != "" {
+			return args.Config.RepoName
+		} else {
+			return defaultRootName
+		}
+	}
+
+	return path.Base(args.Dir)
 }

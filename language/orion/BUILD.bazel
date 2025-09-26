@@ -20,6 +20,7 @@ go_library(
         "//common/bazel/workspace",
         "//common/cache",
         "//common/logger",
+        "//common/rule",
         "//language/orion/plugin",
         "//language/orion/queries",
         "//language/orion/starzelle",

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"maps"
 
-	starUtils "github.com/aspect-build/aspect-gazelle/common/starlark/utils"
+	starUtils "github.com/aspect-build/aspect-gazelle/language/orion/starlark/utils"
 	"go.starlark.net/starlark"
 )
 

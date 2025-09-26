@@ -1,4 +1,4 @@
-package starlark
+package rule
 
 import (
 	"fmt"
@@ -8,11 +8,6 @@ import (
 	bzl "github.com/bazelbuild/buildtools/build"
 	"github.com/bmatcuk/doublestar/v4"
 )
-
-func IsCustomSrcs(srcs bzl.Expr) bool {
-	_, ok := srcs.(*bzl.ListExpr)
-	return !ok
-}
 
 func ExpandSrcs(files []string, expr bzl.Expr) ([]string, error) {
 	// Pure array of source paths.

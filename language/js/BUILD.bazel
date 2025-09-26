@@ -22,7 +22,7 @@ go_library(
         "//common",
         "//common/cache",
         "//common/logger",
-        "//common/starlark",
+        "//common/rule",
         "//language/js/node",
         "//language/js/parser",
         "//language/js/pnpm",

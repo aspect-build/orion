@@ -2,20 +2,12 @@ load("@rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "starlark",
-    srcs = [
-        "eval.go",
-        "glob.go",
-        "rule.go",
-    ],
-    importpath = "github.com/aspect-build/aspect-gazelle/common/starlark",
+    srcs = ["eval.go"],
+    importpath = "github.com/aspect-build/aspect-gazelle/language/orion/starlark",
     visibility = ["//visibility:public"],
     deps = [
-        "//common/logger",
-        "//common/starlark/stdlib",
-        "@com_github_bazelbuild_buildtools//build",
-        "@com_github_bmatcuk_doublestar_v4//:doublestar",
+        "//language/orion/starlark/stdlib",
         "@gazelle//label",
-        "@gazelle//rule",
         "@net_starlark_go//lib/json",
         "@net_starlark_go//starlark",
         "@net_starlark_go//syntax",

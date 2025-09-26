@@ -3,7 +3,7 @@ package starzelle
 /**
  * Starlark utility libraries for starzelle plugins.
  *
- * See common/starlark/stdlib for standard non-starzelle starlark libraries.
+ * See starlark/stdlib for standard non-starzelle starlark libraries.
  */
 
 import (
@@ -12,8 +12,8 @@ import (
 	"reflect"
 
 	BazelLog "github.com/aspect-build/aspect-gazelle/common/logger"
-	starUtils "github.com/aspect-build/aspect-gazelle/common/starlark/utils"
 	"github.com/aspect-build/aspect-gazelle/language/orion/plugin"
+	starUtils "github.com/aspect-build/aspect-gazelle/language/orion/starlark/utils"
 	"github.com/bmatcuk/doublestar/v4"
 	"go.starlark.net/starlark"
 )

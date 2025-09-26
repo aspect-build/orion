@@ -1,4 +1,4 @@
-package starlark
+package rule
 
 import (
 	"github.com/bazelbuild/bazel-gazelle/rule"

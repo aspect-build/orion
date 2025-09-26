@@ -110,18 +110,3 @@ func TestVersion(t *testing.T) {
 		g.Expect(actual).To(Equal(buildinfo.NoReleaseVersion))
 	})
 }
-
-func TestCommandVersion(t *testing.T) {
-	t.Run("with conventional format", func(t *testing.T) {
-		g := NewGomegaWithT(t)
-		bi := buildinfo.New(buildTime, hostName, gitCommit, buildinfo.CleanGitStatus, release)
-		actual := bi.CommandVersion(buildinfo.ConventionalFormat)
-		g.Expect(actual).To(Equal("Aspect CLI version: 1.2.3"))
-	})
-	t.Run("with GNU format", func(t *testing.T) {
-		g := NewGomegaWithT(t)
-		bi := buildinfo.New(buildTime, hostName, gitCommit, buildinfo.CleanGitStatus, release)
-		actual := bi.CommandVersion(buildinfo.GNUFormat)
-		g.Expect(actual).To(Equal("aspect 1.2.3"))
-	})
-}

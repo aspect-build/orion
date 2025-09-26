@@ -1,8 +1,7 @@
-package gazelle
+package rule
 
 import (
 	"fmt"
-	"path"
 
 	BazelLog "github.com/aspect-build/aspect-gazelle/common/logger"
 	"github.com/bazelbuild/bazel-gazelle/label"
@@ -10,22 +9,6 @@ import (
 	"github.com/bazelbuild/bazel-gazelle/rule"
 	"github.com/emirpasic/gods/sets/treeset"
 )
-
-// Return the default target name for the given language.GenerateArgs.
-// The default target name of a BUILD is the directory name. WHen within the repository
-// root which may be outside of version control the default target name is the repository name.
-func ToDefaultTargetName(args language.GenerateArgs, defaultRootName string) string {
-	// The workspace root may be the version control root and non-deterministic
-	if args.Rel == "" {
-		if args.Config.RepoName != "" {
-			return args.Config.RepoName
-		} else {
-			return defaultRootName
-		}
-	}
-
-	return path.Base(args.Dir)
-}
 
 func GetFileRuleByName(args language.GenerateArgs, ruleName string) *rule.Rule {
 	if args.File == nil {

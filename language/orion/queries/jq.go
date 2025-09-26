@@ -2,11 +2,11 @@ package queries
 
 import (
 	"encoding/json"
+	"sync"
 
 	"github.com/itchyny/gojq"
 	"golang.org/x/sync/errgroup"
 
-	common "github.com/aspect-build/aspect-gazelle/common"
 	"github.com/aspect-build/aspect-gazelle/language/orion/plugin"
 )
 
@@ -38,7 +38,7 @@ func runJsonQueries(fileName string, sourceCode []byte, queries plugin.NamedQuer
 }
 
 func runJsonQuery(doc interface{}, query string) (interface{}, error) {
-	q, err := common.ParseJsonQuery(query)
+	q, err := parseJsonQuery(query)
 	if err != nil {
 		return nil, err
 	}
@@ -64,4 +64,23 @@ func runJsonQuery(doc interface{}, query string) (interface{}, error) {
 	}
 
 	return matches, nil
+}
+
+var jqQueryCache = sync.Map{}
+
+func parseJsonQuery(query string) (*gojq.Code, error) {
+	q, loaded := jqQueryCache.Load(query)
+	if !loaded {
+		p, err := gojq.Parse(query)
+		if err != nil {
+			return nil, err
+		}
+		q, err = gojq.Compile(p)
+		if err != nil {
+			return nil, err
+		}
+		q, _ = jqQueryCache.LoadOrStore(query, q)
+	}
+
+	return q.(*gojq.Code), nil
 }

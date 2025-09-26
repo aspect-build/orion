@@ -13,9 +13,9 @@ import (
 	"strings"
 	"sync"
 
-	common "github.com/aspect-build/aspect-gazelle/common"
 	"github.com/aspect-build/aspect-gazelle/common/cache"
 	BazelLog "github.com/aspect-build/aspect-gazelle/common/logger"
+	ruleUtils "github.com/aspect-build/aspect-gazelle/common/rule"
 	"github.com/aspect-build/aspect-gazelle/language/orion/plugin"
 	queryRunner "github.com/aspect-build/aspect-gazelle/language/orion/queries"
 	gazelleLabel "github.com/bazelbuild/bazel-gazelle/label"
@@ -233,7 +233,7 @@ func (host *GazelleHost) applyPluginAction(args gazelleLanguage.GenerateArgs, pl
 	case plugin.AddTargetAction:
 		// Check for name-collisions with the rule being generated.
 		target := action.(plugin.AddTargetAction).TargetDeclaration
-		colError := common.CheckCollisionErrors(target.Name, target.Kind, host.sourceRuleKinds, args)
+		colError := ruleUtils.CheckCollisionErrors(target.Name, target.Kind, host.sourceRuleKinds, args)
 		if colError != nil {
 			fmt.Fprintf(os.Stderr, "Source rule generation error: %v\n", colError)
 			os.Exit(1)
@@ -443,7 +443,12 @@ func (host *GazelleHost) collectSourceFilesByPlugin(cfg *BUILDConfig, args gazel
 	pluginSourceGroupFiles := make(map[plugin.PluginId]map[string][]string, len(cfg.pluginPrepareResults))
 
 	// Collect source files managed by this BUILD for each plugin.
-	common.GazelleWalkDir(args, func(f string) error {
+	for _, f := range args.RegularFiles {
+		// Skip BUILD files
+		if args.Config.IsValidBuildFileName(f) {
+			continue
+		}
+
 		for pluginId, p := range cfg.pluginPrepareResults {
 			foundGroup := false
 
@@ -469,9 +474,7 @@ func (host *GazelleHost) collectSourceFilesByPlugin(cfg *BUILDConfig, args gazel
 				sourceFilePlugins[f] = append(sourceFilePlugins[f], pluginId)
 			}
 		}
-
-		return nil
-	})
+	}
 
 	return pluginSourceFiles, sourceFilePlugins, pluginSourceGroupFiles
 }
