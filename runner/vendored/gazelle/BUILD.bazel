@@ -14,8 +14,8 @@ go_library(
     importpath = "github.com/aspect-build/aspect-gazelle/runner/vendored/gazelle",
     visibility = ["//visibility:public"],
     deps = [
-        "//common/cache",
-        "//runner/vendored/gazelle/internal/wspace",
+        "//vendored/gazelle/internal/wspace",
+        "@aspect_gazelle//common/cache",
         "@com_github_bazelbuild_buildtools//build",
         "@com_github_pmezard_go_difflib//difflib",
         "@gazelle//config",
