@@ -1,4 +1,4 @@
-load("@rules_go//go:def.bzl", "go_binary", "go_library")
+load("@rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "runner",
@@ -24,25 +24,4 @@ go_library(
         "@io_opentelemetry_go_otel_trace//:trace",
         "@org_golang_x_term//:term",
     ],
-)
-
-go_library(
-    name = "configure_lib",
-    srcs = ["main.go"],
-    importpath = "github.com/aspect-build/aspect-gazelle/",
-    visibility = ["//visibility:private"],
-    deps = [
-        ":runner",
-        "//common/buildinfo",
-        "//common/ibp",
-        "//language/orion",
-        "@gazelle//language:go_default_library",
-        "@in_gopkg_yaml_v3//:yaml_v3",
-    ],
-)
-
-go_binary(
-    name = "bin",
-    embed = [":configure_lib"],
-    visibility = ["//visibility:public"],
 )

@@ -1,0 +1,22 @@
+load("@rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_binary(
+    name = "main",
+    embed = [":bin_lib"],
+    visibility = ["//visibility:public"],
+)
+
+go_library(
+    name = "bin_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/aspect-build/aspect-gazelle/runner/bin",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//common/buildinfo",
+        "//common/ibp",
+        "//language/orion",
+        "//runner",
+        "@gazelle//language",
+        "@in_gopkg_yaml_v3//:yaml_v3",
+    ],
+)
