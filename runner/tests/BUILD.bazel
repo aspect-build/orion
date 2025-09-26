@@ -9,6 +9,7 @@ gazelle_binary(
     testonly = True,
     languages = [
         "//language/js",
+        "//language/orion",
         "//runner/git/testing",
     ],
     visibility = ["//visibility:private"],
@@ -18,6 +19,12 @@ gazelle_binary(
     gazelle_generation_test(
         name = "%s_test" % t,
         dir = t,
+        env = {
+            "TEST_STARZELLE_PLUGINS": "%s/%s" % (
+                package_name(),
+                t,
+            ),
+        },
         gazelle_binary = ":gazelle_bin",
     )
     for t in [t.replace("/WORKSPACE", "") for t in glob(["*/WORKSPACE"])]
