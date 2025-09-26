@@ -10,10 +10,10 @@ github.com/alecthomas/participle/v2 v2.1.4 h1:W/H79S8Sat/krZ3el6sQMvMaahJ+XcM9WS
 github.com/alecthomas/participle/v2 v2.1.4/go.mod h1:8tqVbpTX20Ru4NfYQgZf4mP18eXPTBViyMWiArNEgGI=
 github.com/alecthomas/repr v0.4.0 h1:GhI2A8MACjfegCPVq9f1FLvIBS+DrQ2KQBFZP1iFzXc=
 github.com/alecthomas/repr v0.4.0/go.mod h1:Fr0507jx4eOXV7AlPV6AVZLYrLIuIeSOWtW57eE/O/4=
-github.com/bazel-contrib/rules_python/gazelle v0.0.0-20250715122526-cab415d82ebb h1:RuM9XLU3Cq0fG2yEmcSroHqo+FOvNj6R+8eEvdbXJn0=
-github.com/bazel-contrib/rules_python/gazelle v0.0.0-20250715122526-cab415d82ebb/go.mod h1:0dKqZHX7D454/AB9YKxUj7XBbIPJeQb/VZ+QAF2Igak=
-github.com/bazelbuild/bazel-gazelle v0.45.1-0.20250827145400-0e862c3d8182 h1:2XnvwTlUTXpTjCludtQcT5sBUPZ7kmtd2aqyHiruoag=
-github.com/bazelbuild/bazel-gazelle v0.45.1-0.20250827145400-0e862c3d8182/go.mod h1:XdBdWhrTc5x50CKzKXOcwrZWdLuX58IX1KcSaWPtEGo=
+github.com/bazel-contrib/rules_python/gazelle v0.0.0-20250921132421-38f2679fcc6c h1:k/zB8WqsVLp8DP2yBED5W0Qeg3vdjJzYyQ14Or6RtXc=
+github.com/bazel-contrib/rules_python/gazelle v0.0.0-20250921132421-38f2679fcc6c/go.mod h1:84dcq5fZ/hiQGnpjzH57+Xm7T6uwpPty1KPB7qzHDO0=
+github.com/bazelbuild/bazel-gazelle v0.45.1-0.20250924144014-2de7b829fef1 h1:tsMoNz7rX4r65wf8eMyehnIyJPWf2BzS+VaDAfcZmdc=
+github.com/bazelbuild/bazel-gazelle v0.45.1-0.20250924144014-2de7b829fef1/go.mod h1:XdBdWhrTc5x50CKzKXOcwrZWdLuX58IX1KcSaWPtEGo=
 github.com/bazelbuild/buildtools v0.0.0-20250715102656-62b9413b08bb h1:KCEfAAZ5hZH+CEMzShOZ4nCro20Ohf6whugQc2PLZiM=
 github.com/bazelbuild/buildtools v0.0.0-20250715102656-62b9413b08bb/go.mod h1:PLNUetjLa77TCCziPsz0EI8a6CUxgC+1jgmWv0H25tg=
 github.com/bazelbuild/rules_go v0.56.1 h1:YOyW1J8kdvJl1AzlWrR+qikC6EPiFVbT4l1gjTBfXT0=

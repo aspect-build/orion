@@ -11,29 +11,19 @@ bazel_dep(name = "gazelle", version = "0.45.0")
 # Override the gazelle version used locally to pre-release and apply orion patches
 archive_override(
     module_name = "gazelle",
-    integrity = "sha256-3NCjXwfTFu/htS5BEzcn/uKXSdjKEZhrYdC+zykbcUE=",
+    integrity = "sha256-PVedDoJ8oJ5feBKNhef2Y2ziooEYcMB3FuAvNNh1qJI=",
     patch_strip = 1,
     patches = [
         "//runner/patches:bazelbuild_bazel-gazelle_aspect-cli.patch",
         "//runner/git:gazelle-gitignore.patch",
     ],
-    strip_prefix = "bazel-gazelle-0e862c3d81827441407c1e7c421831af511acfdb",
-    urls = ["https://github.com/bazel-contrib/bazel-gazelle/archive/0e862c3d81827441407c1e7c421831af511acfdb.tar.gz"],
+    strip_prefix = "bazel-gazelle-2de7b829fef136795c68d9d3b8644a379693cf55",
+    urls = ["https://github.com/bazel-contrib/bazel-gazelle/archive/2de7b829fef136795c68d9d3b8644a379693cf55.tar.gz"],
 )
 
-# Python
-bazel_dep(name = "rules_python", version = "1.5.3")  # must match go.mod
-bazel_dep(name = "rules_python_gazelle_plugin", version = "1.5.3")  # must match go.mod
-
-# Override the python gazelle version locally to a pre-release to include 5e750070e3bcf952f10c9f32d1da468c3c784f3a
-archive_override(
-    module_name = "rules_python_gazelle_plugin",
-    strip_prefix = "rules_python-5e750070e3bcf952f10c9f32d1da468c3c784f3a/gazelle",
-    urls = ["https://github.com/bazel-contrib/rules_python/archive/5e750070e3bcf952f10c9f32d1da468c3c784f3a.tar.gz"],
-)
-
-# go modules
-bazel_dep(name = "gazelle_cc", version = "0.1.0")
+# Gazelle languages via bzlmod
+bazel_dep(name = "rules_python_gazelle_plugin", version = "1.6.3")  # must match go.mod
+bazel_dep(name = "gazelle_cc", version = "0.1.0")  # must match go.mod
 
 # Go modules
 go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")

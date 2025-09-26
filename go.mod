@@ -4,8 +4,8 @@ go 1.24.5
 
 require (
 	github.com/Masterminds/semver/v3 v3.4.0
-	github.com/bazel-contrib/rules_python/gazelle v0.0.0-20250715122526-cab415d82ebb // NOTE: keep in sync with MODULE.bazel
-	github.com/bazelbuild/bazel-gazelle v0.45.1-0.20250827145400-0e862c3d8182 // NOTE: keep in sync with MODULE.bazel
+	github.com/bazel-contrib/rules_python/gazelle v0.0.0-20250921132421-38f2679fcc6c // NOTE: keep in sync with MODULE.bazel
+	github.com/bazelbuild/bazel-gazelle v0.45.1-0.20250924144014-2de7b829fef1 // NOTE: keep in sync with MODULE.bazel
 	github.com/bazelbuild/buildtools v0.0.0-20250715102656-62b9413b08bb
 	github.com/bazelbuild/rules_go v0.56.1 // indirect; NOTE: keep in sync with MODULE.bazel
 	github.com/bmatcuk/doublestar/v4 v4.9.1
