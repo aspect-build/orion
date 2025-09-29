@@ -8,9 +8,9 @@ import (
 	"path"
 
 	"github.com/aspect-build/aspect-gazelle/common/buildinfo"
-	"github.com/aspect-build/aspect-gazelle/common/ibp"
 	host "github.com/aspect-build/aspect-gazelle/language/orion"
 	"github.com/aspect-build/aspect-gazelle/runner"
+	"github.com/aspect-build/aspect-gazelle/runner/pkg/ibp"
 	"github.com/bazelbuild/bazel-gazelle/language"
 	"gopkg.in/yaml.v3"
 )

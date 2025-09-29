@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"slices"
 
-	"github.com/aspect-build/aspect-gazelle/common/socket"
+	"github.com/aspect-build/aspect-gazelle/runner/pkg/socket"
 )
 
 type IncrementalClient interface {

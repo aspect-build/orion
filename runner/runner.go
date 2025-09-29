@@ -26,12 +26,12 @@ import (
 
 	"github.com/EngFlow/gazelle_cc/language/cc"
 	"github.com/aspect-build/aspect-gazelle/common/bazel"
-	"github.com/aspect-build/aspect-gazelle/common/ibp"
 	js "github.com/aspect-build/aspect-gazelle/language/js"
 	orion "github.com/aspect-build/aspect-gazelle/language/orion"
 	"github.com/aspect-build/aspect-gazelle/runner/git"
 	"github.com/aspect-build/aspect-gazelle/runner/language/bzl"
 	"github.com/aspect-build/aspect-gazelle/runner/language/python"
+	"github.com/aspect-build/aspect-gazelle/runner/pkg/ibp"
 	"github.com/aspect-build/aspect-gazelle/runner/progress"
 	vendoredGazelle "github.com/aspect-build/aspect-gazelle/runner/vendored/gazelle"
 	"github.com/bazelbuild/bazel-gazelle/config"

@@ -6,13 +6,13 @@ go_library(
         "cache.go",
         "watch.go",
     ],
-    importpath = "github.com/aspect-build/aspect-gazelle/runner/watchman",
+    importpath = "github.com/aspect-build/aspect-gazelle/runner/pkg/watchman",
     visibility = ["//visibility:public"],
     deps = [
         "//common/bazel",
         "//common/cache",
         "//common/logger",
-        "//common/socket",
+        "//runner/pkg/socket",
         "@gazelle//config",
     ],
 )

@@ -6,10 +6,10 @@ go_library(
         "client.go",
         "protocol.go",
     ],
-    importpath = "github.com/aspect-build/aspect-gazelle/common/ibp",
+    importpath = "github.com/aspect-build/aspect-gazelle/runner/pkg/ibp",
     visibility = ["//visibility:public"],
     deps = [
-        "//common/socket",
+        "//runner/pkg/socket",
         "@com_github_fatih_color//:color",
     ],
 )

@@ -13,9 +13,9 @@ go_library(
     visibility = ["//visibility:private"],
     deps = [
         "//common/buildinfo",
-        "//common/ibp",
         "//language/orion",
         "//runner",
+        "//runner/pkg/ibp",
         "@gazelle//language",
         "@in_gopkg_yaml_v3//:yaml_v3",
     ],

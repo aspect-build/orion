@@ -7,12 +7,12 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//common/bazel",
-        "//common/ibp",
         "//language/js",
         "//language/orion",
         "//runner/git",
         "//runner/language/bzl",
         "//runner/language/python",
+        "//runner/pkg/ibp",
         "//runner/progress",
         "//runner/vendored/gazelle",
         "@gazelle//config",
