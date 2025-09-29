@@ -73,7 +73,7 @@ func (c *diskCache) read() {
 
 	cacheDecoder := gob.NewDecoder(cacheReader)
 
-	if !verifyCacheVersion(cacheDecoder, "disk", c.file) {
+	if !VerifyCacheVersion(cacheDecoder, "disk", c.file) {
 		return
 	}
 
@@ -108,7 +108,7 @@ func (c *diskCache) write() {
 
 	cacheEncoder := gob.NewEncoder(cacheWriter)
 
-	if err := writeCacheVersion(cacheEncoder, "disk"); err != nil {
+	if err := WriteCacheVersion(cacheEncoder, "disk"); err != nil {
 		BazelLog.Errorf("Failed to write cache info to %q: %v", c.file, err)
 		return
 	}
@@ -172,14 +172,14 @@ type persistedCacheInfo struct {
 	Version string
 }
 
-func writeCacheVersion(encoder *gob.Encoder, cacheType string) error {
+func WriteCacheVersion(encoder *gob.Encoder, cacheType string) error {
 	return encoder.Encode(persistedCacheInfo{
 		Type:    cacheType,
 		Version: buildinfo.GitCommit,
 	})
 }
 
-func verifyCacheVersion(decoder *gob.Decoder, expectedType, file string) bool {
+func VerifyCacheVersion(decoder *gob.Decoder, expectedType, file string) bool {
 	var pi persistedCacheInfo
 
 	// Read the cache metadata

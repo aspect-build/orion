@@ -1,4 +1,4 @@
-package watch
+package watchman
 
 import (
 	"context"

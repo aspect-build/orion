@@ -1,4 +1,4 @@
-package cache
+package watchman
 
 import (
 	"encoding/gob"
@@ -9,8 +9,8 @@ import (
 	"runtime"
 	"sync"
 
+	"github.com/aspect-build/aspect-gazelle/common/cache"
 	BazelLog "github.com/aspect-build/aspect-gazelle/common/logger"
-	watcher "github.com/aspect-build/aspect-gazelle/common/watch"
 	"github.com/bazelbuild/bazel-gazelle/config"
 )
 
@@ -24,7 +24,7 @@ type cacheState struct {
 }
 
 type watchmanCache struct {
-	w *watcher.WatchmanWatcher
+	w *WatchmanWatcher
 
 	file string
 
@@ -33,9 +33,9 @@ type watchmanCache struct {
 	lastClockSpec string
 }
 
-var _ Cache = (*watchmanCache)(nil)
+var _ cache.Cache = (*watchmanCache)(nil)
 
-func NewWatchmanCache(c *config.Config) Cache {
+func NewWatchmanCache(c *config.Config) cache.Cache {
 	diskCachePath := os.Getenv("ASPECT_GAZELLE_CACHE")
 	if diskCachePath == "" {
 		// A default path for the cache file.
@@ -45,7 +45,7 @@ func NewWatchmanCache(c *config.Config) Cache {
 	}
 
 	// Start the watcher
-	w := watcher.NewWatchman(c.RepoRoot)
+	w := NewWatchman(c.RepoRoot)
 	if err := w.Start(); err != nil {
 		log.Fatalf("failed to start the watcher: %v", err)
 	}
@@ -79,7 +79,7 @@ func (c *watchmanCache) read() {
 
 	cacheDecoder := gob.NewDecoder(cacheReader)
 
-	if !verifyCacheVersion(cacheDecoder, "watchman", c.file) {
+	if !cache.VerifyCacheVersion(cacheDecoder, "watchman", c.file) {
 		return
 	}
 
@@ -141,7 +141,7 @@ func (c *watchmanCache) write() {
 
 	cacheEncoder := gob.NewEncoder(cacheWriter)
 
-	if err := writeCacheVersion(cacheEncoder, "watchman"); err != nil {
+	if err := cache.WriteCacheVersion(cacheEncoder, "watchman"); err != nil {
 		BazelLog.Errorf("Failed to write cache info to %q: %v", c.file, err)
 		return
 	}
@@ -155,7 +155,7 @@ func (c *watchmanCache) Persist() {
 	c.write()
 }
 
-func (c *watchmanCache) LoadOrStoreFile(root, p, key string, loader FileCompute) (any, bool, error) {
+func (c *watchmanCache) LoadOrStoreFile(root, p, key string, loader cache.FileCompute) (any, bool, error) {
 	// Load directly from c.new to potentially convert map[] to sync.Map
 	fileMap, hasFileMap := c.new.Load(p)
 	if !hasFileMap {

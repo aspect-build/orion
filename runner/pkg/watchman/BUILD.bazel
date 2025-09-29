@@ -1,0 +1,25 @@
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "watchman",
+    srcs = [
+        "cache.go",
+        "watch.go",
+    ],
+    importpath = "github.com/aspect-build/aspect-gazelle/runner/watchman",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//common/bazel",
+        "//common/cache",
+        "//common/logger",
+        "//common/socket",
+        "@gazelle//config",
+    ],
+)
+
+go_test(
+    name = "watchman_test",
+    srcs = ["watch_test.go"],
+    embed = [":watchman"],
+    tags = ["manual"],  # TODO: we need watchman in our runners.
+)
