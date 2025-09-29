@@ -1,4 +1,3 @@
-load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_file")
 load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@rules_go//go:def.bzl", "go_library", "go_test")
 
@@ -8,8 +7,8 @@ go_library(
         "package.go",
         "paths.go",
         "std_modules.go",
-        "std_modules_list.go",
     ],
+    embedsrcs = ["std_modules.list"],
     importpath = "github.com/aspect-build/aspect-gazelle/language/js/node",
     visibility = ["//visibility:public"],
     deps = [
@@ -27,17 +26,10 @@ js_binary(
 
 genrule(
     name = "gen_std_modules_go",
-    outs = ["std_modules_list.out"],
+    outs = ["std_modules.list"],
     cmd = "BAZEL_BINDIR=$(BINDIR) $(location :std_modules_launcher) > $@",
     tools = [":std_modules_launcher"],
     visibility = ["//visibility:private"],
-)
-
-write_source_file(
-    name = "write_std_modules_go",
-    in_file = ":gen_std_modules_go",
-    out_file = "std_modules_list.go",
-    visibility = ["//visibility:public"],
 )
 
 go_test(

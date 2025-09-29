@@ -1,17 +1,21 @@
 package gazelle
 
 import (
+	_ "embed"
 	"strings"
 
 	"github.com/emirpasic/gods/sets/treeset"
 )
+
+//go:embed std_modules.list
+var nativeModulesJson []byte
 
 var nativeModulesSet = createNativeModulesSet()
 
 func createNativeModulesSet() *treeset.Set {
 	set := treeset.NewWithStringComparator()
 
-	for _, m := range NativeModules {
+	for _, m := range strings.Split(strings.TrimSpace(string(nativeModulesJson)), "\n") {
 		set.Add(m)
 	}
 
