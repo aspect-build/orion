@@ -14,7 +14,7 @@ archive_override(
     patch_strip = 1,
     patches = [
         "//runner/patches:bazelbuild_bazel-gazelle_aspect-cli.patch",
-        "//runner/git:gazelle-gitignore.patch",
+        "//runner/pkg/git:gazelle-gitignore.patch",
     ],
     strip_prefix = "bazel-gazelle-2de7b829fef136795c68d9d3b8644a379693cf55",
     urls = ["https://github.com/bazel-contrib/bazel-gazelle/archive/2de7b829fef136795c68d9d3b8644a379693cf55.tar.gz"],
@@ -150,7 +150,7 @@ go_deps2.module_override(
     patch_strip = 1,
     patches = [
         "//runner/patches:bazelbuild_bazel-gazelle_aspect-cli.patch",
-        "//runner/git:gazelle-gitignore.patch",
+        "//runner/pkg/git:gazelle-gitignore.patch",
     ],
     path = "github.com/bazelbuild/bazel-gazelle",
 )

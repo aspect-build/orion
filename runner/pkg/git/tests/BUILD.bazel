@@ -9,7 +9,7 @@ gazelle_binary(
     testonly = True,
     languages = [
         "//language/js",
-        "//runner/git/testing",
+        "//runner/pkg/git/testing",
     ],
     visibility = ["//visibility:private"],
 )
