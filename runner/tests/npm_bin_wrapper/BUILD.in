@@ -1,1 +1,2 @@
+# gazelle:lang js,orion
 # gazelle:js_files postcss_config postcss.config.mjs

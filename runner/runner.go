@@ -29,6 +29,7 @@ import (
 	"github.com/aspect-build/aspect-gazelle/common/ibp"
 	"github.com/aspect-build/aspect-gazelle/common/progress"
 	js "github.com/aspect-build/aspect-gazelle/language/js"
+	orion "github.com/aspect-build/aspect-gazelle/language/orion"
 	"github.com/aspect-build/aspect-gazelle/runner/git"
 	"github.com/aspect-build/aspect-gazelle/runner/language/bzl"
 	"github.com/aspect-build/aspect-gazelle/runner/language/python"
@@ -55,6 +56,7 @@ type GazelleLanguage = string
 
 const (
 	JavaScript GazelleLanguage = "javascript"
+	Orion                      = orion.GazelleLanguageName
 	Go                         = "go"
 	Protobuf                   = "protobuf"
 	Bzl                        = "bzl"
@@ -112,6 +114,10 @@ func (c *GazelleRunner) AddLanguage(lang GazelleLanguage) {
 	switch lang {
 	case JavaScript:
 		c.AddLanguageFactory(lang, js.NewLanguage)
+	case Orion:
+		c.AddLanguageFactory(lang, func() language.Language {
+			return orion.NewLanguage()
+		})
 	case Go:
 		c.AddLanguageFactory(lang, golang.NewLanguage)
 	case Protobuf:
@@ -200,6 +206,15 @@ func (runner *GazelleRunner) Generate(mode GazelleMode, excludes []string, args 
 		fmt.Printf("%v BUILD %s updated\n", updated, pluralize("file", updated))
 	}
 
+	return updated > 0, err
+}
+
+// A Generate()-like function desinged for running in gazelle test targets
+func (runner *GazelleRunner) Test() (bool, error) {
+	wd, fixArgs := runner.PrepareGazelleArgs(Fix, []string{}, []string{
+		os.Getenv("BUILD_WORKSPACE_DIRECTORY"),
+	})
+	_, updated, err := vendoredGazelle.RunGazelleFixUpdate(wd, runner.InstantiateLanguages(), fixArgs)
 	return updated > 0, err
 }
 
