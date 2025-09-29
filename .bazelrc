@@ -1,1 +1,3 @@
-common:ci --announce_rc
+########################
+# Import bazelrc presets
+import %workspace%/tools/preset.bazelrc

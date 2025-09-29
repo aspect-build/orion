@@ -1,6 +1,9 @@
 load("@aspect_rules_lint//format:defs.bzl", "format_multirun")
+load("@bazelrc-preset.bzl", "bazelrc_preset")
 
 package(default_visibility = ["//visibility:public"])
+
+bazelrc_preset(name = "preset")
 
 format_multirun(
     name = "format",

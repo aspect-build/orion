@@ -1,6 +1,7 @@
 # See https://docs.aspect.build/workflows/configuration/tasks
 tasks:
   - buildifier:
+  - gazelle:
   - test:
 notifications:
   github: {}
