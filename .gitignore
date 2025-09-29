@@ -1,4 +1,5 @@
 /bazel-*
 /runner/bazel-*
+/language/*/bazel-*
 *.bazel.lock
 **/node_modules

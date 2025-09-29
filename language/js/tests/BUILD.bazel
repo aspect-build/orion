@@ -1,5 +1,5 @@
+load("@aspect_gazelle//:gazelle.bzl", "gazelle_generation_test")
 load("@gazelle//:def.bzl", "gazelle_binary")
-load("//:gazelle.bzl", "gazelle_generation_test")
 
 # gazelle:ignore
 
@@ -10,7 +10,7 @@ gazelle_binary(
     testonly = True,
     languages = [
         "@gazelle//language/proto:go_default_library",
-        "//language/js",
+        "//:js",
     ],
     visibility = ["//visibility:private"],
 )

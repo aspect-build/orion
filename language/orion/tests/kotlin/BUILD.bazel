@@ -1,6 +1,6 @@
-load("//:gazelle.bzl", "gazelle_generation_test")
+load("@aspect_gazelle//:gazelle.bzl", "gazelle_generation_test")
 
-BUILTIN_PLUGINS_DIR = "language/orion/plugins"
+BUILTIN_PLUGINS_DIR = "plugins"
 
 # Disable the gazelle extensions
 # gazelle:exclude .
@@ -18,7 +18,7 @@ KOTLIN_TESTS = [t.replace("/WORKSPACE", "") for t in glob(["*/WORKSPACE"])]
         env = {
             "TEST_STARZELLE_PLUGINS": BUILTIN_PLUGINS_DIR,
         },
-        gazelle_binary = "//language/orion/tests:gazelle_orion_binary",
+        gazelle_binary = "//tests:gazelle_orion_binary",
     )
     for t in KOTLIN_TESTS
     # TODO(#7623): remove opt-outs

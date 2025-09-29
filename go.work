@@ -1,0 +1,9 @@
+go 1.25.0
+
+use (
+	./
+	./language/js
+	./language/kotlin
+	./language/orion
+	./runner
+)

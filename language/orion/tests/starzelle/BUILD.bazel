@@ -1,4 +1,4 @@
-load("//:gazelle.bzl", "gazelle_generation_test")
+load("@aspect_gazelle//:gazelle.bzl", "gazelle_generation_test")
 
 # General starzelle unit tests. Each test has its own *.star plugins and only the host language.
 
@@ -12,7 +12,7 @@ load("//:gazelle.bzl", "gazelle_generation_test")
                 t,
             ),
         },
-        gazelle_binary = "//language/orion/tests:gazelle_orion_binary",
+        gazelle_binary = "//tests:gazelle_orion_binary",
     )
     for t in [t.replace("/WORKSPACE", "") for t in glob(["*/WORKSPACE"])]
 ]

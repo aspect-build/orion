@@ -1,4 +1,19 @@
+load("@gazelle//:def.bzl", "gazelle")
 load("@rules_go//go:def.bzl", "go_library")
+
+# gazelle:resolve_regexp go github.com/aspect-build/aspect-gazelle/common(/.*)? @aspect_gazelle//common$1
+
+gazelle(
+    name = "gazelle",
+    extra_args = ["-index=lazy"],
+    gazelle = "@aspect_gazelle//:gazelle_bin",
+)
+
+gazelle(
+    name = "gazelle.check",
+    gazelle = "@aspect_gazelle//:gazelle_bin",
+    mode = "diff",
+)
 
 go_library(
     name = "orion",
@@ -13,14 +28,14 @@ go_library(
     importpath = "github.com/aspect-build/aspect-gazelle/language/orion",
     visibility = ["//visibility:public"],
     deps = [
-        "//common",
-        "//common/bazel/workspace",
-        "//common/cache",
-        "//common/logger",
-        "//common/rule",
-        "//language/orion/plugin",
-        "//language/orion/queries",
-        "//language/orion/starzelle",
+        "//plugin",
+        "//queries",
+        "//starzelle",
+        "@aspect_gazelle//common",
+        "@aspect_gazelle//common/bazel/workspace",
+        "@aspect_gazelle//common/cache",
+        "@aspect_gazelle//common/logger",
+        "@aspect_gazelle//common/rule",
         "@com_github_bmatcuk_doublestar_v4//:doublestar",
         "@com_github_emirpasic_gods//maps/linkedhashmap",
         "@com_github_emirpasic_gods//sets/treeset",

@@ -1,11 +1,23 @@
 # See https://docs.aspect.build/workflows/configuration/tasks
 workspaces:
   .:
-      icon: deer
+    icon: deer
+  language/js:
+    tasks:
+      - buildifier:
+          without: true
+  language/kotlin:
+    tasks:
+      - buildifier:
+          without: true
+  language/orion:
+    tasks:
+      - buildifier:
+          without: true
   runner:
-      tasks:
-        - buildifier:
-            without: true
+    tasks:
+      - buildifier:
+          without: true
 tasks:
   - buildifier:
   - gazelle:

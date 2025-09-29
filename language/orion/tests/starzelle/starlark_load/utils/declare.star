@@ -1,4 +1,4 @@
-load("//language/orion/tests/starzelle/starlark_load/utils:identity.star", "identity")
+load("//tests/starzelle/starlark_load/utils:identity.star", "identity")
 
 def declare_targets(ctx):
     if len(ctx.sources) == 0:

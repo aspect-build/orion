@@ -1,4 +1,20 @@
+load("@gazelle//:def.bzl", "gazelle")
 load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+# gazelle:resolve_regexp go github.com/aspect-build/aspect-gazelle/common(/.*)? @aspect_gazelle//common$1
+# gazelle:resolve_regexp go github.com/bazel-contrib/rules_jvm/(.*) @contrib_rules_jvm//$1
+
+gazelle(
+    name = "gazelle",
+    extra_args = ["-index=lazy"],
+    gazelle = "@aspect_gazelle//:gazelle_bin",
+)
+
+gazelle(
+    name = "gazelle.check",
+    gazelle = "@aspect_gazelle//:gazelle_bin",
+    mode = "diff",
+)
 
 go_library(
     name = "kotlin",
@@ -13,19 +29,19 @@ go_library(
     importpath = "github.com/aspect-build/aspect-gazelle/language/kotlin",
     visibility = ["//visibility:public"],
     deps = [
-        "//common",
-        "//common/logger",
-        "//common/rule",
-        "//language/kotlin/kotlinconfig",
-        "//language/kotlin/parser",
-        "@com_github_bazel_contrib_rules_jvm//java/gazelle/javaconfig",
-        "@com_github_bazel_contrib_rules_jvm//java/gazelle/private/java",
-        "@com_github_bazel_contrib_rules_jvm//java/gazelle/private/maven",
-        "@com_github_bazel_contrib_rules_jvm//java/gazelle/private/types",
+        "//kotlinconfig",
+        "//parser",
+        "@aspect_gazelle//common",
+        "@aspect_gazelle//common/logger",
+        "@aspect_gazelle//common/rule",
         "@com_github_emirpasic_gods//maps/treemap",
         "@com_github_emirpasic_gods//sets/treeset",
         "@com_github_emirpasic_gods//utils",
         "@com_github_rs_zerolog//:zerolog",
+        "@contrib_rules_jvm//java/gazelle/javaconfig",
+        "@contrib_rules_jvm//java/gazelle/private/java",
+        "@contrib_rules_jvm//java/gazelle/private/maven",
+        "@contrib_rules_jvm//java/gazelle/private/types",
         "@gazelle//config",
         "@gazelle//label",
         "@gazelle//language",

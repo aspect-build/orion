@@ -1,7 +1,7 @@
+load("@aspect_gazelle//:gazelle.bzl", "gazelle_generation_test")
 load("@gazelle//:def.bzl", "gazelle_binary")
-load("//:gazelle.bzl", "gazelle_generation_test")
 
-BUILTIN_PLUGINS_DIR = "language/orion/plugins"
+BUILTIN_PLUGINS_DIR = "plugins"
 
 # Disable the gazelle extensions
 # gazelle:ignore
@@ -19,7 +19,7 @@ BZL_TESTS = [t.replace("/WORKSPACE", "") for t in glob(["bzl/*/WORKSPACE"])]
         env = {
             "TEST_STARZELLE_PLUGINS": BUILTIN_PLUGINS_DIR,
         },
-        gazelle_binary = "//language/orion/tests:gazelle_orion_binary",
+        gazelle_binary = ":gazelle_orion_binary",
     )
     for t in BZL_TESTS
     # TODO: remove opt-outs
@@ -39,7 +39,7 @@ gazelle_binary(
     name = "gazelle_orion_binary",
     testonly = True,
     languages = [
-        "//language/orion",
+        "//:orion",
     ],
-    visibility = ["//language/orion/tests:__subpackages__"],
+    visibility = [":__subpackages__"],
 )

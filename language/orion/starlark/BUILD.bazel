@@ -6,7 +6,7 @@ go_library(
     importpath = "github.com/aspect-build/aspect-gazelle/language/orion/starlark",
     visibility = ["//visibility:public"],
     deps = [
-        "//language/orion/starlark/stdlib",
+        "//starlark/stdlib",
         "@gazelle//label",
         "@net_starlark_go//lib/json",
         "@net_starlark_go//starlark",

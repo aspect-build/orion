@@ -1,12 +1,12 @@
+load("@aspect_gazelle//:gazelle.bzl", "gazelle_generation_test")
 load("@gazelle//:def.bzl", "gazelle_binary")
-load("//:gazelle.bzl", "gazelle_generation_test")
 
 # gazelle:ignore
 
 # Internal only for tests
 gazelle_binary(
     name = "gazelle_kotlin_test_binary",
-    languages = ["//language/kotlin"],
+    languages = ["//:kotlin"],
     visibility = ["//visibility:private"],
 )
 

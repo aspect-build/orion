@@ -8,7 +8,7 @@ gazelle_binary(
     name = "gazelle_bin",
     testonly = True,
     languages = [
-        "@aspect_gazelle//language/js",
+        "@aspect_gazelle_js//:js",
         "//pkg/git/testing",
     ],
     visibility = ["//visibility:private"],

@@ -1,4 +1,19 @@
+load("@gazelle//:def.bzl", "gazelle")
 load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+# gazelle:resolve_regexp go github.com/aspect-build/aspect-gazelle/common(/.*)? @aspect_gazelle//common$1
+
+gazelle(
+    name = "gazelle",
+    extra_args = ["-index=lazy"],
+    gazelle = "@aspect_gazelle//:gazelle_bin",
+)
+
+gazelle(
+    name = "gazelle.check",
+    gazelle = "@aspect_gazelle//:gazelle_bin",
+    mode = "diff",
+)
 
 go_library(
     name = "js",
@@ -15,15 +30,15 @@ go_library(
     importpath = "github.com/aspect-build/aspect-gazelle/language/js",
     visibility = ["//visibility:public"],
     deps = [
-        "//common",
-        "//common/cache",
-        "//common/logger",
-        "//common/rule",
-        "//language/js/node",
-        "//language/js/parser",
-        "//language/js/pnpm",
-        "//language/js/proto",
-        "//language/js/typescript",
+        "//node",
+        "//parser",
+        "//pnpm",
+        "//proto",
+        "//typescript",
+        "@aspect_gazelle//common",
+        "@aspect_gazelle//common/cache",
+        "@aspect_gazelle//common/logger",
+        "@aspect_gazelle//common/rule",
         "@com_github_bazelbuild_buildtools//build",
         "@com_github_bmatcuk_doublestar_v4//:doublestar",
         "@com_github_emirpasic_gods//maps/linkedhashmap",
