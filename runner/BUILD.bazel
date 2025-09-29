@@ -10,6 +10,7 @@ go_library(
         "//common/ibp",
         "//common/progress",
         "//language/js",
+        "//language/orion",
         "//runner/git",
         "//runner/language/bzl",
         "//runner/language/python",
