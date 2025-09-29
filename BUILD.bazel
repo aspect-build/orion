@@ -28,6 +28,12 @@ gazelle(
     gazelle = ":gazelle_bin",
 )
 
+gazelle(
+    name = "gazelle.check",
+    gazelle = ":gazelle_bin",
+    mode = "diff",
+)
+
 bzl_library(
     name = "gazelle_lib",
     srcs = ["gazelle.bzl"],

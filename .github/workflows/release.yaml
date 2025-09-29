@@ -41,7 +41,7 @@ jobs:
           shasum -a 256 assets/* > assets/CHECKSUMS
           
           cat <<EOF > release_notes.txt
-          We recommend using with https://github.com/theoremlp/rules_multitool.
+          We recommend using with https://github.com/bazel-contrib/rules_multitool.
 
           To upgrade run,
           
