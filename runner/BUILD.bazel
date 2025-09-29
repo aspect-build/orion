@@ -8,12 +8,12 @@ go_library(
     deps = [
         "//common/bazel",
         "//common/ibp",
-        "//common/progress",
         "//language/js",
         "//language/orion",
         "//runner/git",
         "//runner/language/bzl",
         "//runner/language/python",
+        "//runner/progress",
         "//runner/vendored/gazelle",
         "@gazelle//config",
         "@gazelle//language",

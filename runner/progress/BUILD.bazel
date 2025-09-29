@@ -3,7 +3,7 @@ load("@rules_go//go:def.bzl", "go_library")
 go_library(
     name = "progress",
     srcs = ["progress.go"],
-    importpath = "github.com/aspect-build/aspect-gazelle/common/progress",
+    importpath = "github.com/aspect-build/aspect-gazelle/runner/progress",
     visibility = ["//visibility:public"],
     deps = [
         "@gazelle//config",
