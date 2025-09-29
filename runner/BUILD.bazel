@@ -63,6 +63,7 @@ go_library(
         "@aspect_gazelle//common/bazel",
         "@aspect_gazelle//language/js",
         "@aspect_gazelle//language/orion",
+        "@contrib_rules_jvm//java/gazelle",
         "@gazelle//config",
         "@gazelle//language",
         "@gazelle//language/go",
