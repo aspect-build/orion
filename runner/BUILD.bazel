@@ -20,6 +20,7 @@ gazelle_binary(
     name = "gazelle_bin",
     languages = [
         "@gazelle//language/go:go_default_library",
+        "@contrib_rules_jvm//java/gazelle",
     ],
 )
 
