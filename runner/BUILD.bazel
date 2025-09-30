@@ -35,6 +35,18 @@ gazelle(
     mode = "diff",
 )
 
+gazelle_binary(
+    name = "gazelle_prebuilt_bin",
+    languages = [
+        "//language/bzl",
+        "//language/python",
+        "@aspect_gazelle//language/js",
+        "@gazelle_cc//language/cc",
+        "@gazelle//language/proto",
+        "@gazelle//language/go",
+    ],
+)
+
 go_library(
     name = "runner",
     srcs = ["runner.go"],
