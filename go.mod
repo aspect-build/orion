@@ -9,7 +9,7 @@ require (
 	github.com/bazelbuild/rules_go v0.56.1 // indirect; NOTE: keep in sync with MODULE.bazel
 	github.com/bmatcuk/doublestar/v4 v4.9.1
 	github.com/emirpasic/gods v1.18.1
-	github.com/fatih/color v1.18.0
+	github.com/fatih/color v1.18.0 // indirect
 	github.com/itchyny/gojq v0.12.17
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/msolo/jsonr v0.0.0-20231023064044-62fbfc3a0313
@@ -28,7 +28,6 @@ require (
 	github.com/bazel-contrib/rules_jvm v0.27.0
 	github.com/mikefarah/yq/v4 v4.46.1
 	github.com/rs/zerolog v1.34.0
-	golang.org/x/term v0.33.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20250603155806-513f23925822
 	gopkg.in/op/go-logging.v1 v1.0.0-20160211212156-b2cb9fa56473
 )
