@@ -1,5 +1,4 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("@buildifier_prebuilt//:rules.bzl", "buildifier")
 load("@gazelle//:def.bzl", "gazelle", "gazelle_binary")
 
 # gazelle:lang go
@@ -44,16 +43,12 @@ alias(
     actual = "//tools/format",
 )
 
-buildifier(
+alias(
     name = "buildifier",
-    exclude_patterns = ["./.git/*"],
-    lint_mode = "fix",
-    mode = "fix",
+    actual = "//tools:buildifier",
 )
 
-buildifier(
+alias(
     name = "buildifier.check",
-    exclude_patterns = ["./.git/*"],
-    lint_mode = "warn",
-    mode = "diff",
+    actual = "//tools:buildifier.check",
 )
