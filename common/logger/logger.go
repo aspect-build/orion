@@ -53,8 +53,8 @@ func init() {
 
 		// Default to Debug for tests
 		level = DebugLevel
-	} else if os.Getenv("ASPECT_CLI_LOG_FILE") != "" {
-		logfile, err := os.Create(os.Getenv("ASPECT_CLI_LOG_FILE"))
+	} else if os.Getenv("ASPECT_GAZELLE_LOG_FILE") != "" {
+		logfile, err := os.Create(os.Getenv("ASPECT_GAZELLE_LOG_FILE"))
 		if err != nil {
 			log.Fatalf("CLI failed to create log file: %v\n", err)
 		}
@@ -66,8 +66,8 @@ func init() {
 	logging.SetLevel(logging.WARNING, "yq-lib")
 
 	// Override the default log level
-	if os.Getenv("ASPECT_CLI_LOG_DEBUG") != "" {
-		envLevel := strings.ToUpper(strings.TrimSpace(os.Getenv("ASPECT_CLI_LOG_DEBUG")))
+	if os.Getenv("ASPECT_GAZELLE_LOG_LEVEL") != "" {
+		envLevel := strings.ToUpper(strings.TrimSpace(os.Getenv("ASPECT_GAZELLE_LOG_LEVEL")))
 		switch envLevel {
 		case "TRACE":
 			level = TraceLevel
