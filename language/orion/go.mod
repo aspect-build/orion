@@ -2,7 +2,7 @@ module github.com/aspect-build/aspect-gazelle/language/orion
 
 go 1.24.5
 
-replace github.com/aspect-build/aspect-gazelle => ../../
+replace github.com/aspect-build/aspect-gazelle/common => ../../common
 
 require (
 	github.com/bazelbuild/bazel-gazelle v0.45.1-0.20250924144014-2de7b829fef1 // NOTE: keep in sync with MODULE.bazel
@@ -13,12 +13,12 @@ require (
 	github.com/itchyny/gojq v0.12.17
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	go.starlark.net v0.0.0-20250717191651-336a4b3a6d1d
-	golang.org/x/mod v0.27.0 // indirect
-	golang.org/x/sync v0.16.0
+	golang.org/x/mod v0.28.0 // indirect
+	golang.org/x/sync v0.17.0
 )
 
 require (
-	github.com/aspect-build/aspect-gazelle v0.0.0-00010101000000-000000000000
+	github.com/aspect-build/aspect-gazelle/common v0.0.0-00010101000000-000000000000
 	github.com/mikefarah/yq/v4 v4.46.1
 )
 
@@ -34,7 +34,7 @@ require (
 	github.com/jinzhu/copier v0.4.0 // indirect
 	github.com/yuin/gopher-lua v1.1.1 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
-	golang.org/x/text v0.28.0 // indirect
+	golang.org/x/text v0.29.0 // indirect
 	golang.org/x/tools/go/vcs v0.1.0-deprecated // indirect
 )
 
@@ -44,7 +44,8 @@ require (
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.4 // indirect
 	github.com/smacker/go-tree-sitter v0.0.0-20240827094217-dd81d9e9be82 // indirect
-	golang.org/x/net v0.43.0 // indirect
+	golang.org/x/net v0.44.0 // indirect
 	golang.org/x/sys v0.36.0 // indirect
+	google.golang.org/protobuf v1.36.9 // indirect
 	gopkg.in/op/go-logging.v1 v1.0.0-20160211212156-b2cb9fa56473 // indirect
 )

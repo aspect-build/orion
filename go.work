@@ -1,7 +1,7 @@
 go 1.25.0
 
 use (
-	./
+	./common
 	./language/js
 	./language/kotlin
 	./language/orion
