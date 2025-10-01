@@ -6,6 +6,9 @@ gazelle_binary(
     languages = [
         "@gazelle//language/go:go_default_library",
     ],
+
+    # Public for use in sub-MODULEs
+    visibility = ["//visibility:public"],
 )
 
 gazelle(
