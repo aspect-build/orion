@@ -19,6 +19,7 @@ gazelle(
 alias(
     name = "aspect_gazelle_js",
     actual = ":js",
+    visibility = ["//visibility:public"],
 )
 
 go_library(

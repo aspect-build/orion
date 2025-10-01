@@ -6,9 +6,9 @@ load("@rules_go//go:def.bzl", "go_library")
 # gazelle:resolve_regexp go github.com/bazel-contrib/rules_python/gazelle/(.*) @rules_python_gazelle_plugin//$1
 # gazelle:resolve_regexp go github.com/EngFlow/gazelle_cc/(.*) @gazelle_cc//$1
 # gazelle:resolve_regexp go github.com/aspect-build/aspect-gazelle/common(/.*)? @aspect_gazelle//common$1
-# gazelle:resolve_regexp go github.com/aspect-build/aspect-gazelle/language/js @aspect_gazelle_js//:js
-# gazelle:resolve_regexp go github.com/aspect-build/aspect-gazelle/language/orion @aspect_gazelle_orion//:orion
-# gazelle:resolve_regexp go github.com/aspect-build/aspect-gazelle/language/kotlin @aspect_gazelle_kotlin//:kotlin
+# gazelle:resolve_regexp go github.com/aspect-build/aspect-gazelle/language/js @aspect_gazelle_js
+# gazelle:resolve_regexp go github.com/aspect-build/aspect-gazelle/language/orion @aspect_gazelle_orion
+# gazelle:resolve_regexp go github.com/aspect-build/aspect-gazelle/language/kotlin @aspect_gazelle_kotlin
 # gazelle:resolve_regexp go github.com/aspect-build/aspect-gazelle/runner/(.*) //$1
 
 gazelle(
@@ -28,8 +28,8 @@ gazelle_binary(
     languages = [
         "//language/bzl",
         "//language/python",
-        "@aspect_gazelle_js//:js",
-        "@aspect_gazelle_kotlin//:kotlin",
+        "@aspect_gazelle_js",
+        "@aspect_gazelle_kotlin",
         "@gazelle_cc//language/cc",
         "@gazelle//language/proto",
         "@gazelle//language/go",
@@ -40,6 +40,7 @@ gazelle_binary(
 alias(
     name = "aspect_gazelle_runner",
     actual = ":runner",
+    visibility = ["//visibility:public"],
 )
 
 go_library(
@@ -55,8 +56,8 @@ go_library(
         "//progress",
         "//vendored/gazelle",
         "@aspect_gazelle//common/bazel",
-        "@aspect_gazelle_js//:js",
-        "@aspect_gazelle_orion//:orion",
+        "@aspect_gazelle_js",
+        "@aspect_gazelle_orion",
         "@gazelle//config",
         "@gazelle//language",
         "@gazelle//language/go",

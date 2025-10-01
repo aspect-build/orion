@@ -15,7 +15,7 @@ go_library(
         "//:runner",
         "//pkg/ibp",
         "@aspect_gazelle//common/buildinfo",
-        "@aspect_gazelle_orion//:orion",
+        "@aspect_gazelle_orion",
         "@gazelle//language",
         "@in_gopkg_yaml_v3//:yaml_v3",
     ],
