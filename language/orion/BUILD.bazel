@@ -15,6 +15,12 @@ gazelle(
     mode = "diff",
 )
 
+# Target name matching MODULE name
+alias(
+    name = "aspect_gazelle_orion",
+    actual = ":orion",
+)
+
 go_library(
     name = "orion",
     srcs = [

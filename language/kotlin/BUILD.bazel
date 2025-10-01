@@ -16,6 +16,12 @@ gazelle(
     mode = "diff",
 )
 
+# Target name matching MODULE name
+alias(
+    name = "aspect_gazelle_kotlin",
+    actual = ":kotlin",
+)
+
 go_library(
     name = "kotlin",
     srcs = [

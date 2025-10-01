@@ -36,6 +36,12 @@ gazelle_binary(
     ],
 )
 
+# Target name matching MODULE name
+alias(
+    name = "aspect_gazelle_runner",
+    actual = ":runner",
+)
+
 go_library(
     name = "runner",
     srcs = ["runner.go"],

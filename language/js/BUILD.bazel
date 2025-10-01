@@ -15,6 +15,12 @@ gazelle(
     mode = "diff",
 )
 
+# Target name matching MODULE name
+alias(
+    name = "aspect_gazelle_js",
+    actual = ":js",
+)
+
 go_library(
     name = "js",
     srcs = [
