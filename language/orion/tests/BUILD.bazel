@@ -1,3 +1,4 @@
+load("@gazelle//:def.bzl", "gazelle_binary")
 load("//:gazelle.bzl", "gazelle_generation_test")
 
 BUILTIN_PLUGINS_DIR = "language/orion/plugins"
@@ -18,7 +19,7 @@ BZL_TESTS = [t.replace("/WORKSPACE", "") for t in glob(["bzl/*/WORKSPACE"])]
         env = {
             "TEST_STARZELLE_PLUGINS": BUILTIN_PLUGINS_DIR,
         },
-        gazelle_binary = "//language/orion:gazelle_orion_binary",
+        gazelle_binary = "//language/orion/tests:gazelle_orion_binary",
     )
     for t in BZL_TESTS
     # TODO: remove opt-outs
@@ -32,3 +33,13 @@ BZL_TESTS = [t.replace("/WORKSPACE", "") for t in glob(["bzl/*/WORKSPACE"])]
         "relative_import",
     ]
 ]
+
+# Internal only for tests
+gazelle_binary(
+    name = "gazelle_orion_binary",
+    testonly = True,
+    languages = [
+        "//language/orion",
+    ],
+    visibility = ["//language/orion/tests:__subpackages__"],
+)

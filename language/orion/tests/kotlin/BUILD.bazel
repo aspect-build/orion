@@ -18,7 +18,7 @@ KOTLIN_TESTS = [t.replace("/WORKSPACE", "") for t in glob(["*/WORKSPACE"])]
         env = {
             "TEST_STARZELLE_PLUGINS": BUILTIN_PLUGINS_DIR,
         },
-        gazelle_binary = "//language/orion:gazelle_orion_binary",
+        gazelle_binary = "//language/orion/tests:gazelle_orion_binary",
     )
     for t in KOTLIN_TESTS
     # TODO(#7623): remove opt-outs

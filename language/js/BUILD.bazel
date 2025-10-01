@@ -1,8 +1,4 @@
-load("@gazelle//:def.bzl", "gazelle_binary")
 load("@rules_go//go:def.bzl", "go_library", "go_test")
-load("//:gazelle.bzl", "gazelle_generation_test")
-
-# gazelle:exclude tests/
 
 go_library(
     name = "js",
@@ -48,25 +44,3 @@ go_test(
     srcs = ["generate_test.go"],
     embed = [":js"],
 )
-
-# The gazelle binary to run local gazelle tests.
-# Internal only for tests.
-gazelle_binary(
-    name = "gazelle_js_binary",
-    testonly = True,
-    languages = [
-        "@gazelle//language/proto:go_default_library",
-        ":js",
-    ],
-    visibility = ["//visibility:private"],
-)
-
-# A separate generation test for each tests/* test case
-[
-    gazelle_generation_test(
-        name = "%s_test" % test_workspace.replace("/WORKSPACE", "").replace("tests/", ""),
-        dir = test_workspace.replace("/WORKSPACE", ""),
-        gazelle_binary = "gazelle_js_binary",
-    )
-    for test_workspace in glob(["tests/**/WORKSPACE"])
-]

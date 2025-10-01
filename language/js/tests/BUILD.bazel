@@ -1,0 +1,26 @@
+load("@gazelle//:def.bzl", "gazelle_binary")
+load("//:gazelle.bzl", "gazelle_generation_test")
+
+# gazelle:ignore
+
+# The gazelle binary to run local gazelle tests.
+# Internal only for tests.
+gazelle_binary(
+    name = "gazelle_js_test_binary",
+    testonly = True,
+    languages = [
+        "@gazelle//language/proto:go_default_library",
+        "//language/js",
+    ],
+    visibility = ["//visibility:private"],
+)
+
+# A separate generation test for each test case
+[
+    gazelle_generation_test(
+        name = "%s_test" % test_workspace.replace("/WORKSPACE", ""),
+        dir = test_workspace.replace("/WORKSPACE", ""),
+        gazelle_binary = ":gazelle_js_test_binary",
+    )
+    for test_workspace in glob(["*/WORKSPACE"])
+]

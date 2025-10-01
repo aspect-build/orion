@@ -1,4 +1,3 @@
-load("@gazelle//:def.bzl", "gazelle_binary")
 load("@rules_go//go:def.bzl", "go_library")
 
 # gazelle:exclude tests/
@@ -35,14 +34,4 @@ go_library(
         "@gazelle//rule",
         "@org_golang_x_sync//errgroup",
     ],
-)
-
-# Internal only for tests
-gazelle_binary(
-    name = "gazelle_orion_binary",
-    testonly = True,
-    languages = [
-        ":orion",
-    ],
-    visibility = ["//:__subpackages__"],
 )

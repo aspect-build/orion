@@ -1,9 +1,4 @@
-load("@gazelle//:def.bzl", "gazelle_binary")
 load("@rules_go//go:def.bzl", "go_library", "go_test")
-load("//:gazelle.bzl", "gazelle_generation_test")
-
-# Exclude all test data
-# gazelle:exclude tests/
 
 go_library(
     name = "kotlin",
@@ -39,23 +34,6 @@ go_library(
         "@gazelle//rule",
     ],
 )
-
-# Internal only for tests
-gazelle_binary(
-    name = "gazelle_kotlin_binary",
-    languages = [":kotlin"],
-    visibility = ["//visibility:private"],
-)
-
-# A separate generation test for each tests/* test case
-[
-    gazelle_generation_test(
-        name = "%s_test" % test_workspace.replace("/WORKSPACE", "").replace("tests/", ""),
-        dir = test_workspace.replace("/WORKSPACE", ""),
-        gazelle_binary = "gazelle_kotlin_binary",
-    )
-    for test_workspace in glob(["tests/**/WORKSPACE"])
-]
 
 go_test(
     name = "kotlin_test",

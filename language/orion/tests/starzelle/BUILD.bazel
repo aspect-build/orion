@@ -12,7 +12,7 @@ load("//:gazelle.bzl", "gazelle_generation_test")
                 t,
             ),
         },
-        gazelle_binary = "//language/orion:gazelle_orion_binary",
+        gazelle_binary = "//language/orion/tests:gazelle_orion_binary",
     )
     for t in [t.replace("/WORKSPACE", "") for t in glob(["*/WORKSPACE"])]
 ]
