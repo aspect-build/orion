@@ -4,7 +4,7 @@ load("//:gazelle.bzl", "gazelle_generation_test")
 BUILTIN_PLUGINS_DIR = "language/orion/plugins"
 
 # Disable the gazelle extensions
-# gazelle:exclude .
+# gazelle:ignore
 
 # bzl plugin tests
 BZL_TESTS = [t.replace("/WORKSPACE", "") for t in glob(["bzl/*/WORKSPACE"])]

@@ -1,7 +1,5 @@
 load("@rules_go//go:def.bzl", "go_library")
 
-# gazelle:exclude tests/
-
 go_library(
     name = "orion",
     srcs = [

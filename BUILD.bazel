@@ -1,17 +1,6 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@gazelle//:def.bzl", "gazelle", "gazelle_binary")
 
-# gazelle:lang go
-# gazelle:build_file_name BUILD.bazel
-
-# Go config
-# gazelle:go_naming_convention import
-# gazelle:go_naming_convention_external import
-
-# Use the gazelle bazel modules instead of go.mod modules
-# gazelle:resolve_regexp go github.com/bazelbuild/bazel-gazelle/(.*) @gazelle//$1
-# gazelle:resolve_regexp go github.com/bazelbuild/rules_go/(.*) @rules_go//$1
-
 gazelle_binary(
     name = "gazelle_bin",
     languages = [

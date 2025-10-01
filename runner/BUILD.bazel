@@ -1,13 +1,6 @@
 load("@gazelle//:def.bzl", "gazelle", "gazelle_binary")
 load("@rules_go//go:def.bzl", "go_library")
 
-# gazelle:lang go
-# gazelle:build_file_name BUILD.bazel
-
-# Go config
-# gazelle:go_naming_convention import
-# gazelle:go_naming_convention_external import
-
 # Use the gazelle bazel modules instead of go.mod modules
 # gazelle:resolve_regexp go github.com/bazelbuild/bazel-gazelle/(.*) @gazelle//$1
 # gazelle:resolve_regexp go github.com/bazel-contrib/rules_python/gazelle/(.*) @rules_python_gazelle_plugin//$1
